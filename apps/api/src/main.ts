@@ -1,0 +1,43 @@
+import { I18nService } from 'nestjs-i18n';
+import { NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
+
+import { AppModule } from './app.module';
+import { ResponseInterceptor } from './core/middleware/handler-response.middleware';
+import { ValidationError } from 'class-validator';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+
+  const configService = app.get(ConfigService);
+  const i18nService: I18nService<Record<string, string>> = app.get(I18nService);
+
+  const PORT = configService.get<number>('PORT') || 8081;
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      exceptionFactory: (errors: ValidationError[]) => {
+        const errorProperties = errors.reduce(
+          (acc, curr) => (acc ? `${acc}, ${curr.property}` : curr.property),
+          '',
+        );
+
+        const message = i18nService.t('global.INVALID_REQUEST', {
+          args: { properties: errorProperties },
+        });
+
+        throw new BadRequestException(message);
+      },
+    }),
+  );
+
+  app.useGlobalInterceptors(new ResponseInterceptor());
+
+  app.enableCors();
+
+  await app.listen(PORT);
+}
+
+bootstrap();

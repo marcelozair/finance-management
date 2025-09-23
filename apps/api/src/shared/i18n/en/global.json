@@ -1,0 +1,3 @@
+{
+  "INVALID_REQUEST": "Invalid request payload, missing properies: {properties}"
+}

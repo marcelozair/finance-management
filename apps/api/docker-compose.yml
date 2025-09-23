@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: finzen_database
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_USER=finzen
+      - POSTGRES_DB=finzen
+    ports:
+      - 5433:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+volumes:
+  postgres: 
+    driver: local

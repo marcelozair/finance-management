@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+.card-wallet {
+  @apply cursor-pointer transition-all duration-300 hover:shadow-sm w-52 min-w-[208px] h-16 flex bg-white p-2 border-2 border-gray-100 rounded-md gap-2;
+}
+
+.card-wallet__color-bar {
+  @apply h-full rounded-full w-[8px];
+}
+
+.card-wallet__content {
+  @apply text-left w-full;
+}
+
+.card-wallet__name {
+  @apply font-bold text-ellipsis truncate text-sm;
+}
+
+.card-wallet__balance {
+  @apply font-bold text-sm;
+}
