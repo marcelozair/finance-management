@@ -5,10 +5,14 @@ import {
 import { LocalStorageService } from "./core/utils/localStorage";
 import { serviceLocator, ServiceName } from "./core/services/ServiceLocator";
 import { LoggerService } from "./core/utils/logger";
+import { ConfigurationService } from "./core/utils/configuration";
 
 // Global instances Implementation
-const logger = new LoggerService();
+const configurationService = new ConfigurationService();
 const localStorageService = new LocalStorageService();
+
+const loggerLevel = configurationService.ENV === "PRODUCTION" ? 2 : 0;
+const logger = new LoggerService(loggerLevel);
 
 /**
  * Get the language based on navigator class
@@ -17,7 +21,7 @@ const localStorageService = new LocalStorageService();
  */
 function getLanguageBasedNavigator() {
   const locale = navigator.language; // e.g. "es-ES", "en-US"
-  logger.info(`[Setup] Navigator language: '${locale}'`);
+  logger.debug(`[Setup] Navigator language: '${locale}'`);
   return locale.split(/[-_]/)[0].toLowerCase(); // "es" or "en"
 }
 
@@ -36,6 +40,8 @@ function getBrowserTheme() {
  * Ensure verify neccessary metada for application critical functionalities
  */
 export const setupApplication = () => {
+  logger.debug("[SetUp] Starting setting up configurations ...");
+
   // Service Locator initalizing ...
   serviceLocator.register(ServiceName.LoggerService, logger);
   serviceLocator.register(ServiceName.LocalStorage, localStorageService);
@@ -43,10 +49,10 @@ export const setupApplication = () => {
   // Setting up default language client
   const language = getLanguageBasedNavigator();
   localStorageService.save(LANGUAGE_STORAGE_KEY, language);
-  logger.info(`[Setup] Config '${language}' as default language`);
+  logger.debug(`[Setup] Config '${language}' as default language`);
 
   // Setting up default user theme
   const theme = getBrowserTheme();
   localStorageService.save(THEME_STORAGE_KEY, theme);
-  logger.info(`[Setup] Config '${theme}' as default UI theme`);
+  logger.debug(`[Setup] Config '${theme}' as default UI theme`);
 };
