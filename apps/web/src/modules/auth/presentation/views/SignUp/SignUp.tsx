@@ -1,13 +1,25 @@
-import { useState } from "react";
 import { Grid, GridItem } from "@chakra-ui/react";
 
-import { EnumStatusSignUp } from "../../interfaces/ISignUpForm";
 import { RegisterForm } from "../../components/RegisterForm/RegisterForm";
+import { useAtomNavigator } from "../../../../../core/hook/useAtomNavigator";
 
 import "./../../styles/signIn.css";
+import { VerifyCode } from "../../components/VerifyCode/VerifyCode";
+
+export type TypeSignUpViews =
+  | "register-user"
+  | "user-preferences"
+  | "user-verification";
 
 export const SignUpView = () => {
-  const [step, setStep] = useState<EnumStatusSignUp>(EnumStatusSignUp.REGISTER);
+  const { CurrentComponent, navigate } = useAtomNavigator<TypeSignUpViews>({
+    defaultView: "user-verification",
+    atomsView: {
+      "register-user": () => <RegisterForm navigate={navigate} />,
+      "user-verification": () => <VerifyCode navigate={navigate} />,
+      "user-preferences": () => <p>Preferences</p>,
+    },
+  });
 
   return (
     <main className="auth">
@@ -21,12 +33,11 @@ export const SignUpView = () => {
         ></GridItem>
         <GridItem
           placeItems="center"
+          width="100%"
           className="sign-in__form"
           colSpan={{ lg: 2, base: 1 }}
         >
-          {step === EnumStatusSignUp.REGISTER && (
-            <RegisterForm next={() => setStep(EnumStatusSignUp.VERIFICATION)} />
-          )}
+          <CurrentComponent />
         </GridItem>
       </Grid>
     </main>

@@ -5,26 +5,27 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { AuthDomain } from "../../../domain";
 import type { ISignUpForm } from "../../interfaces/ISignUpForm";
+import type { TypeSignUpViews } from "../../views/SignUp/SignUp";
 import { signUpValidator } from "../../validator/SignUpValidator";
-import type { User } from "../../../../user/domain/entities/User";
 import { useExecuteUseCase } from "../../../../../core/hook/useExecuteUseCase";
 import { TextField } from "../../../../../shared/components/TextField/TextField";
 import { EmailField } from "../../../../../shared/components/EmailField/EmailField";
 import { PasswordField } from "../../../../../shared/components/PasswordField/PasswordField";
+import { PhoneNumberField } from "../../../../../shared/components/PhoneNumberField/PhoneNumberField";
 
 interface RegisterForm {
-  next: () => void;
+  navigate: (view: TypeSignUpViews) => void;
 }
 
-export const RegisterForm = ({ next }: RegisterForm) => {
+export const RegisterForm = ({ navigate }: RegisterForm) => {
   const authDomain = new AuthDomain();
 
-  const { register, formState, handleSubmit } = useForm<ISignUpForm>({
+  const { register, formState, handleSubmit, setValue } = useForm<ISignUpForm>({
     mode: "onChange",
     resolver: yupResolver(signUpValidator),
   });
 
-  const { execute, loading } = useExecuteUseCase<User, ISignUpForm>({
+  const { execute, loading } = useExecuteUseCase<void, ISignUpForm>({
     callback: (params: ISignUpForm) => {
       return authDomain.signUp(params);
     },
@@ -32,8 +33,7 @@ export const RegisterForm = ({ next }: RegisterForm) => {
 
   const signUp = async (values: ISignUpForm) => {
     await execute({ ...values });
-    next();
-    // redirect("admin/wallets");
+    navigate("user-verification");
   };
 
   return (
@@ -50,7 +50,6 @@ export const RegisterForm = ({ next }: RegisterForm) => {
       <Flex direction="column" gap={5}>
         <TextField
           label="Full Name"
-          required={true}
           placeholder="Enter your full name"
           error={formState.errors.name?.message}
           startElement={<FaUserAlt />}
@@ -62,6 +61,14 @@ export const RegisterForm = ({ next }: RegisterForm) => {
           placeholder="Enter your email"
           error={formState.errors.email?.message}
           {...register("email")}
+        />
+
+        <PhoneNumberField
+          label="Phone number"
+          placeholder="Enter your phone number"
+          error={formState.errors.phone?.message}
+          setValue={(value: string) => setValue("phone", value)}
+          {...register("phone")}
         />
 
         <PasswordField
