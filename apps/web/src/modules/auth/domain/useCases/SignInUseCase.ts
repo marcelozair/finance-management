@@ -1,7 +1,7 @@
-import type { User } from "../../../user/domain/entities/User";
 import type { IAuthRepository } from "../repositories/IAuthRepository";
 import type { SignInCredentials } from "../interfaces/SignInCredentials";
 import { type IAuthorizationHandler } from "../../../../core/services/AuthorizationCookie";
+import type { ISessionUser } from "../../data/interfaces/IAuthResponse";
 
 export class SignInUseCase {
   private readonly authRepository: IAuthRepository;
@@ -15,11 +15,11 @@ export class SignInUseCase {
     this.authorizationHandler = authorizationHandler;
   }
 
-  async execute(signInCredentials: SignInCredentials): Promise<User> {
+  async execute(signInCredentials: SignInCredentials): Promise<ISessionUser> {
     const { data } = await this.authRepository.signIn(signInCredentials);
 
-    this.authorizationHandler.setAuthorization(data.authorization);
+    this.authorizationHandler.setAuthorization(data.session.authorizationToken);
 
-    return data.user;
+    return data;
   }
 }

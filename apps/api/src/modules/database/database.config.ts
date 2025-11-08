@@ -14,7 +14,7 @@ export const DatabaseProvider = {
       password: process.env.DATABASE_PASSWORD,
       port: Number(process.env.DATABASE_PORT),
 
-      logging: false,
+      logging: true,
       synchronize: true,
 
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],

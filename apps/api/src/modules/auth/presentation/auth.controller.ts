@@ -12,6 +12,8 @@ import { SignUpDTO } from './dto/signup.dto';
 import { ResHandler } from 'src/core/utils/response-handler';
 import { SignInUseCase } from '../domain/userCases/signIn';
 import { SignUpUseCase } from '../domain/userCases/signUp';
+import { VerifyCodeDTO } from './dto/verifyCode.dto';
+import { VerifyCodeUseCase } from '../domain/userCases/verifyCode';
 
 @Controller('auth')
 export class AuthController {
@@ -20,6 +22,9 @@ export class AuthController {
 
   @Inject(SignUpUseCase)
   private readonly signUpUseCase: SignUpUseCase;
+
+  @Inject(VerifyCodeUseCase)
+  private readonly verifyCodeUseCase: VerifyCodeUseCase;
 
   @Post('sign-in')
   @HttpCode(HttpStatus.OK)
@@ -32,6 +37,13 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   async signUp(@Body() body: SignUpDTO) {
     const response = await this.signUpUseCase.execute(body);
+    return ResHandler(response);
+  }
+
+  @Post('verify-code')
+  @HttpCode(HttpStatus.OK)
+  async verifyCode(@Body() body: VerifyCodeDTO) {
+    const response = await this.verifyCodeUseCase.execute(body);
     return ResHandler(response);
   }
 }

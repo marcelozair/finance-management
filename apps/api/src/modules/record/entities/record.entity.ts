@@ -51,7 +51,7 @@ export enum RecordCategoryEnum {
   Other = 'Other',
 }
 
-@Entity()
+@Entity('records')
 export class RecordEntity {
   @PrimaryGeneratedColumn()
   id: number;

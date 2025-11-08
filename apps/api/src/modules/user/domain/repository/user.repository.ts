@@ -2,7 +2,6 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import { CreateUserDTO } from '../dto/createUser.dto';
 import { UserEntity } from '../../entities/user.entity';
-import { EncryptHandler } from 'src/core/utils/CryptHandler';
 import { IUserRepository } from '../../repository/userRepository';
 
 import {
@@ -12,9 +11,6 @@ import {
 
 @Injectable()
 export class UserRepository implements IUserRepository {
-  @Inject(EncryptHandler)
-  private readonly encryptHandler: EncryptHandler;
-
   @Inject(UserRepositoryName)
   private readonly userRepository: UserRepositoryEntity;
 
@@ -22,9 +18,8 @@ export class UserRepository implements IUserRepository {
     return this.userRepository.findOne({ where: { email } });
   }
 
-  async create(user: CreateUserDTO): Promise<UserEntity> {
-    const password = await this.encryptHandler.encrypt(user.password);
-    const userPayload = this.userRepository.create({ ...user, password });
+  create(user: CreateUserDTO): Promise<UserEntity> {
+    const userPayload = this.userRepository.create(user);
     return this.userRepository.save(userPayload);
   }
 

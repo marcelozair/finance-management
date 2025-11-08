@@ -15,6 +15,13 @@
   --text-primary-normal: #3da9fc;
 }
 
+.dark {
+  /* Color Palletes */
+  --color-primary-light: #161616;
+  --color-primary-normal: #1071bb;
+  --text-primary-normal: #1071bb;
+}
+
 
 /* :root {
 

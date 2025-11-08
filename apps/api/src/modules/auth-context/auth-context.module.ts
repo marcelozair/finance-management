@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { EncryptHandler } from 'src/core/utils/CryptHandler';
+import { EncryptHandler } from 'src/core/utils/EncryptHandler';
 import { DatabaseProvider } from '../database/database.config';
 import { ProfileRepository } from '../profile/profile.repository';
 import { UserRepositoryProvider } from '../user/entities/user.provider';

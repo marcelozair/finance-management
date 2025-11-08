@@ -1,25 +1,41 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 
-import { RegisterForm } from "../../components/RegisterForm/RegisterForm";
-import { useAtomNavigator } from "../../../../../core/hook/useAtomNavigator";
+import { VerifyCode } from "../../components/VerifyCode";
+import { SignUpTOTP } from "../../components/SignUpTOTP";
+import { RegisterForm } from "../../components/RegisterForm";
+import { useAtomNavigator } from "@shared/presentation/hooks/useAtomNavigator";
 
 import "./../../styles/signIn.css";
-import { VerifyCode } from "../../components/VerifyCode/VerifyCode";
+
+export interface SignUpAtomCtx {
+  secret: string;
+  userId: number;
+}
+
+export interface SignUpAtomsProps {
+  context: SignUpAtomCtx;
+  navigate: (view: TypeSignUpViews) => void;
+  updateCtx: (values: Partial<SignUpAtomCtx>) => void;
+}
 
 export type TypeSignUpViews =
-  | "register-user"
-  | "user-preferences"
-  | "user-verification";
+  | "user-sign-up"
+  | "user-register-totp"
+  | "user-finishing-sign-up"
+  | "user-verification-totp";
 
 export const SignUpView = () => {
-  const { CurrentComponent, navigate } = useAtomNavigator<TypeSignUpViews>({
-    defaultView: "user-verification",
-    atomsView: {
-      "register-user": () => <RegisterForm navigate={navigate} />,
-      "user-verification": () => <VerifyCode navigate={navigate} />,
-      "user-preferences": () => <p>Preferences</p>,
-    },
-  });
+  const { CurrentComponent } = useAtomNavigator<TypeSignUpViews, SignUpAtomCtx>(
+    {
+      defaultView: "user-sign-up",
+      atomsView: {
+        "user-sign-up": RegisterForm,
+        "user-register-totp": SignUpTOTP,
+        "user-verification-totp": VerifyCode,
+        "user-finishing-sign-up": VerifyCode,
+      },
+    }
+  );
 
   return (
     <main className="auth">

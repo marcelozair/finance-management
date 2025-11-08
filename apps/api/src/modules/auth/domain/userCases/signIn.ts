@@ -5,13 +5,13 @@ import {
 } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
 
-import { EncryptHandler } from 'src/core/utils/CryptHandler';
+import { EncryptHandler } from 'src/core/utils/EncryptHandler';
 import { UserMapper } from '../../../user/mapper/user.mapper';
 import { SignInDTO } from '../../presentation/dto/signin.dto';
-import { SignInRespose } from '../interface/sign-in.interface';
-import { AuthVerifyService } from '../services/auth-verify.service';
+import { AuthVerifyService } from '../services/AuthVerifyService';
 import { UserRepository } from 'src/modules/user/domain/repository/user.repository';
 import { IUserRepository } from 'src/modules/user/repository/userRepository';
+import { ISessionUser } from '../interface/iSessionUser';
 
 export class SignInUseCase {
   @Inject(EncryptHandler)
@@ -29,9 +29,9 @@ export class SignInUseCase {
   /**
    * Sign up user using its credentials
    * @param {SignInDTO} body user credentials
-   * @returns {Promise<SignInRespose>} user payload and authorization
+   * @returns {Promise<ISessionUser>} user payload and authorization
    */
-  async execute(body: SignInDTO): Promise<SignInRespose> {
+  async execute(body: SignInDTO): Promise<ISessionUser> {
     const { password, email } = body;
 
     const user = await this.userRepository.findByEmail(email);
@@ -52,8 +52,12 @@ export class SignInUseCase {
     const authorizationToken = this.authVerifyService.generate(user);
 
     return {
-      authorization: authorizationToken,
       user: UserMapper.map(user),
+      session: {
+        authorizationToken,
+        authorizationType: 'Bearer',
+        sessionId: 'session-id-uuid-v4',
+      },
     };
   }
 }

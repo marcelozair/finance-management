@@ -21,7 +21,13 @@ export class UserEntity {
   email: string;
 
   @Column()
+  phone: string;
+
+  @Column()
   password: string;
+
+  @Column()
+  secret: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

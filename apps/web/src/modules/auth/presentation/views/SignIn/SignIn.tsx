@@ -1,34 +1,40 @@
 import { useForm } from "react-hook-form";
-import { Link, redirect } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 
-import "./../../styles/signIn.css";
 import { AuthDomain } from "../../../domain";
 import type { ISignInForm } from "../../interfaces/ISignInForm";
 import { signInValidator } from "../../validator/signInValidator";
-import type { User } from "../../../../user/domain/entities/User";
-import { EmailField } from "../../../../../shared/components/EmailField/EmailField";
-import { PasswordField } from "../../../../../shared/components/PasswordField/PasswordField";
-import { useExecuteUseCase } from "../../../../../core/hook/useExecuteUseCase";
+import type { ISessionUser } from "../../../data/interfaces/IAuthResponse";
+
+import { useSession } from "@shared/presentation/store/session/useSession";
+import { EmailField } from "@shared/presentation/components/EmailField/EmailField";
+import { PasswordField } from "@shared/presentation/components/PasswordField/PasswordField";
+
+import "./../../styles/signIn.css";
+import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase";
 
 export const SignInView = () => {
   const authDomain = new AuthDomain();
+  const navigate = useNavigate();
+  const { setUserSession } = useSession();
 
   const { register, formState, handleSubmit } = useForm<ISignInForm>({
     mode: "onChange",
     resolver: yupResolver(signInValidator),
   });
 
-  const { execute, loading } = useExecuteUseCase<User, ISignInForm>({
+  const { execute, loading } = useExecuteUseCase<ISessionUser, ISignInForm>({
     callback: (params: ISignInForm) => {
       return authDomain.signIn(params);
     },
   });
 
   const signIn = async (values: ISignInForm) => {
-    await execute({ ...values });
-    redirect("admin/wallets");
+    const { session, user } = await execute({ ...values });
+    setUserSession(session, user);
+    navigate("/admin/wallet");
   };
 
   return (
@@ -39,7 +45,7 @@ export const SignInView = () => {
         <GridItem
           colSpan={{ lg: 4 }}
           display={{ base: "none", lg: "block" }}
-          clasName="sign-in__banner"
+          // clasName="sign-in__banner"
         ></GridItem>
         <GridItem
           placeItems="center"

@@ -1,18 +1,28 @@
-import type { IAuthResponse } from "../interfaces/IAuthResponse";
-import { ApiService } from "../../../../core/services/ApiService";
-import type { ApiRes } from "../../../../core/interfaces/IApiResponse";
-import { serviceLocator } from "../../../../core/services/ServiceLocator";
-import { signInEndpoint, signUpEndpoint } from "../endpoints/authEndpoint";
-import { API_AUTH_BASE_URL } from "../../../../core/const/apiConfiguration";
-import { CreateApiClient } from "../../../../core/services/CreateApiClient";
-import type { IAuthRepository } from "../../domain/repositories/IAuthRepository";
-import type { SignInCredentials } from "../../domain/interfaces/SignInCredentials";
-import type { SignUpCredentials } from "../../domain/interfaces/SignUpCredentials";
+import type {
+  IAuthResponse,
+  ISessionUser,
+  ISignUpResponse,
+} from "../interfaces/IAuthResponse";
+import {
+  signInEndpoint,
+  signUpEndpoint,
+  verifyCode,
+} from "../endpoints/authEndpoint";
 
 import {
   DEFAULT_LANGUAGE,
   LANGUAGE_STORAGE_KEY,
 } from "../../../../core/const/appConfig";
+
+import { ApiService } from "../../../../core/services/ApiService";
+import type { ApiRes } from "../../../../core/interfaces/IApiResponse";
+import type { IVerifyCode } from "../../domain/interfaces/IVerifyCode";
+import { serviceLocator } from "../../../../core/services/ServiceLocator";
+import { API_AUTH_BASE_URL } from "../../../../core/const/apiConfiguration";
+import { CreateApiClient } from "../../../../core/services/CreateApiClient";
+import type { IAuthRepository } from "../../domain/repositories/IAuthRepository";
+import type { SignInCredentials } from "../../domain/interfaces/SignInCredentials";
+import type { SignUpCredentials } from "../../domain/interfaces/SignUpCredentials";
 
 export class AuthRepository extends ApiService implements IAuthRepository {
   constructor() {
@@ -30,11 +40,15 @@ export class AuthRepository extends ApiService implements IAuthRepository {
     super(ApiClient, failureHandler);
   }
 
-  signIn(body: SignInCredentials): Promise<ApiRes<IAuthResponse>> {
-    return this.post<ApiRes<IAuthResponse>>(signInEndpoint, body);
+  signIn(body: SignInCredentials): Promise<ApiRes<ISessionUser>> {
+    return this.post<ApiRes<ISessionUser>>(signInEndpoint, body);
   }
 
-  signUp(body: SignUpCredentials): Promise<ApiRes<IAuthResponse>> {
-    return this.post<ApiRes<IAuthResponse>>(signUpEndpoint, body);
+  signUp(body: SignUpCredentials): Promise<ApiRes<ISignUpResponse>> {
+    return this.post<ApiRes<ISignUpResponse>>(signUpEndpoint, body);
+  }
+
+  verifyCode(body: IVerifyCode): Promise<ApiRes<ISessionUser>> {
+    return this.post<ApiRes<ISessionUser>>(verifyCode, body);
   }
 }

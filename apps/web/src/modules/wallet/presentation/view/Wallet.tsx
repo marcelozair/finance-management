@@ -1,10 +1,10 @@
-import { WalletsContainer } from "../components/WalletsContainer/WalletsContainer";
+// import { WalletsContainer } from "../components/WalletsContainer/WalletsContainer";
 import { WidgetsContainer } from "../components/WidgetsContainer/WidgetsContainer";
 
 export const WalletView = () => {
   return (
     <article>
-      <WalletsContainer />
+      {/* <WalletsContainer /> */}
       <WidgetsContainer />
     </article>
   );

@@ -1,8 +1,8 @@
-import { TbDiamondFilled } from "react-icons/tb";
-import { Box, Flex, Text } from "@chakra-ui/react";
 import { TbWallet } from "react-icons/tb";
-import { TbSmartHome } from "react-icons/tb";
 import { TbSettings } from "react-icons/tb";
+import { TbSmartHome } from "react-icons/tb";
+import { Box, Flex, Text } from "@chakra-ui/react";
+import { TbDiamondFilled } from "react-icons/tb";
 
 import "./Sidebar.css";
 
@@ -11,9 +11,9 @@ export const Sidebar = () => {
     <aside className="sidebar">
       <Flex direction="column" justifyContent="space-between" height="100%">
         <Flex direction="column">
-          <div className="sidebar__logo">
+          {/* <div className="sidebar__logo">
             <img src="/siete-pe-logo.svg" />
-          </div>
+          </div> */}
 
           <div className="sidebar__menu-container-title">
             <p className="sidebar__menu-title">Menu</p>
@@ -36,7 +36,7 @@ export const Sidebar = () => {
         <Box>
           <div className="sidebar__menu-option">
             <a href="#" className="sidebar__menu-link">
-              <TbDiamondFilled size={20} color="skyblue" />
+              <TbDiamondFilled size={20} color="primary-normal" />
               <Text>Premium</Text>
             </a>
           </div>

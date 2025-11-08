@@ -2,10 +2,10 @@ import {
   LANGUAGE_STORAGE_KEY,
   THEME_STORAGE_KEY,
 } from "./core/const/appConfig";
-import { LocalStorageService } from "./core/utils/localStorage";
-import { serviceLocator, ServiceName } from "./core/services/ServiceLocator";
 import { LoggerService } from "./core/utils/logger";
+import { LocalStorageService } from "./core/utils/localStorage";
 import { ConfigurationService } from "./core/utils/configuration";
+import { serviceLocator, ServiceName } from "./core/services/ServiceLocator";
 
 // Global instances Implementation
 const configurationService = new ConfigurationService();
@@ -29,7 +29,15 @@ function getLanguageBasedNavigator() {
  * Detects the user's preferred color scheme (light or dark).
  * @returns {"light" | "dark"} User theme
  */
-function getBrowserTheme() {
+function getBrowserTheme(): "dark" | "light" {
+  // Get theme from local storage
+  const theme = localStorageService.get<"dark" | "light">(
+    THEME_STORAGE_KEY,
+    null
+  );
+
+  if (theme) return theme;
+
   return window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
@@ -39,7 +47,9 @@ function getBrowserTheme() {
  * Setup application function
  * Ensure verify neccessary metada for application critical functionalities
  */
-export const setupApplication = () => {
+export const setupApplication = (): {
+  theme: "dark" | "light";
+} => {
   logger.debug("[SetUp] Starting setting up configurations ...");
 
   // Service Locator initalizing ...
@@ -55,4 +65,6 @@ export const setupApplication = () => {
   const theme = getBrowserTheme();
   localStorageService.save(THEME_STORAGE_KEY, theme);
   logger.debug(`[Setup] Config '${theme}' as default UI theme`);
+
+  return { theme };
 };
