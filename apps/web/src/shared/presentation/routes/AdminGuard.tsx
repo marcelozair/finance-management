@@ -7,6 +7,7 @@ export const AdminGuard = () => {
   // #TODO: Improve validations
   // - Check if session expired
   if (!session) {
+    return <Outlet />;
     return <Navigate to="/auth/sign-in" />;
   }
 

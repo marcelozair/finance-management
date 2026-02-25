@@ -3,9 +3,13 @@ import { Center, Text } from "@chakra-ui/react";
 
 import "./CreateWalletCard.css";
 
-export const CreateWalletCard = () => {
+interface CreateWalletCardProps {
+  openModal: () => void;
+}
+
+export const CreateWalletCard = ({ openModal }: CreateWalletCardProps) => {
   return (
-    <button>
+    <button style={{ cursor: "pointer" }} onClick={openModal}>
       <Center
         width="4rem"
         height="4rem"

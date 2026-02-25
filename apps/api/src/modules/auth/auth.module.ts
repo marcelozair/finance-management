@@ -1,32 +1,37 @@
 import { Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule as JwtConfigModule } from '@nestjs/jwt';
 
-import { SignInUseCase } from './domain/userCases/signIn';
-import { SignUpUseCase } from './domain/userCases/signUp';
 import { AuthController } from './presentation/auth.controller';
+import { SignInUseCase } from './application/useCases/signIn.useCase';
+import { EncryptHandler } from 'src/core/utils/EncryptHandler';
+import { UserRepository } from '../users/domain/interfaces/user.repository';
+import { UserRepositoryImpl } from 'src/shared/infrastructure/database/repositories/user.repository';
 import { AuthVerifyService } from './domain/services/AuthVerifyService';
-import { AuthContextModule } from '../auth-context/auth-context.module';
-import { ResendService } from 'src/core/services/ResendService';
-import { VerifyCodeUseCase } from './domain/userCases/verifyCode';
+import { UserEntity } from 'src/shared/infrastructure/database/entities/user.entity';
+import { SignUpUseCase } from './application/useCases/signUp.useCase';
+import { VerifyCodeUseCase } from './application/useCases/verifyCode';
 
 @Module({
   controllers: [AuthController],
   imports: [
+    TypeOrmModule.forFeature([UserEntity]),
     JwtConfigModule.register({
       global: true,
       secret: '1dEIHe12tCtO',
       signOptions: { expiresIn: '60s' },
     }),
-    AuthContextModule,
   ],
   providers: [
-    ConfigService,
     SignInUseCase,
     SignUpUseCase,
-    VerifyCodeUseCase,
-    ResendService,
+    EncryptHandler,
     AuthVerifyService,
+    VerifyCodeUseCase,
+    {
+      provide: UserRepository,
+      useClass: UserRepositoryImpl,
+    },
   ],
 })
 export class AuthModule {}

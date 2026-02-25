@@ -34,7 +34,7 @@ export const SignUpView = () => {
         "user-verification-totp": VerifyCode,
         "user-finishing-sign-up": VerifyCode,
       },
-    }
+    },
   );
 
   return (

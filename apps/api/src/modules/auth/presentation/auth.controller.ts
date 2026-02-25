@@ -1,19 +1,19 @@
 import {
   Body,
-  Post,
-  Inject,
+  Controller,
   HttpCode,
   HttpStatus,
-  Controller,
+  Inject,
+  Post,
 } from '@nestjs/common';
 
 import { SignInDTO } from './dto/signin.dto';
 import { SignUpDTO } from './dto/signup.dto';
-import { ResHandler } from 'src/core/utils/response-handler';
-import { SignInUseCase } from '../domain/userCases/signIn';
-import { SignUpUseCase } from '../domain/userCases/signUp';
 import { VerifyCodeDTO } from './dto/verifyCode.dto';
-import { VerifyCodeUseCase } from '../domain/userCases/verifyCode';
+import { ResHandler } from 'src/core/utils/response-handler';
+import { SignUpUseCase } from '../application/useCases/signUp.useCase';
+import { SignInUseCase } from '../application/useCases/signIn.useCase';
+import { VerifyCodeUseCase } from '../application/useCases/verifyCode';
 
 @Controller('auth')
 export class AuthController {

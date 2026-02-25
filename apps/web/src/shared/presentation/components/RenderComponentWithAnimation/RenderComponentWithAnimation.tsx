@@ -26,8 +26,5 @@ export const RenderComponentWithAnimation = ({
         {children}
       </Flex>
     </Presence>
-    // <>
-    //   {children}
-    // </>
   );
 };

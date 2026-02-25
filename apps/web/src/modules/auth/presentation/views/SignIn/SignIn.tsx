@@ -1,7 +1,14 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  Text,
+  Link as LinkChakra,
+} from "@chakra-ui/react";
 
 import { AuthDomain } from "../../../domain";
 import type { ISignInForm } from "../../interfaces/ISignInForm";
@@ -45,7 +52,6 @@ export const SignInView = () => {
         <GridItem
           colSpan={{ lg: 4 }}
           display={{ base: "none", lg: "block" }}
-          // clasName="sign-in__banner"
         ></GridItem>
         <GridItem
           placeItems="center"
@@ -59,8 +65,8 @@ export const SignInView = () => {
             maxWidth="450px"
             h="100%"
           >
-            <h2 className="sign-in-form__title">Sign in to SientePE</h2>
-            <p className="sign-in-form__description">Welcome back</p>
+            <h2 className="sign-in-form__title">SIGN IN.</h2>
+            <p className="sign-in-form__description">Welcome Back</p>
 
             <Flex direction="column" gap={5}>
               <EmailField
@@ -76,10 +82,14 @@ export const SignInView = () => {
                 error={formState.errors.password?.message}
                 {...register("password")}
               />
-
-              <Link to="auth/sing-up" className="sign-in-form__forgot-password">
-                Forgot password?
-              </Link>
+              <Text fontSize="sm" color="gray.400">
+                Forgot password?{" "}
+                <Link to="auth/sing-up">
+                  <LinkChakra variant="underline" color="white">
+                    Reset here.
+                  </LinkChakra>
+                </Link>
+              </Text>
 
               <Button
                 w="100%"
@@ -90,8 +100,13 @@ export const SignInView = () => {
                 Sign in
               </Button>
 
-              <Text fontSize={14} textAlign="center">
-                Don't have an account? <Link to="/auth/sign-up">Sign up.</Link>
+              <Text fontSize="sm" textAlign="center" color="gray.400">
+                Don't have an account?{" "}
+                <Link to="/auth/sign-up">
+                  <LinkChakra variant="underline" color="white">
+                    Sign up.
+                  </LinkChakra>
+                </Link>
               </Text>
             </Flex>
           </Flex>

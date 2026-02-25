@@ -10,7 +10,7 @@ export class SignUpUseCase {
   }
 
   async execute(
-    signUpCredentials: SignUpCredentials
+    signUpCredentials: SignUpCredentials,
   ): Promise<ISignUpResponse> {
     const { data } = await this.authRepository.signUp(signUpCredentials);
     return data;

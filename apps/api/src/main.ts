@@ -1,20 +1,22 @@
 import { I18nService } from 'nestjs-i18n';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
+import { ValidationError } from 'class-validator';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 
 import { AppModule } from './app.module';
-import { ResponseInterceptor } from './core/middleware/handler-response.middleware';
-import { ValidationError } from 'class-validator';
+import { ResponseInterceptor } from './core/middleware/responseInterceptor.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
   const configService = app.get(ConfigService);
+
   const i18nService: I18nService<Record<string, string>> = app.get(I18nService);
 
   const PORT = configService.get<number>('PORT') || 8081;
 
+  app.useGlobalInterceptors(new ResponseInterceptor());
+  app.enableCors();
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -32,10 +34,6 @@ async function bootstrap() {
       },
     }),
   );
-
-  app.useGlobalInterceptors(new ResponseInterceptor());
-
-  app.enableCors();
 
   await app.listen(PORT);
 }

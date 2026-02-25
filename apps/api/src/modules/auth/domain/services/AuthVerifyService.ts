@@ -4,8 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { Inject, Injectable } from '@nestjs/common';
 
-import { UserDTO } from '../../../user/domain/dto/user.dto';
-import { UserEntity } from '../../../user/entities/user.entity';
+import { User } from 'src/modules/users/domain/user';
 
 export interface TOTPSecret {
   value: string;
@@ -20,11 +19,11 @@ export class AuthVerifyService {
   @Inject(ConfigService)
   private readonly configService: ConfigService;
 
-  generate(user: UserEntity): string {
+  generate(user: User): string {
     return this.jwtService.sign({ userId: user.id }, { expiresIn: '1d' });
   }
 
-  decryptAuthorization(token: string): Promise<UserDTO> {
+  decryptAuthorization(token: string): Promise<User> {
     const JWT_SECRET = this.configService.get<string>('JWT_SECRET');
     return this.jwtService.verify(token, { secret: JWT_SECRET });
   }

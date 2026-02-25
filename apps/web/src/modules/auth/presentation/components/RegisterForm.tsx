@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { FaUserAlt } from "react-icons/fa";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Flex, Link, Text } from "@chakra-ui/react";
+import { Button, Flex, Link as LinkChakra, Text } from "@chakra-ui/react";
 
 import { AuthDomain } from "../../domain";
 import { AuthWrapper } from "./AuthWrapper";
@@ -17,6 +17,7 @@ import { EmailField } from "@shared/presentation/components/EmailField/EmailFiel
 import { PasswordField } from "@shared/presentation/components/PasswordField/PasswordField";
 import { PhoneNumberField } from "@shared/presentation/components/PhoneNumberField/PhoneNumberField";
 import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase";
+import { Link } from "react-router";
 
 export const RegisterForm = (props: SignUpAtomsProps) => {
   const authDomain = new AuthDomain();
@@ -39,26 +40,13 @@ export const RegisterForm = (props: SignUpAtomsProps) => {
     props.navigate("user-register-totp");
   };
 
-  // useEffect(() => {
-  //   const { name } = getValues();
-  //   setValue(
-  //     "name",
-  //     name
-  //       .split(" ")
-  //       .map(
-  //         (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-  //       )
-  //       .join(" ")
-  //   );
-  // }, [watch("name"), getValues, setValue]);
-
   return (
     <AuthWrapper>
       <Heading textAlign="left" mb={2}>
         Register
       </Heading>
       <SubHeading textAlign="left" mb={8}>
-        Hi there! It's a please to see you here
+        Create your account to start managing your finances.
       </SubHeading>
 
       <Flex direction="column" gap={5}>
@@ -95,13 +83,13 @@ export const RegisterForm = (props: SignUpAtomsProps) => {
         />
         <Text mt={4} textAlign="left" textStyle="sm" color="gray.400">
           By creating an account, you acknowledge and accept our{" "}
-          <Link variant="underline" color="primary">
+          <LinkChakra variant="underline" color="primary">
             Terms and Conditions
-          </Link>{" "}
+          </LinkChakra>{" "}
           and{" "}
-          <Link variant="underline" color="primary">
+          <LinkChakra variant="underline" color="primary">
             Privacy Policy.
-          </Link>
+          </LinkChakra>
         </Text>
         <Button
           w="100%"
@@ -111,6 +99,14 @@ export const RegisterForm = (props: SignUpAtomsProps) => {
         >
           SIGN UP
         </Button>
+        <Text fontSize="sm" textAlign="center" color="gray.400">
+          Have an account?{" "}
+          <Link to="/auth/sign-in">
+            <LinkChakra variant="underline" color="white">
+              Sign in.
+            </LinkChakra>
+          </Link>
+        </Text>
       </Flex>
     </AuthWrapper>
   );

@@ -1,15 +1,11 @@
-import { Module } from '@nestjs/common';
+// import { Module } from '@nestjs/common';
 
-import { WalletService } from './wallet.service';
-import { WalletRepository } from './wallet.repository';
-import { WalletController } from './wallet.controller';
-import { WalletRepositoryProvider } from './entities/wallet.provider';
-import { AuthContextModule } from '../auth-context/auth-context.module';
+// import { WalletController } from './presentation/wallet.controller';
 
-@Module({
-  exports: [WalletService, WalletRepository],
-  imports: [AuthContextModule],
-  controllers: [WalletController],
-  providers: [WalletService, WalletRepository, WalletRepositoryProvider],
-})
-export class WalletModule {}
+// @Module({
+//   exports: [WalletService, WalletRepository],
+//   imports: [AuthContextModule],
+//   controllers: [WalletController],
+//   providers: [WalletService, WalletRepository, WalletRepositoryProvider],
+// })
+// export class WalletModule {}
