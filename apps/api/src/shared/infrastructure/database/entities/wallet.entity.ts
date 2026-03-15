@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   PrimaryGeneratedColumn,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 
 import { CurrencyEnum } from 'src/core/constant/currency.enum';
@@ -26,7 +27,7 @@ export class WalletEntity {
   name: string;
 
   @Column({ enum: WalletTypeEnum, type: 'enum' })
-  walletType: WalletTypeEnum;
+  walletType: string;
 
   @Column({ type: 'float' })
   initialBalance: number;
@@ -38,7 +39,7 @@ export class WalletEntity {
   color: string;
 
   @Column({ enum: CurrencyEnum, type: 'enum' })
-  currency: CurrencyEnum;
+  currency: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
@@ -52,6 +53,10 @@ export class WalletEntity {
   // @OneToMany(() => RecordEntity, (record: RecordEntity) => record.wallet)
   // records: RecordEntity[];
 
-  @ManyToOne(() => ProfileEntity, (profile: ProfileEntity) => profile.wallets)
-  profile: ProfileEntity;
+  @Column()
+  profileId: number; // The physical column
+
+  @ManyToOne(() => ProfileEntity)
+  @JoinColumn({ name: 'profileId' })
+  profile: ProfileEntity; // The virtual relation
 }

@@ -9,12 +9,16 @@ import { UserMapper } from 'src/modules/users/application/mappers/user.mapper';
 import { UserRepository } from 'src/modules/users/domain/interfaces/user.repository';
 import { Email, FullName } from 'src/modules/users/domain/vo';
 import { User } from 'src/modules/users/domain/entities/User';
+import { ProfileRepository } from 'src/modules/profiles/domain/interfaces/ProfileRepository';
+import { Profile } from 'src/modules/profiles/domain/entities/Profile';
+import { Currency } from 'src/modules/wallets/domain/vo/Currency';
 
 export class SignUpUseCase {
   constructor(
     private readonly logger: Logger,
     private readonly i18n: I18nService,
     private readonly userRepository: UserRepository,
+    private readonly profileRepository: ProfileRepository,
     private readonly encryptHandler: EncryptHandler,
     private readonly authVerifyService: AuthVerifyService,
   ) {}
@@ -25,6 +29,8 @@ export class SignUpUseCase {
    * @returns {SignUpResponseDTO} user payload and authorization
    */
   async execute(body: SignUpDTO): Promise<SignUpResponseDTO> {
+    // #TODO | CRITICAL | Implement transactions |
+
     this.logger.log(`Register user credentials for: ${body.email}`);
 
     const userEmail = new Email(body.email);
@@ -51,8 +57,17 @@ export class SignUpUseCase {
       ),
     );
 
+    const newProfile = Profile.forCreate(
+      body.name,
+      'default-profile-color',
+      new Currency(body.currency),
+      userCreated._id,
+    );
+
+    const profile = await this.profileRepository.save(newProfile);
+
     this.logger.log(
-      `User created in storage. id=${userCreated._id} email=${userCreated._email}`,
+      `User created in storage. id=${userCreated._id} profileId=${profile._id} email=${userCreated._email} `,
     );
 
     return {

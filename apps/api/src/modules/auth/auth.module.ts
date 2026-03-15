@@ -19,12 +19,15 @@ import { SignInUseCase } from './application/useCases/signIn.useCase';
 import { AuthVerifyService } from './domain/services/AuthVerifyService';
 import { UserRepository } from '../users/domain/interfaces/user.repository';
 import { UserEntity } from 'src/shared/infrastructure/database/entities/user.entity';
-import { UserRepositoryImpl } from 'src/shared/infrastructure/database/repositories/user.repository';
+import { UserRepositoryImpl } from 'src/shared/infrastructure/database/repositories/UserRepositoryImpl';
+import { ProfileRepository } from '../profiles/domain/interfaces/ProfileRepository';
+import { ProfileRepositoryImpl } from 'src/shared/infrastructure/database/repositories/ProfileRepositoryImpl';
+import { ProfileEntity } from 'src/shared/infrastructure/database/entities/profile.entity';
 
 @Module({
   controllers: [AuthController],
   imports: [
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([UserEntity, ProfileEntity]),
     JwtConfigModule.registerAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
@@ -35,6 +38,7 @@ import { UserRepositoryImpl } from 'src/shared/infrastructure/database/repositor
     }),
   ],
   providers: [
+    Logger,
     EncryptHandler, // #TODO create class interface ..
     {
       provide: TOTPService,
@@ -43,6 +47,10 @@ import { UserRepositoryImpl } from 'src/shared/infrastructure/database/repositor
     {
       provide: UserRepository,
       useClass: UserRepositoryImpl,
+    },
+    {
+      provide: ProfileRepository,
+      useClass: ProfileRepositoryImpl,
     },
     {
       provide: AuthVerifyService,
@@ -67,15 +75,24 @@ import { UserRepositoryImpl } from 'src/shared/infrastructure/database/repositor
         logger: Logger,
         i18n: I18nService,
         userRepo: UserRepository,
+        profileRepo: ProfileRepository,
         encrypt: EncryptHandler,
         authVerify: AuthVerifyService,
       ) => {
-        return new SignUpUseCase(logger, i18n, userRepo, encrypt, authVerify);
+        return new SignUpUseCase(
+          logger,
+          i18n,
+          userRepo,
+          profileRepo,
+          encrypt,
+          authVerify,
+        );
       },
       inject: [
         Logger,
         I18nService,
         UserRepository,
+        ProfileRepository,
         EncryptHandler,
         AuthVerifyService,
       ],

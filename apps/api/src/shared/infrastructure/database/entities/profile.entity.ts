@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 
 import { CurrencyEnum } from 'src/core/constant/currency.enum';
@@ -25,9 +26,13 @@ export class ProfileEntity {
   color: string;
 
   @Column({ enum: CurrencyEnum, type: 'enum' })
-  currency: CurrencyEnum;
+  currency: string;
 
-  @ManyToOne(() => UserEntity, (user: UserEntity) => user.profiles)
+  @Column()
+  userId: number;
+
+  @ManyToOne(() => UserEntity)
+  @JoinColumn({ name: 'userId' })
   user: UserEntity;
 
   @OneToMany(() => WalletEntity, (wallet: WalletEntity) => wallet.profile)

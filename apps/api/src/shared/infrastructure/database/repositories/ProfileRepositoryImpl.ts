@@ -1,0 +1,27 @@
+import { Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+
+import { ProfileRepository } from 'src/modules/profiles/domain/interfaces/ProfileRepository';
+import { Profile } from 'src/modules/profiles/domain/entities/Profile';
+import { ProfileEntity } from '../entities/profile.entity';
+import { ProfileMapper } from 'src/modules/profiles/application/mappers/ProfileMapper';
+
+@Injectable()
+export class ProfileRepositoryImpl implements ProfileRepository {
+  @InjectRepository(ProfileEntity)
+  private readonly repository: Repository<ProfileEntity>;
+
+  async save(profile: Profile): Promise<Profile> {
+    const entity = this.repository.create({
+      name: profile._name,
+      color: profile._color,
+      userId: profile._userId,
+      currency: profile._currency.getValue(),
+    });
+
+    const newProfile = await this.repository.save(entity);
+
+    return ProfileMapper.entityToDomain(newProfile);
+  }
+}
