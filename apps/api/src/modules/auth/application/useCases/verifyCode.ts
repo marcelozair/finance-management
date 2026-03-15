@@ -1,9 +1,8 @@
 import { I18nService } from 'nestjs-i18n';
 
 import {
-  Inject,
-  BadRequestException,
   Logger,
+  BadRequestException,
   UnauthorizedException,
 } from '@nestjs/common';
 
@@ -14,16 +13,12 @@ import { UserMapper } from 'src/modules/users/application/mappers/user.mapper';
 import { UserRepository } from 'src/modules/users/domain/interfaces/user.repository';
 
 export class VerifyCodeUseCase {
-  @Inject(UserRepository)
-  private readonly userRepository: UserRepository;
-
-  @Inject(AuthVerifyService)
-  private readonly authVerifyService: AuthVerifyService;
-
-  @Inject(I18nService)
-  private readonly i18n: I18nService;
-
-  private readonly logger = new Logger(VerifyCodeUseCase.name);
+  constructor(
+    private readonly logger: Logger,
+    private readonly i18n: I18nService,
+    private readonly userRepository: UserRepository,
+    private readonly authVerifyService: AuthVerifyService,
+  ) {}
 
   /**
    * Verify user code using TOTP Argun2 algorithm
@@ -41,7 +36,7 @@ export class VerifyCodeUseCase {
       throw new BadRequestException(this.i18n.t('auth.USER_NOT_EXIST'));
     }
 
-    const isValid = this.authVerifyService.TOTPverifyToken(user.secret, token);
+    const isValid = this.authVerifyService.verifyTokenTOTP(user._secret, token);
 
     if (!isValid) {
       this.logger.warn(`User token is invalid`);
@@ -50,7 +45,8 @@ export class VerifyCodeUseCase {
 
     this.logger.log('User token is valid, creating user authorization Bearer');
 
-    const authorizationToken = this.authVerifyService.generate(user);
+    const authorizationToken =
+      this.authVerifyService.createAuthorizationToken(user);
 
     const userMapped = UserMapper.toDTO(user);
 

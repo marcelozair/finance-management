@@ -24,6 +24,7 @@ export const CreateWalletModal = ({
 }: CreateWalletModalProps) => {
   return (
     <Modal
+      size="sm"
       isOpen={isOpen}
       title="Create Wallet"
       body={

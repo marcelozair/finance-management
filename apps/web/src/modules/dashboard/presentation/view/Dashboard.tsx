@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 import { Grid, GridItem } from "@chakra-ui/react";
 
-// import { Sidebar } from "../components/Sidebar/Sidebar";
+import { Sidebar } from "../components/Sidebar/Sidebar";
 
 export const DashboardView = () => {
   return (
@@ -9,11 +9,10 @@ export const DashboardView = () => {
       <Grid
         gridTemplateColumns={{ lg: "repeat(6, 1fr)", base: "repeat(1, 1fr)" }}
       >
-        {/* <GridItem colSpan={{ lg: 1 }}>
+        <GridItem colSpan={{ lg: 1 }}>
           <Sidebar />
-        </GridItem> */}
-        <GridItem colSpan={{ lg: 1 }} paddingX={20} paddingY={10}>
-          {/* <header>header</header> */}
+        </GridItem>
+        <GridItem colSpan={{ lg: 5 }} paddingX={20} paddingY={10}>
           <Outlet />
         </GridItem>
       </Grid>

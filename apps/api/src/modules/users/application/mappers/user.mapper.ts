@@ -1,23 +1,26 @@
-import { UserEntity } from 'src/shared/infrastructure/database/entities/user.entity';
-import { User } from '../../domain/user';
+import { Email, FullName } from '../../domain/vo';
+
+import { User } from '../../domain/entities/User';
 import { UserDTO } from '../../presentation/dto/user.dto';
+import { UserEntity } from 'src/shared/infrastructure/database/entities/user.entity';
 
 export class UserMapper {
   static toDTO(user: User): UserDTO {
     return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
+      id: user._id,
+      name: user._name,
+      email: user._email,
     };
   }
 
   static entityToDomain(userEntity: UserEntity): User {
     const user = new User(
       userEntity.id,
-      userEntity.name,
-      userEntity.email,
+      new FullName(userEntity.name),
+      new Email(userEntity.email),
       userEntity.phone,
       userEntity.secret,
+      userEntity.password,
     );
 
     return user;

@@ -1,13 +1,13 @@
-import { CreateUserDTO } from '../dto/createUser.dto';
-import { User } from '../user';
+import { Email } from '../vo';
+import { User } from '../entities/User';
 
 export abstract class UserRepository {
-  abstract create(user: CreateUserDTO): Promise<User>;
+  abstract create(user: User): Promise<User>;
   abstract findById(id: number): Promise<User | null>;
-  abstract findByEmail(email: string): Promise<User | null>;
+  abstract findByEmail(email: Email): Promise<User | null>;
 
   abstract verifyCredentials(
-    email: string,
+    email: Email,
     password: string,
   ): Promise<User | null>;
 }

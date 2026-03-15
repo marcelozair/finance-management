@@ -1,13 +1,12 @@
 import { Navigate, Outlet } from "react-router";
 import { useSession } from "@shared/presentation/store/session/useSession";
+import { SessionCookieStore } from "src/modules/auth/infrastructure/services/SessionCookieStore";
 
 export const AdminGuard = () => {
-  const { session } = useSession();
+  const sessionStoreService = new SessionCookieStore();
+  const { session } = useSession({ sessionStoreService });
 
-  // #TODO: Improve validations
-  // - Check if session expired
   if (!session) {
-    return <Outlet />;
     return <Navigate to="/auth/sign-in" />;
   }
 

@@ -1,63 +1,55 @@
-import * as qrcode from 'qrcode';
-import * as speakeasy from 'speakeasy';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
-import { Inject, Injectable } from '@nestjs/common';
+import { TOTPSecret } from '../entities/TOTPSecret';
+import { JwtService } from '../interfaces/JwtService';
+import { TOTPService } from '../interfaces/TOTPService';
+import { User } from 'src/modules/users/domain/entities/User';
+import { TOTPInternalError } from '../exceptions/TOTPInternalError';
+import { InvalidAuthorizationToken } from '../exceptions/InvalidAuthorizationToken';
 
-import { User } from 'src/modules/users/domain/user';
-
-export interface TOTPSecret {
-  value: string;
-  path: string;
-}
-
-@Injectable()
 export class AuthVerifyService {
-  @Inject(JwtService)
-  private readonly jwtService: JwtService;
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly totpService: TOTPService,
+  ) {}
 
-  @Inject(ConfigService)
-  private readonly configService: ConfigService;
+  async decryptAuthorizationToken(
+    token: string,
+    secret: string,
+  ): Promise<number> {
+    const raw = await this.jwtService.verify(token, { secret });
 
-  generate(user: User): string {
-    return this.jwtService.sign({ userId: user.id }, { expiresIn: '1d' });
+    if (!raw.userId || typeof raw.userId != 'number') {
+      throw new InvalidAuthorizationToken();
+    }
+
+    return raw.userId as number;
   }
 
-  decryptAuthorization(token: string): Promise<User> {
-    const JWT_SECRET = this.configService.get<string>('JWT_SECRET');
-    return this.jwtService.verify(token, { secret: JWT_SECRET });
+  createAuthorizationToken(user: User): string {
+    return this.jwtService.sign({ userId: user._id }, { expiresIn: '1d' });
   }
 
-  TOTPcreateSecret(): TOTPSecret {
+  createSecretTOTP(): TOTPSecret {
     try {
-      const secret = speakeasy.generateSecret({
+      const secret = this.totpService.generateSecret({
         issuer: 'Personal Finance App',
         name: 'Finance',
         length: 25,
       });
 
-      return {
-        value: secret.base32,
-        path: secret.otpauth_url || 'Unknow',
-      };
-    } catch {
-      // #TODO Implement business rules for invalid secret generations
-      return {
-        value: 'Unknow',
-        path: 'Unknow',
-      };
+      if (!secret.otpauth_url) throw new TOTPInternalError();
+
+      return new TOTPSecret(secret.base32, secret.otpauth_url);
+    } catch (error) {
+      console.error(error);
+      throw new TOTPInternalError();
     }
   }
 
-  TOTPverifyToken(secret: string, token: string): boolean {
-    return speakeasy.totp.verify({
+  verifyTokenTOTP(secret: string, token: string): boolean {
+    return this.totpService.verifySecret({
       token,
       secret,
       encoding: 'base32',
     });
-  }
-
-  TOTPgetSecretQR(secret: string): Promise<string> {
-    return qrcode.toDataURL(secret);
   }
 }

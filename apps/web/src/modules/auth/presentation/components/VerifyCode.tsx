@@ -2,27 +2,34 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Button, Link, PinInput, Text } from "@chakra-ui/react";
 
-import { AuthDomain } from "../../domain";
+import { AuthDomain } from "../../application";
 import { AuthWrapper } from "./AuthWrapper";
 import type { SignUpAtomsProps } from "../views/SignUp/SignUp";
-import type { IVerifyCode } from "../../domain/interfaces/IVerifyCode";
-import type { ISessionUser } from "../../data/interfaces/IAuthResponse";
+import type { SessionUserDTO } from "../../infrastructure/dtos/AuthDTO";
+import type { VerifyCodeDTO } from "../../application/dtos/VerifyCodeDTO";
 import { Heading } from "@shared/presentation/components/content/Heading";
 import { useSession } from "@shared/presentation/store/session/useSession";
 import { SubHeading } from "@shared/presentation/components/content/SubHeading";
 import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase";
+import { SessionCookieStore } from "../../infrastructure/services/SessionCookieStore";
 
 export const VerifyCode = (props: SignUpAtomsProps) => {
   const authDomain = new AuthDomain();
-  const [code, setCode] = useState("");
-  const navigate = useNavigate();
-  const { setUserSession } = useSession();
 
-  const { execute, loading } = useExecuteUseCase<ISessionUser, IVerifyCode>({
-    callback: (params: IVerifyCode) => {
-      return authDomain.verifyCode(params);
+  const navigate = useNavigate();
+
+  const [code, setCode] = useState("");
+
+  const sessionStoreService = new SessionCookieStore();
+  const { setUserSession } = useSession({ sessionStoreService });
+
+  const { execute, loading } = useExecuteUseCase<SessionUserDTO, VerifyCodeDTO>(
+    {
+      callback: (params: VerifyCodeDTO) => {
+        return authDomain.verifyCode(params);
+      },
     },
-  });
+  );
 
   const onSubmit = async () => {
     const { session, user } = await execute({

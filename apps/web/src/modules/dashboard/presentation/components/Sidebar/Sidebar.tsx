@@ -1,53 +1,248 @@
+import { useState } from "react";
 import { TbWallet } from "react-icons/tb";
 import { TbSettings } from "react-icons/tb";
 import { TbSmartHome } from "react-icons/tb";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { TbDiamondFilled } from "react-icons/tb";
-
-import "./Sidebar.css";
+import { CiLogout } from "react-icons/ci";
+import { useSession } from "@shared/presentation/store/session/useSession";
+import { SessionCookieStore } from "src/modules/auth/infrastructure/services/SessionCookieStore";
+import { useNavigate } from "react-router";
 
 export const Sidebar = () => {
+  const navigate = useNavigate();
+
+  const sessionStoreService = new SessionCookieStore();
+  const { clearUserSession } = useSession({ sessionStoreService });
+
+  const [selectedMenu, setSelectedMenu] = useState<string>("dashboard");
+
+  const logOut = () => {
+    clearUserSession();
+    navigate("/auth/sign-in");
+  };
+
   return (
-    <aside className="sidebar">
+    <Box
+      width="full"
+      height="100vh"
+      paddingX={2}
+      paddingY={5}
+      backgroundColor="white"
+      _dark={{
+        backgroundColor: "gray.900",
+      }}
+    >
       <Flex direction="column" justifyContent="space-between" height="100%">
         <Flex direction="column">
           {/* <div className="sidebar__logo">
             <img src="/siete-pe-logo.svg" />
           </div> */}
 
-          <div className="sidebar__menu-container-title">
-            <p className="sidebar__menu-title">Menu</p>
-          </div>
+          <Box marginBottom={10} paddingX={4}>
+            <Text
+              fontSize="sm"
+              fontWeight="bold"
+              opacity={0.7}
+              color="gray.800"
+              _dark={{
+                color: "gray.200",
+              }}
+            >
+              Menu
+            </Text>
+          </Box>
 
-          <div className="sidebar__menu-option">
-            <a href="#" className="sidebar__menu-link">
-              <TbSmartHome size={20} />
-              <Text>Dashboard</Text>
-            </a>
-          </div>
+          <Box
+            marginBottom={1}
+            paddingX={4}
+            paddingY={2}
+            borderRadius="lg"
+            cursor="pointer"
+            transition="all 0.3s ease-in-out"
+            backgroundColor={
+              selectedMenu === "dashboard" ? "#e2f2ff" : "transparent"
+            }
+            color={selectedMenu === "dashboard" ? "#3da9fc" : "gray.800"}
+            onClick={() => setSelectedMenu("dashboard")}
+            _hover={{
+              backgroundColor: "#e2f2ff",
+              color: "#3da9fc",
+            }}
+            _dark={{
+              backgroundColor:
+                selectedMenu === "dashboard" ? "#161616" : "transparent",
+              color: selectedMenu === "dashboard" ? "#1071bb" : "gray.200",
+              _hover: {
+                backgroundColor: "#161616",
+                color: "#1071bb",
+              },
+            }}
+          >
+            <Flex
+              alignItems="center"
+              gap={2}
+              color="inherit"
+              transition="all 0.3s ease-in-out"
+            >
+              <TbSmartHome size={16} />
+              <Text fontSize="sm">Dashboard</Text>
+            </Flex>
+          </Box>
 
-          <div className="sidebar__menu-option">
-            <a href="#" className="sidebar__menu-link">
-              <TbWallet size={20} />
-              <Text>Wallets</Text>
-            </a>
-          </div>
+          <Box
+            marginBottom={1}
+            paddingX={4}
+            paddingY={2}
+            borderRadius="lg"
+            cursor="pointer"
+            transition="all 0.3s ease-in-out"
+            backgroundColor={
+              selectedMenu === "wallets" ? "#e2f2ff" : "transparent"
+            }
+            color={selectedMenu === "wallets" ? "#3da9fc" : "gray.800"}
+            onClick={() => setSelectedMenu("wallets")}
+            _hover={{
+              backgroundColor: "#e2f2ff",
+              color: "#3da9fc",
+            }}
+            _dark={{
+              backgroundColor:
+                selectedMenu === "wallets" ? "#161616" : "transparent",
+              color: selectedMenu === "wallets" ? "#1071bb" : "gray.200",
+              _hover: {
+                backgroundColor: "#161616",
+                color: "#1071bb",
+              },
+            }}
+          >
+            <Flex
+              alignItems="center"
+              gap={2}
+              color="inherit"
+              transition="all 0.3s ease-in-out"
+            >
+              <TbWallet size={16} />
+              <Text fontSize="sm">Wallets</Text>
+            </Flex>
+          </Box>
         </Flex>
+
         <Box>
-          <div className="sidebar__menu-option">
-            <a href="#" className="sidebar__menu-link">
-              <TbDiamondFilled size={20} color="primary-normal" />
-              <Text>Premium</Text>
-            </a>
-          </div>
-          <div className="sidebar__menu-option">
-            <a href="#" className="sidebar__menu-link">
-              <TbSettings size={20} />
-              <Text>Settings</Text>
-            </a>
-          </div>
+          <Box
+            marginBottom={1}
+            paddingX={4}
+            paddingY={2}
+            borderRadius="lg"
+            cursor="pointer"
+            transition="all 0.3s ease-in-out"
+            backgroundColor={
+              selectedMenu === "premium" ? "#e2f2ff" : "transparent"
+            }
+            color={selectedMenu === "premium" ? "#3da9fc" : "gray.800"}
+            onClick={() => setSelectedMenu("premium")}
+            _hover={{
+              backgroundColor: "#e2f2ff",
+              color: "#3da9fc",
+            }}
+            _dark={{
+              backgroundColor:
+                selectedMenu === "premium" ? "#161616" : "transparent",
+              color: selectedMenu === "premium" ? "#1071bb" : "gray.200",
+              _hover: {
+                backgroundColor: "#161616",
+                color: "#1071bb",
+              },
+            }}
+          >
+            <Flex
+              alignItems="center"
+              gap={2}
+              color="inherit"
+              transition="all 0.3s ease-in-out"
+            >
+              <TbDiamondFilled
+                size={16}
+                color={selectedMenu === "premium" ? "#3da9fc" : "#3da9fc"}
+              />
+              <Text fontSize="sm">Premium</Text>
+            </Flex>
+          </Box>
+
+          <Box
+            marginBottom={1}
+            paddingX={4}
+            paddingY={2}
+            borderRadius="lg"
+            cursor="pointer"
+            transition="all 0.3s ease-in-out"
+            backgroundColor={
+              selectedMenu === "settings" ? "#e2f2ff" : "transparent"
+            }
+            color={selectedMenu === "settings" ? "#3da9fc" : "gray.800"}
+            onClick={() => setSelectedMenu("settings")}
+            _hover={{
+              backgroundColor: "#e2f2ff",
+              color: "#3da9fc",
+            }}
+            _dark={{
+              backgroundColor:
+                selectedMenu === "settings" ? "#161616" : "transparent",
+              color: selectedMenu === "settings" ? "#1071bb" : "gray.200",
+              _hover: {
+                backgroundColor: "#161616",
+                color: "#1071bb",
+              },
+            }}
+          >
+            <Flex
+              alignItems="center"
+              gap={2}
+              color="inherit"
+              transition="all 0.3s ease-in-out"
+            >
+              <TbSettings size={16} />
+              <Text fontSize="sm">Settings</Text>
+            </Flex>
+          </Box>
+          <Box
+            marginBottom={1}
+            paddingX={4}
+            paddingY={2}
+            borderRadius="lg"
+            cursor="pointer"
+            transition="all 0.3s ease-in-out"
+            backgroundColor={
+              selectedMenu === "settings" ? "#e2f2ff" : "transparent"
+            }
+            color={selectedMenu === "settings" ? "#3da9fc" : "gray.800"}
+            onClick={logOut}
+            _hover={{
+              backgroundColor: "#e2f2ff",
+              color: "#3da9fc",
+            }}
+            _dark={{
+              backgroundColor:
+                selectedMenu === "settings" ? "#161616" : "transparent",
+              color: selectedMenu === "settings" ? "#1071bb" : "gray.200",
+              _hover: {
+                backgroundColor: "#161616",
+                color: "#1071bb",
+              },
+            }}
+          >
+            <Flex
+              alignItems="center"
+              gap={2}
+              color="inherit"
+              transition="all 0.3s ease-in-out"
+            >
+              <CiLogout size={16} />
+              <Text fontSize="sm">Log out</Text>
+            </Flex>
+          </Box>
         </Box>
       </Flex>
-    </aside>
+    </Box>
   );
 };

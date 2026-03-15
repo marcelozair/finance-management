@@ -33,7 +33,7 @@ function getBrowserTheme(): "dark" | "light" {
   // Get theme from local storage
   const theme = localStorageService.get<"dark" | "light">(
     THEME_STORAGE_KEY,
-    null
+    null,
   );
 
   if (theme) return theme;

@@ -25,7 +25,7 @@ export class BaseService {
     method: HttpMethod,
     endpoint: string,
     data?: any,
-    params?: any
+    params?: any,
   ): Promise<T> {
     try {
       const endpointParsed = `/${endpoint}`;

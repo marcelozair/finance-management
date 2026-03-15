@@ -5,12 +5,19 @@ interface ModalProps {
   body: React.ReactNode;
   footer?: React.ReactNode;
   isOpen?: boolean;
+  size: "sm" | "md" | "lg" | "xl";
   onClose?: () => void;
 }
 
-export const Modal = ({ title, isOpen, body, footer }: ModalProps) => {
+export const Modal = ({
+  title,
+  isOpen,
+  body,
+  footer,
+  size = "sm",
+}: ModalProps) => {
   return (
-    <Dialog.Root open={isOpen} size={"lg"} placement="center">
+    <Dialog.Root open={isOpen} size={size} placement="center">
       <Dialog.Backdrop />
       <Dialog.Positioner>
         <Dialog.Content>
