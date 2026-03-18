@@ -57,7 +57,6 @@ export const SelectProfileView = () => {
   };
 
   const handleCreateProfile = () => {
-    console.log("Navigate to create profile form...");
     // navigate("/admin/create-profile")
   };
 

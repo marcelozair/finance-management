@@ -1,8 +1,13 @@
 import { useAtom } from "jotai";
 import { useEffect } from "react";
-import { activeProfileAtom } from "./profileStore";
-import type { Profile } from "../../../../modules/profiles/domain/entities/Profile";
+
+import {
+  activeProfileAtom,
+  loadingProfileAtom,
+  profileStore,
+} from "./profileStore";
 import { serviceLocator } from "../../../../core/services/ServiceLocator";
+import type { Profile } from "../../../../modules/profiles/domain/entities/Profile";
 
 const LOCAL_STORAGE_PROFILE_KEY = "selected-profile";
 
@@ -10,23 +15,16 @@ const LOCAL_STORAGE_PROFILE_KEY = "selected-profile";
  * Custom hook to manage the global Profile state and Local Storage synchronization.
  */
 export const useProfile = () => {
-  const [profile, setProfileState] = useAtom(activeProfileAtom);
   const localStorage = serviceLocator.getLocalStorage();
 
-  useEffect(() => {
-    if (!profile) {
-      const storedProfile = localStorage.get<Profile>(
-        LOCAL_STORAGE_PROFILE_KEY,
-        null as null,
-      );
-      if (storedProfile) {
-        setProfileState(storedProfile);
-      }
-    }
-  }, [profile, setProfileState, localStorage]);
+  const [profile, setProfileState] = useAtom(activeProfileAtom, {
+    store: profileStore,
+  });
+
+  const logger = serviceLocator.getLogger();
 
   const setProfile = (newProfile: Profile | null) => {
-    console.info("Setting profile into locaStorage and Store");
+    logger.info("Setting profile into locaStorage and Store");
     setProfileState(newProfile);
 
     if (newProfile) {
@@ -36,8 +34,24 @@ export const useProfile = () => {
     }
   };
 
+  useEffect(() => {
+    if (!profile) {
+      const storedProfile = localStorage.get<Profile>(
+        LOCAL_STORAGE_PROFILE_KEY,
+        null as null,
+      );
+
+      if (storedProfile) {
+        setProfileState(storedProfile);
+      }
+    }
+
+    profileStore.set(loadingProfileAtom, false);
+  }, []);
+
   return {
     profile,
     setProfile,
+    loading: profileStore.get(loadingProfileAtom),
   };
 };

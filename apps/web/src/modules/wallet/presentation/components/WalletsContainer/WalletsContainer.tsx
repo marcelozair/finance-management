@@ -17,7 +17,7 @@ export const WalletsContainer = () => {
       />
       <CreateWalletCard openModal={() => setCreateModal(true)} />
       {mockWallets.map((value) => (
-        <WalletCard selected={value === 1} />
+        <WalletCard key={value} selected={value === 1} />
       ))}
     </Flex>
   );

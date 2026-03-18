@@ -1,8 +1,15 @@
+import { serviceLocator } from "src/core/services/ServiceLocator";
 import { Session } from "../../domain/entities/session";
 import type { SessionStore } from "../../domain/interfaces/SessionStore";
+import type { LoggerService } from "src/core/utils/logger";
 
 export class SessionCookieStore implements SessionStore {
   private sessionKey: string = "session-cookie";
+  private logger: LoggerService;
+
+  constructor() {
+    this.logger = serviceLocator.getLogger();
+  }
 
   /**
    * This method handle session and save it into cookies memories
@@ -16,7 +23,7 @@ export class SessionCookieStore implements SessionStore {
 
     document.cookie = `${this.sessionKey}=${session.toString()}; expires=${expires}; path=/`;
 
-    console.info(`Session save into document cookies ${document.cookie}`);
+    this.logger.debug(`Session save into document cookies ${document.cookie}`);
   }
 
   /**

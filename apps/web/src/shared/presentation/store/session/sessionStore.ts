@@ -19,7 +19,13 @@ export const activeSessionAtom = atom<Session | null>(null);
 export const userSessionAtom = atom<User | null>(null);
 
 /**
+ * Value that indicates if sessions is proccessing
+ */
+export const loadingSessionAtom = atom<boolean>(true);
+
+/**
  * Initialize user state in store
  */
 sessionStore.set(userSessionAtom, null);
 sessionStore.set(activeSessionAtom, null);
+sessionStore.set(loadingSessionAtom, true);

@@ -2,12 +2,15 @@ import {
   sessionStore,
   userSessionAtom,
   activeSessionAtom,
+  loadingSessionAtom,
 } from "./sessionStore";
+
+import { useEffect } from "react";
 
 import type { User } from "@shared/domain/entities/User";
 import type { Session } from "@shared/domain/entities/Session";
 import type { SessionStore } from "src/modules/auth/domain/interfaces/SessionStore";
-import { useEffect } from "react";
+import { useAtom } from "jotai";
 
 /**
  * Dependencies that the hook needs. You can provide them via context or
@@ -29,36 +32,35 @@ export interface UseSessionDeps {
  *    `SessionCookieStore` or repositories.
  */
 export const useSession = ({ sessionStoreService }: UseSessionDeps) => {
+  const [session, setSession] = useAtom(activeSessionAtom, {
+    store: sessionStore,
+  });
+
   const setUserSession = (session: Session, user: User) => {
-    console.log("Setting user session:", { session, user });
-    sessionStore.set(activeSessionAtom, session);
     sessionStore.set(userSessionAtom, user);
+    setSession(session);
   };
 
   const checkExistSession = async () => {
     const localSession = sessionStoreService.get();
 
     if (localSession) {
-      sessionStore.set(activeSessionAtom, localSession);
-
-      // if (loadSessionUseCase) {
-      //   // call the use-case to refresh user data from API
-      //   const loaded = await loadSessionUseCase.execute(localSession);
-      //   if (loaded.user) {
-      //     sessionStore.set(userSessionAtom, loaded.user);
-      //   }
-      // }
+      setSession(localSession);
     }
+
+    sessionStore.set(loadingSessionAtom, false);
   };
 
   useEffect(() => {
     checkExistSession();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {
+    // Values
+    session: session,
     user: sessionStore.get(userSessionAtom),
-    session: sessionStore.get(activeSessionAtom),
+    loadingSession: sessionStore.get(loadingSessionAtom),
+    // Methods
     clearUserSession: () => sessionStoreService.clear(),
     setUserSession,
   };

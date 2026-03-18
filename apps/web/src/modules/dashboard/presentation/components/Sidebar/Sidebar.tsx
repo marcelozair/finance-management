@@ -30,7 +30,7 @@ export const Sidebar = () => {
       paddingY={5}
       backgroundColor="white"
       _dark={{
-        backgroundColor: "gray.900",
+        backgroundColor: "black",
       }}
     >
       <Flex direction="column" justifyContent="space-between" height="100%">
@@ -39,9 +39,9 @@ export const Sidebar = () => {
             <img src="/siete-pe-logo.svg" />
           </div> */}
 
-          <Box marginBottom={10} paddingX={4}>
+          <Box marginBottom={3} paddingX={4}>
             <Text
-              fontSize="sm"
+              fontSize="xs"
               fontWeight="bold"
               opacity={0.7}
               color="gray.800"
@@ -49,7 +49,7 @@ export const Sidebar = () => {
                 color: "gray.200",
               }}
             >
-              Menu
+              MENU
             </Text>
           </Box>
 

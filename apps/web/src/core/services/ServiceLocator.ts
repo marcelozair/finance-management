@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import type { LocalStorageService } from "../utils/localStorage";
+import type { LoggerService } from "../utils/logger";
 import { FailureHandler } from "./FailureHandler";
 
 export enum ServiceName {
@@ -34,6 +35,10 @@ class ServiceLocator {
 
   getLocalStorage(): LocalStorageService {
     return this.get<LocalStorageService>(ServiceName.LocalStorage);
+  }
+
+  getLogger(): LoggerService {
+    return this.get<LoggerService>(ServiceName.LoggerService);
   }
 }
 

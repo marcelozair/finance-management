@@ -1,10 +1,14 @@
 import { Navigate, Outlet } from "react-router";
 import { useProfile } from "../store/profile/useProfile";
+import { LoadingPage } from "../views/LoadingPage";
 
 export const ProfileGuard = () => {
-  const { profile } = useProfile();
+  const { profile, loading } = useProfile();
 
-  // If there is no profile natively loaded from jotai or localStorage
+  if (loading) {
+    return <LoadingPage />;
+  }
+
   if (!profile) {
     return <Navigate to="/admin/select-profile" />;
   }
