@@ -2,7 +2,13 @@ import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 import { FaUserAlt } from "react-icons/fa";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Flex, Link as LinkChakra, Text } from "@chakra-ui/react";
+import {
+  Button,
+  createListCollection,
+  Flex,
+  Link as LinkChakra,
+  Text,
+} from "@chakra-ui/react";
 
 import { AuthWrapper } from "./AuthWrapper";
 import { AuthDomain } from "../../application";
@@ -17,6 +23,18 @@ import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase"
 import { EmailField } from "@shared/presentation/components/EmailField/EmailField";
 import { PasswordField } from "@shared/presentation/components/PasswordField/PasswordField";
 import { PhoneNumberField } from "@shared/presentation/components/PhoneNumberField/PhoneNumberField";
+import { SelectField } from "@shared/presentation/components/SelectField/SelectField";
+
+const currencyCatalog = createListCollection({
+  items: [
+    { label: "Peruvian Sol (PEN)", value: "PEN" },
+    { label: "US Dollar (USD)", value: "USD" },
+    { label: "Euro (EUR)", value: "EUR" },
+    { label: "British Pound (GBP)", value: "GBP" },
+    { label: "Mexican Peso (MXN)", value: "MXN" },
+    { label: "Japanese Yen (JPY)", value: "JPY" },
+  ],
+});
 
 export const RegisterForm = (props: SignUpAtomsProps) => {
   const authDomain = new AuthDomain();
@@ -68,6 +86,15 @@ export const RegisterForm = (props: SignUpAtomsProps) => {
             {...register("email")}
           />
 
+          <SelectField
+            options={currencyCatalog}
+            label="Currency"
+            placeholder="Please select a default currency"
+            onSelect={(value: string) => {
+              setValue("currency", value);
+            }}
+          />
+
           <PhoneNumberField
             label="Phone number"
             placeholder="Enter your phone number"
@@ -106,9 +133,9 @@ export const RegisterForm = (props: SignUpAtomsProps) => {
           <Text fontSize="sm" textAlign="center" color="gray.400">
             Have an account?{" "}
             <Link to="/auth/sign-in">
-              <LinkChakra variant="underline" color="primary">
+              <Text style={{ textDecoration: "underline" }} color="primary">
                 Sign in.
-              </LinkChakra>
+              </Text>
             </Link>
           </Text>
         </Flex>

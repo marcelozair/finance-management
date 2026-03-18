@@ -46,7 +46,7 @@ export const SignInView = () => {
   const signIn = async (values: ISignInForm) => {
     const { session, user } = await execute({ ...values });
     setUserSession(session, user);
-    navigate("/admin/wallet");
+    navigate("/admin/select-profile");
   };
 
   return (

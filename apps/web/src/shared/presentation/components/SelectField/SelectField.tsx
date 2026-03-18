@@ -10,7 +10,7 @@ interface SelectFieldProps {
   label: string;
   error?: string;
   placeholder: string;
-  setValue?: (value: string) => void;
+  onSelect?: (value: string) => void;
   required?: boolean;
   options: ListCollection<{
     label: string;
@@ -23,15 +23,17 @@ export const SelectField = ({
   placeholder,
   options,
   error,
+  onSelect,
   required = false,
 }: SelectFieldProps) => {
   const [value, setValue] = useState("");
 
   const onChange = (
-    event: SelectValueChangeDetails<{ value: string; label: string }>
+    event: SelectValueChangeDetails<{ value: string; label: string }>,
   ) => {
     const value = event.value;
     setValue(value[0]);
+    if (onSelect) onSelect(value[0]);
   };
 
   return (
@@ -47,7 +49,7 @@ export const SelectField = ({
         <Select.HiddenSelect />
         <Select.Control>
           <Select.Trigger>
-            <Select.ValueText placeholder={placeholder} />
+            <Select.ValueText placeholder={placeholder} color={"gray.400"} />
           </Select.Trigger>
           <Select.IndicatorGroup>
             <Select.Indicator />

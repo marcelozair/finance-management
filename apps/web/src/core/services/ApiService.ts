@@ -18,6 +18,7 @@ export class BaseService {
 
   constructor(client: AxiosInstance, failureHandler: IFailureHandler) {
     this.client = client;
+
     this.failureHandler = failureHandler;
   }
 
@@ -29,6 +30,8 @@ export class BaseService {
   ): Promise<T> {
     try {
       const endpointParsed = `/${endpoint}`;
+      console.log("axios client", this.client.defaults.baseURL);
+      console.log("axios endpoint", endpoint);
 
       let response;
       if (method === HttpMethod.GET) {

@@ -5,8 +5,8 @@ export class SessionMapper {
   static toDomain(session: SessionDTO): Session {
     return new Session(
       session.sessionId,
-      session.authorizationToken,
       session.authorizationType,
+      session.authorizationToken,
     );
   }
 }

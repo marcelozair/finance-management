@@ -27,7 +27,7 @@ export class Profile {
   }
 
   get _currency() {
-    return this.currency;
+    return this.currency.getValue();
   }
 
   get _userId() {

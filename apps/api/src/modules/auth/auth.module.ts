@@ -1,12 +1,8 @@
 import { Logger, Module } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
-import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import {
-  JwtModule as JwtConfigModule,
-  JwtService as JwtServiceImpl,
-} from '@nestjs/jwt';
+import { JwtService as JwtServiceImpl } from '@nestjs/jwt';
 
 import { JwtService } from './domain/interfaces/JwtService';
 import { TOTPService } from './domain/interfaces/TOTPService';
@@ -26,17 +22,7 @@ import { ProfileEntity } from 'src/shared/infrastructure/database/entities/profi
 
 @Module({
   controllers: [AuthController],
-  imports: [
-    TypeOrmModule.forFeature([UserEntity, ProfileEntity]),
-    JwtConfigModule.registerAsync({
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        global: true,
-        signOptions: { expiresIn: '60s' },
-        secret: configService.get<string>('JWT_SECRET'),
-      }),
-    }),
-  ],
+  imports: [TypeOrmModule.forFeature([UserEntity, ProfileEntity])],
   providers: [
     Logger,
     EncryptHandler, // #TODO create class interface ..

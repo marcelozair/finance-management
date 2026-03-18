@@ -7,6 +7,7 @@ import {
 import type { User } from "@shared/domain/entities/User";
 import type { Session } from "@shared/domain/entities/Session";
 import type { SessionStore } from "src/modules/auth/domain/interfaces/SessionStore";
+import { useEffect } from "react";
 
 /**
  * Dependencies that the hook needs. You can provide them via context or
@@ -36,7 +37,6 @@ export const useSession = ({ sessionStoreService }: UseSessionDeps) => {
 
   const checkExistSession = async () => {
     const localSession = sessionStoreService.get();
-    console.info(`Loading local session | Result: ${localSession}`);
 
     if (localSession) {
       sessionStore.set(activeSessionAtom, localSession);
@@ -51,7 +51,10 @@ export const useSession = ({ sessionStoreService }: UseSessionDeps) => {
     }
   };
 
-  checkExistSession();
+  useEffect(() => {
+    checkExistSession();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return {
     user: sessionStore.get(userSessionAtom),

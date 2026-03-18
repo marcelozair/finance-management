@@ -3,6 +3,7 @@ export interface ISignUpForm {
   email: string;
   phone: string;
   password: string;
+  currency: string;
 }
 
 export enum EnumStatusSignUp {
