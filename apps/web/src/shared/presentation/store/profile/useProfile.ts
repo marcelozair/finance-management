@@ -21,6 +21,10 @@ export const useProfile = () => {
     store: profileStore,
   });
 
+  const [loading, setLoading] = useAtom(loadingProfileAtom, {
+    store: profileStore,
+  });
+
   const logger = serviceLocator.getLogger();
 
   const setProfile = (newProfile: Profile | null) => {
@@ -46,12 +50,12 @@ export const useProfile = () => {
       }
     }
 
-    profileStore.set(loadingProfileAtom, false);
+    setLoading(false);
   }, []);
 
   return {
+    loading,
     profile,
     setProfile,
-    loading: profileStore.get(loadingProfileAtom),
   };
 };

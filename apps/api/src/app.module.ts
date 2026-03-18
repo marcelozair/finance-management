@@ -8,6 +8,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ProfilesModule } from './modules/profiles/profiles.module';
 import { DatabaseModule } from './shared/infrastructure/database/database.module';
 import { SharedSecurityModule } from './shared/infrastructure/security/security.module';
+import { WalletModule } from './modules/wallets/wallet.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { SharedSecurityModule } from './shared/infrastructure/security/security.
     SharedSecurityModule,
     AuthModule,
     ProfilesModule,
+    WalletModule,
   ],
   providers: [],
 })

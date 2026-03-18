@@ -36,6 +36,10 @@ export const useSession = ({ sessionStoreService }: UseSessionDeps) => {
     store: sessionStore,
   });
 
+  const [loading, setLoading] = useAtom(loadingSessionAtom, {
+    store: sessionStore,
+  });
+
   const setUserSession = (session: Session, user: User) => {
     sessionStore.set(userSessionAtom, user);
     setSession(session);
@@ -48,7 +52,7 @@ export const useSession = ({ sessionStoreService }: UseSessionDeps) => {
       setSession(localSession);
     }
 
-    sessionStore.set(loadingSessionAtom, false);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -58,8 +62,8 @@ export const useSession = ({ sessionStoreService }: UseSessionDeps) => {
   return {
     // Values
     session: session,
+    loadingSession: loading,
     user: sessionStore.get(userSessionAtom),
-    loadingSession: sessionStore.get(loadingSessionAtom),
     // Methods
     clearUserSession: () => sessionStoreService.clear(),
     setUserSession,

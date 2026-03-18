@@ -9,7 +9,7 @@ export class ProfileDomain {
   constructor() {
     // Instantiate repository and inject it to handle IoC
     const profileRepository = new ProfileRepositoryImpl();
-    
+
     this.getProfilesUseCase = new GetProfilesUseCase(profileRepository);
   }
 

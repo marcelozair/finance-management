@@ -12,13 +12,18 @@ import { User } from 'src/modules/users/domain/entities/User';
 import { ProfileRepository } from 'src/modules/profiles/domain/interfaces/ProfileRepository';
 import { Profile } from 'src/modules/profiles/domain/entities/Profile';
 import { Currency } from 'src/modules/wallets/domain/vo/Currency';
+import { WalletRepository } from 'src/modules/wallets/domain/interfaces/WalletRepository';
+import { Wallet } from 'src/modules/wallets/domain/entities/Wallet';
+import { WalletName } from 'src/modules/wallets/domain/vo/WalletName';
+import { Amount } from 'src/modules/wallets/domain/vo/Amount';
 
 export class SignUpUseCase {
   constructor(
     private readonly logger: Logger,
     private readonly i18n: I18nService,
-    private readonly userRepository: UserRepository,
-    private readonly profileRepository: ProfileRepository,
+    private readonly userRepo: UserRepository,
+    private readonly walletRepo: WalletRepository,
+    private readonly profileRepo: ProfileRepository,
     private readonly encryptHandler: EncryptHandler,
     private readonly authVerifyService: AuthVerifyService,
   ) {}
@@ -34,7 +39,7 @@ export class SignUpUseCase {
     this.logger.log(`Register user credentials for: ${body.email}`);
 
     const userEmail = new Email(body.email);
-    const user = await this.userRepository.findByEmail(userEmail);
+    const user = await this.userRepo.findByEmail(userEmail);
 
     if (user) {
       this.logger.error(`User with email ${body.email} already exists`);
@@ -47,7 +52,7 @@ export class SignUpUseCase {
     const hashPassword = await this.encryptHandler.encrypt(body.password);
     this.logger.log('User password encrypted successfully');
 
-    const userCreated = await this.userRepository.create(
+    const userCreated = await this.userRepo.create(
       User.forCreate(
         new FullName(body.name),
         userEmail,
@@ -56,19 +61,29 @@ export class SignUpUseCase {
         hashPassword,
       ),
     );
-
+    const currency = new Currency(body.currency);
     const newProfile = Profile.forCreate(
       body.name,
       'default-profile-color',
-      new Currency(body.currency),
+      currency,
       userCreated._id,
     );
 
-    const profile = await this.profileRepository.save(newProfile);
+    const profile = await this.profileRepo.save(newProfile);
 
     this.logger.log(
       `User created in storage. id=${userCreated._id} profileId=${profile._id} email=${userCreated._email} `,
     );
+
+    const defaultWallet = Wallet.forCreate(
+      new WalletName('Cash'),
+      'Cash',
+      new Amount(0),
+      currency,
+      'green',
+    );
+
+    await this.walletRepo.save(profile._id, defaultWallet);
 
     return {
       user: UserMapper.toDTO(userCreated),

@@ -1,7 +1,7 @@
-import { InvalidBalanceError } from '../exceptions/InvalidBalanceError';
 import { Amount } from '../vo/Amount';
 import { Currency } from '../vo/Currency';
 import { WalletName } from '../vo/WalletName';
+import { InvalidBalanceError } from '../exceptions/InvalidBalanceError';
 
 export class Wallet {
   constructor(

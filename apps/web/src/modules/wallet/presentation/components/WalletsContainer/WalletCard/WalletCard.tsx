@@ -1,20 +1,13 @@
 import { Button, Box, VStack, Text } from "@chakra-ui/react";
+import type { Wallet } from "src/modules/wallet/domain/entities/Wallet";
 
 interface WalletCardProps {
   selected: boolean;
-  walletName?: string;
-  balance?: string;
-  colorBar?: string;
+  wallet: Wallet;
   onClick?: () => void;
 }
 
-export const WalletCard = ({
-  selected,
-  walletName = "BCP",
-  balance = "10,000 MXN",
-  colorBar = "green.500",
-  onClick,
-}: WalletCardProps) => {
+export const WalletCard = ({ selected, wallet, onClick }: WalletCardProps) => {
   return (
     <Button
       as="div"
@@ -46,7 +39,7 @@ export const WalletCard = ({
       <Box
         width="2"
         height="100%"
-        backgroundColor={colorBar}
+        backgroundColor={wallet._color}
         borderRadius="sm"
         flexShrink={0}
       />
@@ -66,7 +59,7 @@ export const WalletCard = ({
           }}
           truncate
         >
-          {walletName}
+          {wallet._name}
         </Text>
         <Text
           fontSize="sm"
@@ -76,7 +69,7 @@ export const WalletCard = ({
             color: "gray.50",
           }}
         >
-          {balance}
+          {wallet._formattedBalance}
         </Text>
       </VStack>
     </Button>

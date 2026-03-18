@@ -19,10 +19,15 @@ import { UserRepositoryImpl } from 'src/shared/infrastructure/database/repositor
 import { ProfileRepository } from '../profiles/domain/interfaces/ProfileRepository';
 import { ProfileRepositoryImpl } from 'src/shared/infrastructure/database/repositories/ProfileRepositoryImpl';
 import { ProfileEntity } from 'src/shared/infrastructure/database/entities/profile.entity';
+import { WalletRepositoryImpl } from 'src/shared/infrastructure/database/repositories/WalletRepositoryImpl';
+import { WalletRepository } from '../wallets/domain/interfaces/WalletRepository';
+import { WalletEntity } from 'src/shared/infrastructure/database/entities/wallet.entity';
 
 @Module({
   controllers: [AuthController],
-  imports: [TypeOrmModule.forFeature([UserEntity, ProfileEntity])],
+  imports: [
+    TypeOrmModule.forFeature([UserEntity, ProfileEntity, WalletEntity]),
+  ],
   providers: [
     Logger,
     EncryptHandler, // #TODO create class interface ..
@@ -37,6 +42,10 @@ import { ProfileEntity } from 'src/shared/infrastructure/database/entities/profi
     {
       provide: ProfileRepository,
       useClass: ProfileRepositoryImpl,
+    },
+    {
+      provide: WalletRepository,
+      useClass: WalletRepositoryImpl,
     },
     {
       provide: AuthVerifyService,
@@ -62,6 +71,7 @@ import { ProfileEntity } from 'src/shared/infrastructure/database/entities/profi
         i18n: I18nService,
         userRepo: UserRepository,
         profileRepo: ProfileRepository,
+        walletRepo: WalletRepository,
         encrypt: EncryptHandler,
         authVerify: AuthVerifyService,
       ) => {
@@ -69,6 +79,7 @@ import { ProfileEntity } from 'src/shared/infrastructure/database/entities/profi
           logger,
           i18n,
           userRepo,
+          walletRepo,
           profileRepo,
           encrypt,
           authVerify,
@@ -79,6 +90,7 @@ import { ProfileEntity } from 'src/shared/infrastructure/database/entities/profi
         I18nService,
         UserRepository,
         ProfileRepository,
+        WalletRepository,
         EncryptHandler,
         AuthVerifyService,
       ],

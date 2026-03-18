@@ -6,6 +6,7 @@ import { LoggerService } from "./core/utils/logger";
 import { LocalStorageService } from "./core/utils/localStorage";
 import { ConfigurationService } from "./core/utils/configuration";
 import { serviceLocator, ServiceName } from "./core/services/ServiceLocator";
+import { defaultLocale } from "./core/const/locales";
 
 // Global instances Implementation
 const configurationService = new ConfigurationService();
@@ -20,7 +21,7 @@ const logger = new LoggerService(loggerLevel);
  * @returns {string} language
  */
 function getLanguageBasedNavigator() {
-  const locale = navigator.language; // e.g. "es-ES", "en-US"
+  const locale = navigator.language || defaultLocale; // e.g. "es-ES", "en-US"
   logger.debug(`[Setup] Navigator language: '${locale}'`);
   return locale.split(/[-_]/)[0].toLowerCase(); // "es" or "en"
 }

@@ -1,5 +1,5 @@
 import { serviceLocator } from "src/core/services/ServiceLocator";
-import { Session } from "../../domain/entities/session";
+import { Session } from "../../domain/entities/Session";
 import type { SessionStore } from "../../domain/interfaces/SessionStore";
 import type { LoggerService } from "src/core/utils/logger";
 

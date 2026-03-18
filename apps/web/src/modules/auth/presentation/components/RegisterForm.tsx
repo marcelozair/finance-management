@@ -133,9 +133,9 @@ export const RegisterForm = (props: SignUpAtomsProps) => {
           <Text fontSize="sm" textAlign="center" color="gray.400">
             Have an account?{" "}
             <Link to="/auth/sign-in">
-              <Text style={{ textDecoration: "underline" }} color="primary">
+              <LinkChakra variant="underline" color="primary">
                 Sign in.
-              </Text>
+              </LinkChakra>
             </Link>
           </Text>
         </Flex>

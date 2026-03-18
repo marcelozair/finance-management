@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { WalletController } from './presentation/WalletController';
 import { WalletRepository } from './domain/interfaces/WalletRepository';
 import { GetWalletUseCase } from './application/useCases/GetWalletsUseCase';
 import { CreateWalletUseCase } from './application/useCases/CreateWalletUseCase';
@@ -9,7 +10,7 @@ import { ProfileEntity } from 'src/shared/infrastructure/database/entities/profi
 import { WalletRepositoryImpl } from 'src/shared/infrastructure/database/repositories/WalletRepositoryImpl';
 
 @Module({
-  controllers: [],
+  controllers: [WalletController],
   imports: [TypeOrmModule.forFeature([ProfileEntity, WalletEntity])],
   providers: [
     {

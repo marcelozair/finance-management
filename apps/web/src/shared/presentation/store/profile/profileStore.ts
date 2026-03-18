@@ -1,9 +1,6 @@
 import { atom, createStore } from "jotai";
 import type { Profile } from "../../../../modules/profiles/domain/entities/Profile";
 
-/**
- * Global store instance for profile state
- */
 export const profileStore = createStore();
 
 /**

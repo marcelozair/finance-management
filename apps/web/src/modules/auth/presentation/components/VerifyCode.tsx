@@ -38,7 +38,7 @@ export const VerifyCode = (props: SignUpAtomsProps) => {
     });
 
     setUserSession(session, user);
-    navigate("/admin/wallet");
+    navigate("/admin/select-profile");
   };
 
   return (
