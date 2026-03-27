@@ -6,7 +6,7 @@ import { EncryptHandler } from 'src/core/utils/EncryptHandler';
 import { AuthVerifyService } from '../../domain/services/AuthVerifyService';
 import { SignUpResponseDTO } from '../../presentation/dto/signupResponse.dto';
 import { UserMapper } from 'src/modules/users/application/mappers/user.mapper';
-import { UserRepository } from 'src/modules/users/domain/interfaces/user.repository';
+import { UserRepository } from 'src/modules/users/domain/interfaces/UserRepository';
 import { Email, FullName } from 'src/modules/users/domain/vo';
 import { User } from 'src/modules/users/domain/entities/User';
 import { ProfileRepository } from 'src/modules/profiles/domain/interfaces/ProfileRepository';

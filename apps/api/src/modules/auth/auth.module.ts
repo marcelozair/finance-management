@@ -13,7 +13,7 @@ import { TOTPServiceImpl } from './application/services/TOTPServiceImpl';
 import { VerifyCodeUseCase } from './application/useCases/verifyCode';
 import { SignInUseCase } from './application/useCases/signIn.useCase';
 import { AuthVerifyService } from './domain/services/AuthVerifyService';
-import { UserRepository } from '../users/domain/interfaces/user.repository';
+import { UserRepository } from '../users/domain/interfaces/UserRepository';
 import { UserEntity } from 'src/shared/infrastructure/database/entities/user.entity';
 import { UserRepositoryImpl } from 'src/shared/infrastructure/database/repositories/UserRepositoryImpl';
 import { ProfileRepository } from '../profiles/domain/interfaces/ProfileRepository';

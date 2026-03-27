@@ -11,8 +11,13 @@ export const useWalletStore = () => {
     setWalletsAtom([...walletsList]);
   };
 
+  const addWallet = (wallet: Wallet) => {
+    setWalletsAtom((prev) => [...prev, wallet]);
+  };
+
   return {
     wallets,
     setWallets,
+    addWallet,
   };
 };

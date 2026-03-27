@@ -7,7 +7,7 @@ import { UserEntity } from '../entities/user.entity';
 import { User } from 'src/modules/users/domain/entities/User';
 import { EncryptHandler } from 'src/core/utils/EncryptHandler';
 import { UserMapper } from 'src/modules/users/application/mappers/user.mapper';
-import { UserRepository } from 'src/modules/users/domain/interfaces/user.repository';
+import { UserRepository } from 'src/modules/users/domain/interfaces/UserRepository';
 
 @Injectable()
 export class UserRepositoryImpl implements UserRepository {

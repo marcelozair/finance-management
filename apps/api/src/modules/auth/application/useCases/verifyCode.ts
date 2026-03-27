@@ -10,7 +10,7 @@ import { UserSessionDTO } from '../../presentation/dto/session.dto';
 import { VerifyCodeDTO } from '../../presentation/dto/verifyCode.dto';
 import { AuthVerifyService } from '../../domain/services/AuthVerifyService';
 import { UserMapper } from 'src/modules/users/application/mappers/user.mapper';
-import { UserRepository } from 'src/modules/users/domain/interfaces/user.repository';
+import { UserRepository } from 'src/modules/users/domain/interfaces/UserRepository';
 
 export class VerifyCodeUseCase {
   constructor(

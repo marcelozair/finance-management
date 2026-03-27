@@ -15,6 +15,7 @@ const LOCAL_STORAGE_PROFILE_KEY = "selected-profile";
  * Custom hook to manage the global Profile state and Local Storage synchronization.
  */
 export const useProfile = () => {
+  const logger = serviceLocator.getLogger();
   const localStorage = serviceLocator.getLocalStorage();
 
   const [profile, setProfileState] = useAtom(activeProfileAtom, {
@@ -24,8 +25,6 @@ export const useProfile = () => {
   const [loading, setLoading] = useAtom(loadingProfileAtom, {
     store: profileStore,
   });
-
-  const logger = serviceLocator.getLogger();
 
   const setProfile = (newProfile: Profile | null) => {
     logger.info("Setting profile into locaStorage and Store");

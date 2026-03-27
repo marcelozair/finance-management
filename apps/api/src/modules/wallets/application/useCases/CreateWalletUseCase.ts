@@ -14,7 +14,7 @@ export class CreateWalletUseCase {
    * @param {CreateWalletDTO} wallet user credentials
    * @returns {Promise<CreateWalletDTO>} user payload and authorization
    */
-  async execute(profileId: number, wallet: CreateWalletDTO): Promise<void> {
+  async execute(profileId: number, wallet: CreateWalletDTO): Promise<Wallet> {
     const newWallet = Wallet.forCreate(
       new WalletName(wallet.name),
       wallet.walletType,
@@ -23,6 +23,11 @@ export class CreateWalletUseCase {
       wallet.color,
     );
 
-    await this.walletRepository.save(profileId, newWallet);
+    const createdWallet = await this.walletRepository.save(
+      profileId,
+      newWallet,
+    );
+
+    return createdWallet;
   }
 }

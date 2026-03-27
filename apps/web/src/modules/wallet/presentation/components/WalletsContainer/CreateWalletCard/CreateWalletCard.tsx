@@ -14,10 +14,10 @@ export const CreateWalletCard = ({ openModal }: CreateWalletCardProps) => {
         width="4rem"
         height="4rem"
         borderRadius="md"
-        border="solid 1px"
-        borderColor="gray.200"
+        border="dashed 1px"
+        borderColor="gray.300"
       >
-        <Text color="gray.500">
+        <Text color="gray.300">
           <FaPlus />
         </Text>
       </Center>
