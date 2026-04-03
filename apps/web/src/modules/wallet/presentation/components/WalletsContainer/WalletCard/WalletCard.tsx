@@ -18,7 +18,7 @@ export const WalletCard = ({ selected, wallet, onClick }: WalletCardProps) => {
       borderRadius="md"
       backgroundColor={selected ? "gray.100" : "gray.50"}
       border={selected ? "2px solid" : "2px solid transparent"}
-      borderColor={selected ? "gray.300" : "transparent"}
+      borderColor={selected ? "gray.200" : "transparent"}
       _dark={{
         backgroundColor: selected ? "gray.800" : "gray.900",
         borderColor: selected ? "gray.600" : "transparent",

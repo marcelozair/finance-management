@@ -34,6 +34,7 @@ export const ProfileCard = ({ profile, onClick }: ProfileCardProps) => {
       transition="all 0.2s"
       position="relative"
       shadow="sm"
+      minH="150px"
     >
       <Flex direction="column" align="center" justifyContent="center" h="100%">
         <FaWallet size={24} />

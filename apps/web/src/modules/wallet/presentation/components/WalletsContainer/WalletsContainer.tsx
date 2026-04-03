@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Flex } from "@chakra-ui/react";
 
 import { WalletCard } from "./WalletCard/WalletCard";
+import { WalletCardSkeleton } from "./WalletCard/WalletCardSkeleton";
 import { CreateWalletCard } from "./CreateWalletCard/CreateWalletCard";
 import { CreateWalletModal } from "./CreateWalletModal/CreateWalletModal";
 import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase";
@@ -9,11 +10,14 @@ import { WalletDomain } from "src/modules/wallet/application";
 import { useWalletStore } from "../../store/useWalletStore";
 import { useProfile } from "@shared/presentation/store/profile/useProfile";
 
+const SKELETON_COUNT = 3;
+
 export const WalletsContainer = () => {
   const walletDomain = new WalletDomain();
 
   const { profile } = useProfile();
-  const { wallets, setWallets } = useWalletStore();
+  const { wallets, setWallets, selectWallet, selectedWalletId } =
+    useWalletStore();
   const [createModal, setCreateModal] = useState(false);
 
   const { execute, loading } = useExecuteUseCase<void, number>({
@@ -36,13 +40,18 @@ export const WalletsContainer = () => {
 
       <CreateWalletCard openModal={() => setCreateModal(true)} />
 
-      {wallets.map((wallet) => (
-        <WalletCard
-          selected={wallet._id === 1}
-          key={wallet._id}
-          wallet={wallet}
-        />
-      ))}
+      {loading
+        ? Array.from({ length: SKELETON_COUNT }).map((_, i) => (
+            <WalletCardSkeleton key={`skeleton-${i}`} />
+          ))
+        : wallets.map((wallet) => (
+            <WalletCard
+              onClick={() => selectWallet(wallet._id)}
+              selected={wallet._id === selectedWalletId}
+              key={wallet._id}
+              wallet={wallet}
+            />
+          ))}
     </Flex>
   );
 };

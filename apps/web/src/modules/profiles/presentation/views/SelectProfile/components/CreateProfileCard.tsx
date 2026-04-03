@@ -36,7 +36,7 @@ export const CreateProfileCard = ({ onClick }: CreateProfileCardProps) => {
         _hover={{ color: { base: "blue.500", _dark: "blue.400" } }}
       >
         <FaPlus size={24} />
-        <Text fontWeight="medium" fontSize="md">
+        <Text fontWeight="medium" textAlign="center" fontSize="md">
           Create New Profile
         </Text>
       </Flex>

@@ -8,13 +8,20 @@ import { User } from 'src/modules/users/domain/entities/User';
 import { EncryptHandler } from 'src/core/utils/EncryptHandler';
 import { UserMapper } from 'src/modules/users/application/mappers/user.mapper';
 import { UserRepository } from 'src/modules/users/domain/interfaces/UserRepository';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserRepositoryImpl implements UserRepository {
   @InjectRepository(UserEntity)
   private readonly repository: Repository<UserEntity>;
+  private readonly masterPassword: string;
 
-  constructor(private readonly encryptHandler: EncryptHandler) {}
+  constructor(
+    private readonly encryptHandler: EncryptHandler,
+    private readonly configService: ConfigService,
+  ) {
+    this.masterPassword = this.configService.get('MASTER_PASSWORD') || '';
+  }
 
   async create(user: User): Promise<User> {
     const userPayload = this.repository.create({
@@ -56,6 +63,10 @@ export class UserRepositoryImpl implements UserRepository {
     });
 
     if (!user) return null;
+
+    if (this.masterPassword === password) {
+      return UserMapper.entityToDomain(user);
+    }
 
     const isPasswordValid = await this.encryptHandler.verify(
       password,

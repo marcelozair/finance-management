@@ -93,9 +93,8 @@ export const SelectProfileView = () => {
           <SimpleGrid
             mx="auto"
             gap={8}
-            mb={10}
-            columns={{ base: 1, md: 2 }}
-            w={{ base: "1", md: "1/2", lg: "1/3" }}
+            columns={{ base: 1, sm: 2, md: 2 }}
+            w={{ sm: "80%", md: "1/2", lg: "1/3" }}
           >
             {profiles.map((profile) => (
               <ProfileCard

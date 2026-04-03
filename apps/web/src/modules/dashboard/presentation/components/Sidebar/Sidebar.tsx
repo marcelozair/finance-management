@@ -24,11 +24,16 @@ export const Sidebar = () => {
 
   return (
     <Box
-      width="full"
-      height="100vh"
+      width="100%"
+      transform="translateX(-100%)"
+      position="fixed"
+      bg="red.500"
+      md={{ width: "100%", transform: "translateX(0)", position: "relative" }}
       paddingX={2}
       paddingY={5}
+      height="100vh"
       backgroundColor="white"
+      transition="all 0.3s ease-in-out"
       _dark={{
         backgroundColor: "black",
       }}
