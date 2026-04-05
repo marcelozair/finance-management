@@ -7,7 +7,7 @@ import {
 // Extend Chakra's HeadingProps
 interface CustomHeadingProps extends ChakraHeadingProps {
   children: ReactNode;
-  textAlign?: "left" | "center" | "right";
+  textAlign?: "left" | "center" | "right" | object;
 }
 
 export const Heading = forwardRef<HTMLHeadingElement, CustomHeadingProps>(
@@ -17,5 +17,5 @@ export const Heading = forwardRef<HTMLHeadingElement, CustomHeadingProps>(
         {children}
       </ChakraHeading>
     );
-  }
+  },
 );

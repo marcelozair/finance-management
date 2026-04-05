@@ -1,6 +1,7 @@
 import {
   Button,
   Clipboard,
+  Flex,
   IconButton,
   Input,
   InputGroup,
@@ -16,20 +17,31 @@ import { SubHeading } from "@shared/presentation/components/content/SubHeading";
 export const SignUpTOTP = (props: SignUpAtomsProps) => {
   return (
     <AuthWrapper>
-      <Heading textAlign="left" mb={4}>
+      <Heading textAlign={{ base: "center", sm: "left" }} mb={4}>
         2FA Authentication
       </Heading>
-      <SubHeading textAlign="left" mb={8} w="80%">
+      <SubHeading
+        textAlign={{ base: "center", sm: "left" }}
+        mb={8}
+        width={{ base: "100%", sm: "80%" }}
+      >
         Please use authenticator app to scan and generate your verification code
       </SubHeading>
 
-      <QrCode.Root value={props.context?.secret || "Unknow"} size="xl">
-        <QrCode.Frame>
-          <QrCode.Pattern />
-        </QrCode.Frame>
-      </QrCode.Root>
+      <Flex justifyContent={{ base: "center", sm: "flex-start" }}>
+        <QrCode.Root value={props.context?.secret || "Unknow"} size="xl">
+          <QrCode.Frame>
+            <QrCode.Pattern />
+          </QrCode.Frame>
+        </QrCode.Root>
+      </Flex>
 
-      <SubHeading textAlign="left" mb={4} mt={8} w="80%">
+      <SubHeading
+        textAlign={{ base: "center", sm: "left" }}
+        mb={4}
+        mt={8}
+        width={{ base: "100%", sm: "80%" }}
+      >
         If you can't scan the QR, copy this text instead
       </SubHeading>
 

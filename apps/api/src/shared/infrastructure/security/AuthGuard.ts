@@ -35,8 +35,6 @@ export class AuthGuard implements CanActivate {
         throw new UnauthorizedException('Invalid token payload');
       }
 
-      console.info({ user: payload.userId, profileId });
-
       request['userId'] = payload.userId;
       request['profileId'] = profileId;
     } catch {

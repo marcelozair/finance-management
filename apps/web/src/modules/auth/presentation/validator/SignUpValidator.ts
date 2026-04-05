@@ -1,9 +1,7 @@
 import { object, string } from "yup";
 
 const phoneRegex = new RegExp(/^\+\d{1,3}\d{6,12}$/);
-const nameRegex = new RegExp(
-  /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü]+(?: [A-Za-zÁÉÍÓÚáéíóúÑñÜü]+)*$/,
-);
+const nameRegex = new RegExp(/^[a-zA-Z]+( [a-zA-Z]+)+$/);
 
 export const signUpValidator = object({
   email: string().email().required(),

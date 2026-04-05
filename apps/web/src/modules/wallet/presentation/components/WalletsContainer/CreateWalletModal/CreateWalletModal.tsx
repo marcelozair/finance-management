@@ -15,11 +15,19 @@ import type { Wallet } from "src/modules/wallet/domain/entities/Wallet";
 import { useWalletStore } from "../../../store/useWalletStore";
 import { useProfile } from "src/shared/presentation/store/profile/useProfile";
 
+enum WalletTypes {
+  SAVE = "Save",
+  CREDIT = "Credit",
+  DEBIT = "Debit",
+  CASH = "Cash",
+}
+
 const accountTypesCatalog = createListCollection({
   items: [
-    { label: "Cash", value: "Cash" },
-    { label: "Debit Wallet", value: "Debit Wallet" },
-    { label: "Save Wallet", value: "Save Wallet" },
+    { label: "Cash", value: WalletTypes.CASH as string },
+    { label: "Save", value: WalletTypes.SAVE as string },
+    { label: "Debit", value: WalletTypes.DEBIT as string },
+    { label: "Credit", value: WalletTypes.CREDIT as string },
   ],
 });
 

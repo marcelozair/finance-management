@@ -7,16 +7,13 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
-import { CurrencyEnum } from 'src/core/constant/currency.enum';
 import { ProfileEntity } from './profile.entity';
-
-export enum WalletTypeEnum {
-  CASH = 'Cash',
-  SAVE_ACCOUNT = 'Save Wallet',
-  DEBIT_ACCOUNT = 'Debit Wallet',
-}
+import { CurrencyEnum } from 'src/core/constant/currency.enum';
+import { WalletTypes } from 'src/modules/wallets/domain/vo/WalletType';
+import { TransactionEntity } from './transaction.entity';
 
 @Entity('wallets')
 export class WalletEntity {
@@ -26,14 +23,8 @@ export class WalletEntity {
   @Column()
   name: string;
 
-  @Column({ enum: WalletTypeEnum, type: 'enum' })
-  walletType: string;
-
-  @Column({ type: 'float' })
-  initialBalance: number;
-
-  @Column({ type: 'float' })
-  currentBalance: number;
+  @Column({ enum: WalletTypes, type: 'enum' })
+  type: string;
 
   @Column()
   color: string;
@@ -50,8 +41,11 @@ export class WalletEntity {
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 
-  // @OneToMany(() => RecordEntity, (record: RecordEntity) => record.wallet)
-  // records: RecordEntity[];
+  @OneToMany(
+    () => TransactionEntity,
+    (transaction: TransactionEntity) => transaction.wallet,
+  )
+  records: TransactionEntity[];
 
   @Column()
   profileId: number; // The physical column

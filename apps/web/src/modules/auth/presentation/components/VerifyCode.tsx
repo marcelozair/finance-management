@@ -43,15 +43,23 @@ export const VerifyCode = (props: SignUpAtomsProps) => {
 
   return (
     <AuthWrapper>
-      <Heading textAlign="left" mb={4}>
+      <Heading textAlign={{ base: "center", sm: "left" }} mb={4}>
         Confirm Code
       </Heading>
-      <SubHeading mb={8} textAlign="left" width="80%">
+      <SubHeading
+        mb={8}
+        textAlign={{ base: "center", sm: "left" }}
+        width={{ base: "100%", sm: "80%" }}
+      >
         Please insert into your verification code from your authenticator app.
       </SubHeading>
       <PinInput.Root
+        smDown={{
+          display: "flex",
+          justifyContent: "center",
+        }}
         attached
-        size="2xl"
+        size={{ base: "md", sm: "2xl" }}
         onValueChange={(e) => setCode(e.value.join(""))}
       >
         <PinInput.HiddenInput />

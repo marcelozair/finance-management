@@ -1,12 +1,7 @@
 import { IsEnum, IsString, IsNumber } from 'class-validator';
 
+import { WalletTypes } from '../../domain/vo/WalletType';
 import { CurrencyEnum } from 'src/core/constant/currency.enum';
-
-export enum WalletTypeEnum {
-  Debit = 'Debit Wallet',
-  Save = 'Save Wallet',
-  Cash = 'Cash',
-}
 
 export class CreateWalletDTO {
   @IsString()
@@ -21,6 +16,6 @@ export class CreateWalletDTO {
   @IsEnum(CurrencyEnum)
   currency: CurrencyEnum;
 
-  @IsEnum(WalletTypeEnum)
-  walletType: WalletTypeEnum;
+  @IsEnum(WalletTypes)
+  walletType: WalletTypes;
 }

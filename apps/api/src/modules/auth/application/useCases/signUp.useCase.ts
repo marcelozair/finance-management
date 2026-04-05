@@ -15,7 +15,11 @@ import { Currency } from 'src/modules/wallets/domain/vo/Currency';
 import { WalletRepository } from 'src/modules/wallets/domain/interfaces/WalletRepository';
 import { Wallet } from 'src/modules/wallets/domain/entities/Wallet';
 import { WalletName } from 'src/modules/wallets/domain/vo/WalletName';
-import { Amount } from 'src/modules/wallets/domain/vo/Amount';
+import {
+  WalletType,
+  WalletTypes,
+} from 'src/modules/wallets/domain/vo/WalletType';
+import { WalletColor } from 'src/modules/wallets/domain/vo/WalletColor';
 
 export class SignUpUseCase {
   constructor(
@@ -34,7 +38,7 @@ export class SignUpUseCase {
    * @returns {SignUpResponseDTO} user payload and authorization
    */
   async execute(body: SignUpDTO): Promise<SignUpResponseDTO> {
-    // #TODO | CRITICAL | Implement transactions |
+    // #TODO | CRITICAL | Implement transactions
 
     this.logger.log(`Register user credentials for: ${body.email}`);
 
@@ -61,6 +65,7 @@ export class SignUpUseCase {
         hashPassword,
       ),
     );
+
     const currency = new Currency(body.currency);
     const newProfile = Profile.forCreate(
       body.name,
@@ -77,10 +82,9 @@ export class SignUpUseCase {
 
     const defaultWallet = Wallet.forCreate(
       new WalletName('Cash'),
-      'Cash',
-      new Amount(0),
+      new WalletType(WalletTypes.CASH),
       currency,
-      'green',
+      new WalletColor('#37943F'),
     );
 
     await this.walletRepo.save(profile._id, defaultWallet);

@@ -17,6 +17,7 @@ export class SignInUseCase {
     signInCredentials: SignInCredentialsDTO,
   ): Promise<SessionUserDTO> {
     const { data } = await this.authRepository.signIn(signInCredentials);
+
     this.sessionStore.save(SessionMapper.toDomain(data.session));
 
     return data;

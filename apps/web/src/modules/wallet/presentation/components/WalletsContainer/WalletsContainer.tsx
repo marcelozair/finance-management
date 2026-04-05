@@ -1,5 +1,5 @@
+import { Flex, ScrollArea } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { Flex } from "@chakra-ui/react";
 
 import { WalletCard } from "./WalletCard/WalletCard";
 import { WalletCardSkeleton } from "./WalletCard/WalletCardSkeleton";
@@ -32,26 +32,36 @@ export const WalletsContainer = () => {
   }, []);
 
   return (
-    <Flex gap={2} flexWrap={"wrap"}>
-      <CreateWalletModal
-        isOpen={createModal}
-        onClose={() => setCreateModal(false)}
-      />
+    <>
+      <ScrollArea.Root size="xs">
+        <ScrollArea.Viewport>
+          <ScrollArea.Content py="4">
+            <Flex gap="2" flexWrap="nowrap">
+              <CreateWalletModal
+                isOpen={createModal}
+                onClose={() => setCreateModal(false)}
+              />
 
-      <CreateWalletCard openModal={() => setCreateModal(true)} />
+              <CreateWalletCard openModal={() => setCreateModal(true)} />
 
-      {loading
-        ? Array.from({ length: SKELETON_COUNT }).map((_, i) => (
-            <WalletCardSkeleton key={`skeleton-${i}`} />
-          ))
-        : wallets.map((wallet) => (
-            <WalletCard
-              onClick={() => selectWallet(wallet._id)}
-              selected={wallet._id === selectedWalletId}
-              key={wallet._id}
-              wallet={wallet}
-            />
-          ))}
-    </Flex>
+              {loading
+                ? Array.from({ length: SKELETON_COUNT }).map((_, i) => (
+                    <WalletCardSkeleton key={`skeleton-${i}`} />
+                  ))
+                : wallets.map((wallet) => (
+                    <WalletCard
+                      onClick={() => selectWallet(wallet._id)}
+                      selected={wallet._id === selectedWalletId}
+                      key={wallet._id}
+                      wallet={wallet}
+                    />
+                  ))}
+            </Flex>
+          </ScrollArea.Content>
+        </ScrollArea.Viewport>
+        <ScrollArea.Scrollbar orientation="horizontal" />
+        <ScrollArea.Corner />
+      </ScrollArea.Root>
+    </>
   );
 };

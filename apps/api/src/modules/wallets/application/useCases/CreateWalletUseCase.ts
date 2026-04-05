@@ -1,12 +1,18 @@
-import { Wallet } from '../../domain/entities/Wallet';
-import { WalletRepository } from '../../domain/interfaces/WalletRepository';
 import { Amount } from '../../domain/vo/Amount';
 import { Currency } from '../../domain/vo/Currency';
+import { Wallet } from '../../domain/entities/Wallet';
 import { WalletName } from '../../domain/vo/WalletName';
+import { WalletType } from '../../domain/vo/WalletType';
+import { WalletColor } from '../../domain/vo/WalletColor';
 import { CreateWalletDTO } from '../../presentation/dtos/CreateWalletDto';
+import { WalletRepository } from '../../domain/interfaces/WalletRepository';
+import { TransactionRepository } from '../../domain/interfaces/TransactionRepository';
 
 export class CreateWalletUseCase {
-  constructor(private readonly walletRepository: WalletRepository) {}
+  constructor(
+    private readonly walletRepository: WalletRepository,
+    private readonly transactionRepository: TransactionRepository,
+  ) {}
 
   /**
    * Create Wallet into user profile account
@@ -17,10 +23,9 @@ export class CreateWalletUseCase {
   async execute(profileId: number, wallet: CreateWalletDTO): Promise<Wallet> {
     const newWallet = Wallet.forCreate(
       new WalletName(wallet.name),
-      wallet.walletType,
-      new Amount(wallet.initialBalance),
+      new WalletType(wallet.walletType),
       new Currency(wallet.currency),
-      wallet.color,
+      new WalletColor(wallet.color),
     );
 
     const createdWallet = await this.walletRepository.save(
@@ -28,6 +33,22 @@ export class CreateWalletUseCase {
       newWallet,
     );
 
-    return createdWallet;
+    if (wallet.initialBalance > 0) {
+      await this.transactionRepository.initialTransaction(
+        createdWallet._id,
+        new Amount(wallet.initialBalance),
+      );
+    }
+
+    const resultWallet = new Wallet(
+      createdWallet._id,
+      new WalletName(createdWallet._name),
+      new WalletType(createdWallet._type),
+      new Currency(createdWallet._currency),
+      new Amount(wallet.initialBalance),
+      new WalletColor(createdWallet._color),
+    );
+
+    return resultWallet;
   }
 }

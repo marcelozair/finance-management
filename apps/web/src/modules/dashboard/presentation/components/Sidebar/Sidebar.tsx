@@ -26,9 +26,12 @@ export const Sidebar = () => {
     <Box
       width="100%"
       transform="translateX(-100%)"
+      top={0}
+      left={0}
       position="fixed"
+      className="wallet-sidebar"
       bg="red.500"
-      md={{ width: "100%", transform: "translateX(0)", position: "relative" }}
+      md={{ width: "100%", transform: "translateX(0)", position: "sticky" }}
       paddingX={2}
       paddingY={5}
       height="100vh"
@@ -41,8 +44,8 @@ export const Sidebar = () => {
       <Flex direction="column" justifyContent="space-between" height="100%">
         <Flex direction="column">
           {/* <div className="sidebar__logo">
-            <img src="/siete-pe-logo.svg" />
-          </div> */}
+              <img src="/siete-pe-logo.svg" />
+            </div> */}
 
           <Box marginBottom={3} paddingX={4}>
             <Text

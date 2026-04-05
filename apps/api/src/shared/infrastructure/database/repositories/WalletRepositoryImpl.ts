@@ -17,11 +17,8 @@ export class WalletRepositoryImpl implements WalletRepository {
       name: wallet._name,
       color: wallet._color,
       currency: wallet._currency,
-      walletType: wallet._walletType,
-      initialBalance: wallet._initialBalance,
-      currentBalance: wallet._currentBalance,
-      // Create Reference for profile
-      profileId,
+      type: wallet._type,
+      profileId, // Create Reference for profile
     });
 
     const userEntity = await this.repository.save(walletPayload);

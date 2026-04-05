@@ -3,7 +3,7 @@ import { Text, type TextProps } from "@chakra-ui/react";
 
 interface SubHeadingProps extends TextProps {
   children: ReactNode;
-  textAlign?: "left" | "center" | "right";
+  textAlign?: "left" | "center" | "right" | object;
 }
 
 export const SubHeading = ({

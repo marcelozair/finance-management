@@ -21,7 +21,6 @@ export interface SignUpAtomsProps {
 export type TypeSignUpViews =
   | "user-sign-up"
   | "user-register-totp"
-  | "user-finishing-sign-up"
   | "user-verification-totp";
 
 export const SignUpView = () => {
@@ -32,26 +31,28 @@ export const SignUpView = () => {
         "user-sign-up": RegisterForm,
         "user-register-totp": SignUpTOTP,
         "user-verification-totp": VerifyCode,
-        "user-finishing-sign-up": VerifyCode,
       },
     },
   );
 
   return (
-    <main className="auth">
+    <main>
       <Grid
-        gridTemplateColumns={{ lg: "repeat(6, 1fr)", base: "repeat(1, 1fr)" }}
+        gridTemplateColumns={{
+          md: "repeat(6, 1fr)",
+          base: "1fr",
+        }}
+        minH="100vh"
       >
-        <GridItem
-          colSpan={{ lg: 4 }}
-          className="sign-in__banner"
-          display={{ base: "none", lg: "block" }}
-        ></GridItem>
+        <GridItem bg="black" colSpan={{ xl: 4, md: 3, base: 0 }}></GridItem>
         <GridItem
           placeItems="center"
           width="100%"
+          paddingY={5}
           className="sign-in__form"
-          colSpan={{ lg: 2, base: 1 }}
+          colSpan={{ xl: 2, md: 3, base: 1 }}
+          minH={0}
+          overflowY="auto"
         >
           <CurrentComponent />
         </GridItem>
