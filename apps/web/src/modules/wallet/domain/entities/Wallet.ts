@@ -1,24 +1,16 @@
-import { defaultLocale } from "src/core/const/locales";
 import type { Amount } from "../vo/Amount";
 import type { Currency } from "../vo/Currency";
 
 export class Wallet {
-  private readonly formattedBalance: string;
-
   constructor(
     private readonly id: number,
     private readonly name: string,
     private readonly type: string,
     private readonly balance: Amount,
+    private readonly formattedBalance: string,
     private readonly currency: Currency,
     private readonly color: string,
-    private readonly locale: string = defaultLocale,
-  ) {
-    this.formattedBalance = new Intl.NumberFormat(this.locale, {
-      style: "currency",
-      currency: this.currency.getValue(),
-    }).format(this.balance.getValue());
-  }
+  ) {}
 
   get _id() {
     return this.id;

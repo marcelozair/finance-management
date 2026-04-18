@@ -3,24 +3,21 @@ import {
   LANGUAGE_STORAGE_KEY,
 } from "../../../../core/const/appConfig";
 
-import type {
-  WalletDto,
-  CreateWalletPayload,
-} from "../interfaces/WalletRepositoryDtos";
-
-import type { Wallet } from "../../domain/entities/Wallet";
 import { ApiService } from "../../../../core/services/ApiService";
-import { WalletMapper } from "../../application/mappers/WalletMapper";
+import type { Transaction } from "../../domain/entities/Transaction";
 import type { ApiRes } from "../../../../core/interfaces/IApiResponse";
 import { serviceLocator } from "../../../../core/services/ServiceLocator";
 import { CreateApiClient } from "../../../../core/services/CreateApiClient";
 import { API_WALLETS_BASE_URL } from "../../../../core/const/apiConfiguration";
-import type { WalletRepository } from "../../domain/interfaces/WalletRepository";
+import type { TransactionDTO } from "../interfaces/TransactionRepositoryDtos";
+import { TransactionMapper } from "../../application/mappers/TransactionMapper";
+import type { TransactionRepository } from "../../domain/interfaces/TransactionRepository";
 import { SessionCookieStore } from "../../../auth/infrastructure/services/SessionCookieStore";
+import type { CreateTransactionDto } from "../../application/dtos/CreateTransactionDto";
 
-export class WalletRepositoryImpl
+export class TransactionRepositoryImpl
   extends ApiService
-  implements WalletRepository
+  implements TransactionRepository
 {
   constructor() {
     const failureHandler = serviceLocator.getFailureHandler();
@@ -46,21 +43,18 @@ export class WalletRepositoryImpl
     super(ApiClient, failureHandler);
   }
 
-  async getAll(profileId: number): Promise<Wallet[]> {
-    this.client.defaults.headers.common["profile-id"] = profileId;
+  async getAll(walletId: number): Promise<Transaction[]> {
+    const response = await this.get<ApiRes<TransactionDTO[]>>(
+      `${walletId}/transactions`,
+    );
 
-    const response = await this.get<ApiRes<WalletDto[]>>("");
-
-    return response.data.map((wallet) => WalletMapper.toDomain(wallet));
+    return response.data.map((trans) => TransactionMapper.toDomain(trans));
   }
 
   async create(
-    profileId: number,
-    payload: CreateWalletPayload,
-  ): Promise<Wallet> {
-    this.client.defaults.headers.common["profile-id"] = profileId;
-    const response = await this.post<ApiRes<WalletDto>>("", payload);
-
-    return WalletMapper.toDomain(response.data);
+    walletId: number,
+    transaction: CreateTransactionDto,
+  ): Promise<void> {
+    await this.post(`${walletId}/transactions`, transaction);
   }
 }

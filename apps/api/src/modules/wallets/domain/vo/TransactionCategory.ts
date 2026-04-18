@@ -1,16 +1,16 @@
 import { ValueObject } from 'src/core/domain/ValueObject';
 
-export const TransactionCategoryEnum = {
-  INITAL: 'initial',
-  FOOD: 'food',
-  TRANSPORT: 'transport',
-  ENTERTAINMENT: 'entertainment',
-  HEALTH: 'health',
-  EDUCATION: 'education',
-  UTILITIES: 'utilities',
-  SALARY: 'salary',
-  OTHER: 'other',
-} as const;
+export enum TransactionCategoryEnum {
+  INITAL = 'initial',
+  FOOD = 'food',
+  TRANSPORT = 'transport',
+  ENTERTAINMENT = 'entertainment',
+  HEALTH = 'health',
+  EDUCATION = 'education',
+  UTILITIES = 'utilities',
+  SALARY = 'salary',
+  OTHER = 'other',
+}
 
 export class TransactionCategory extends ValueObject<string> {
   constructor(value: string) {

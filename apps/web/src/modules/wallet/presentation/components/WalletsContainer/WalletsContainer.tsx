@@ -9,6 +9,7 @@ import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase"
 import { WalletDomain } from "src/modules/wallet/application";
 import { useWalletStore } from "../../store/useWalletStore";
 import { useProfile } from "@shared/presentation/store/profile/useProfile";
+import { useTransactionStore } from "../../store/useTransactionStore";
 
 const SKELETON_COUNT = 3;
 
@@ -16,6 +17,7 @@ export const WalletsContainer = () => {
   const walletDomain = new WalletDomain();
 
   const { profile } = useProfile();
+  const { setTransactions } = useTransactionStore();
   const { wallets, setWallets, selectWallet, selectedWalletId } =
     useWalletStore();
   const [createModal, setCreateModal] = useState(false);
@@ -26,6 +28,11 @@ export const WalletsContainer = () => {
       setWallets(wallets);
     },
   });
+
+  const handleWalletSelection = (walletId: number) => {
+    setTransactions([]);
+    selectWallet(walletId);
+  };
 
   useEffect(() => {
     if (profile && profile.id) execute(profile.id);
@@ -50,7 +57,7 @@ export const WalletsContainer = () => {
                   ))
                 : wallets.map((wallet) => (
                     <WalletCard
-                      onClick={() => selectWallet(wallet._id)}
+                      onClick={() => handleWalletSelection(wallet._id)}
                       selected={wallet._id === selectedWalletId}
                       key={wallet._id}
                       wallet={wallet}

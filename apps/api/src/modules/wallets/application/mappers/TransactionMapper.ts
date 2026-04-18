@@ -3,6 +3,7 @@ import { Transaction } from '../../domain/entities/Transaction';
 import { TransactionType } from '../../domain/vo/TransactionType';
 import { TransactionCategory } from '../../domain/vo/TransactionCategory';
 import { TransactionEntity } from 'src/shared/infrastructure/database/entities/transaction.entity';
+import { TransactionDTO } from '../../presentation/dtos/TransactionDto';
 
 export class TransactionMapper {
   static entityToDomain(entity: TransactionEntity): Transaction {
@@ -15,5 +16,18 @@ export class TransactionMapper {
       new TransactionCategory(entity.category),
       entity.destinationWalletId,
     );
+  }
+
+  static toDto(entity: Transaction): TransactionDTO {
+    return {
+      id: entity._id,
+      type: entity._type,
+      amount: entity._amount,
+      concept: entity._concept,
+      walletId: entity._walletId,
+      category: entity._category,
+      formattedAmount: entity._formattedBalance,
+      destinationWalletId: entity._destinationWalletId,
+    };
   }
 }

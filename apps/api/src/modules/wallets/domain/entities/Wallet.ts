@@ -14,6 +14,8 @@ import { WalletType } from '../vo/WalletType';
 // Calculate the balance by summing all transactions related to this wallet
 
 export class Wallet {
+  private readonly formattedBalance: string;
+
   constructor(
     private readonly id: number,
     private readonly name: WalletName,
@@ -21,7 +23,13 @@ export class Wallet {
     private readonly currency: Currency,
     private readonly balance: Amount,
     private readonly color: WalletColor,
-  ) {}
+    private readonly locale: string = 'en-US',
+  ) {
+    this.formattedBalance = new Intl.NumberFormat(this.locale, {
+      style: 'currency',
+      currency: this.currency.getValue(),
+    }).format(this.balance.getValue());
+  }
 
   static forCreate(
     name: WalletName,
@@ -29,7 +37,7 @@ export class Wallet {
     currency: Currency,
     color: WalletColor,
   ) {
-    return new Wallet(0, name, walletType, currency, new Amount(0), color);
+    return new Wallet(0, name, walletType, currency, new Amount(0), color, '');
   }
 
   get _id() {
@@ -54,5 +62,9 @@ export class Wallet {
 
   get _currency() {
     return this.currency.getValue();
+  }
+
+  get _formattedBalance() {
+    return this.formattedBalance;
   }
 }

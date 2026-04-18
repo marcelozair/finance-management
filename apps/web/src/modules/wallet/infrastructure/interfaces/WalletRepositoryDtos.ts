@@ -3,6 +3,7 @@ export interface WalletDto {
   name: string;
   type: string;
   balance: number;
+  formattedBalance: string;
   currency: string;
   color: string;
 }

@@ -1,9 +1,9 @@
-import { ValueObject } from 'src/core/domain/ValueObject';
+import { ValueObject } from "src/core/domain/ValueObject";
 
 export enum TransactionEnum {
-  INCOME = 'income',
-  EXPENSE = 'expense',
-  TRANSFER = 'transfer',
+  INCOME = "income",
+  EXPENSE = "expense",
+  TRANSFER = "transfer",
 }
 
 export class TransactionType extends ValueObject<string> {
@@ -11,12 +11,12 @@ export class TransactionType extends ValueObject<string> {
     super(value);
 
     if (!TransactionType.isValid(value)) {
-      throw new Error('Invalid transaction type');
+      throw new Error("Invalid transaction type");
     }
   }
 
   private static isValid(value: string): boolean {
-    return Object.values(TransactionEnum).includes(value as any);
+    return Object.values(TransactionEnum).includes(value as TransactionEnum);
   }
 
   get isIncome() {

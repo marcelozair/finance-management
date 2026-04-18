@@ -2,11 +2,12 @@ import {
   LANGUAGE_STORAGE_KEY,
   THEME_STORAGE_KEY,
 } from "./core/const/appConfig";
+
+import { defaultLocale } from "./core/const/locales";
 import { LoggerService } from "./core/utils/logger";
 import { LocalStorageService } from "./core/utils/localStorage";
 import { ConfigurationService } from "./core/utils/configuration";
 import { serviceLocator, ServiceName } from "./core/services/ServiceLocator";
-import { defaultLocale } from "./core/const/locales";
 
 // Global instances Implementation
 const configurationService = new ConfigurationService();

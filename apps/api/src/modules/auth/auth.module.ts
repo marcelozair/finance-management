@@ -1,5 +1,5 @@
-import { Logger, Module } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
+import { Logger, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { JwtService as JwtServiceImpl } from '@nestjs/jwt';

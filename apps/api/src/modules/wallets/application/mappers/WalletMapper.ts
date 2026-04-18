@@ -8,14 +8,15 @@ import { WalletDto } from '../../presentation/dtos/WalletDto';
 import { WalletEntity } from 'src/shared/infrastructure/database/entities/wallet.entity';
 
 export class WalletMapper {
-  static toDTO(wallet: Wallet, balance: number = 0): WalletDto {
+  static toDTO(wallet: Wallet): WalletDto {
     return {
       id: wallet._id,
       name: wallet._name,
       color: wallet._color,
       type: wallet._type,
       currency: wallet._currency,
-      balance,
+      balance: wallet._balance,
+      formattedBalance: wallet._formattedBalance,
     };
   }
 

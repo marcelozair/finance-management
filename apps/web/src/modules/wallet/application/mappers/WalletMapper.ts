@@ -10,6 +10,7 @@ export class WalletMapper {
       wallet.name,
       wallet.type,
       new Amount(wallet.balance),
+      wallet.formattedBalance,
       new Currency(wallet.currency),
       wallet.color,
     );
