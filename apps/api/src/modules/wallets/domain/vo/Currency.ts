@@ -1,5 +1,5 @@
-import { CurrencyEnum } from 'src/core/constant/currency.enum';
 import { ValueObject } from 'src/core/domain/ValueObject';
+import { CurrencyEnum } from 'src/shared/constant/CurrencyEnum';
 import { InvalidCurrencyError } from '../exceptions/InvalidCurrencyError';
 
 export class Currency extends ValueObject<string> {

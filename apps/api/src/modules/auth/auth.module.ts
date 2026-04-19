@@ -6,7 +6,7 @@ import { JwtService as JwtServiceImpl } from '@nestjs/jwt';
 
 import { JwtService } from './domain/interfaces/JwtService';
 import { TOTPService } from './domain/interfaces/TOTPService';
-import { EncryptHandler } from 'src/core/utils/EncryptHandler';
+import { EncryptHandler } from 'src/shared/utils/EncryptHandler';
 import { AuthController } from './presentation/auth.controller';
 import { SignUpUseCase } from './application/useCases/signUp.useCase';
 import { TOTPServiceImpl } from './application/services/TOTPServiceImpl';
@@ -14,14 +14,14 @@ import { VerifyCodeUseCase } from './application/useCases/verifyCode';
 import { SignInUseCase } from './application/useCases/signIn.useCase';
 import { AuthVerifyService } from './domain/services/AuthVerifyService';
 import { UserRepository } from '../users/domain/interfaces/UserRepository';
-import { UserEntity } from 'src/shared/infrastructure/database/entities/user.entity';
-import { UserRepositoryImpl } from 'src/shared/infrastructure/database/repositories/UserRepositoryImpl';
+import { UserEntity } from 'src/infrastructure/database/entities/UserEntity';
+import { UserRepositoryImpl } from 'src/infrastructure/database/repositories/UserRepositoryImpl';
 import { ProfileRepository } from '../profiles/domain/interfaces/ProfileRepository';
-import { ProfileRepositoryImpl } from 'src/shared/infrastructure/database/repositories/ProfileRepositoryImpl';
-import { ProfileEntity } from 'src/shared/infrastructure/database/entities/profile.entity';
-import { WalletRepositoryImpl } from 'src/shared/infrastructure/database/repositories/WalletRepositoryImpl';
+import { ProfileRepositoryImpl } from 'src/infrastructure/database/repositories/ProfileRepositoryImpl';
+import { ProfileEntity } from 'src/infrastructure/database/entities/ProfileEntity';
+import { WalletRepositoryImpl } from 'src/infrastructure/database/repositories/WalletRepositoryImpl';
 import { WalletRepository } from '../wallets/domain/interfaces/WalletRepository';
-import { WalletEntity } from 'src/shared/infrastructure/database/entities/wallet.entity';
+import { WalletEntity } from 'src/infrastructure/database/entities/WalletEntity';
 
 @Module({
   controllers: [AuthController],

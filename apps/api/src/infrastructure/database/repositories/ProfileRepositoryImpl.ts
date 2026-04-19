@@ -6,8 +6,9 @@ import {
   ProfileRepository,
   UpdateProfileData,
 } from 'src/modules/profiles/domain/interfaces/ProfileRepository';
+
+import { ProfileEntity } from '../entities/ProfileEntity';
 import { Profile } from 'src/modules/profiles/domain/entities/Profile';
-import { ProfileEntity } from '../entities/profile.entity';
 import { ProfileMapper } from 'src/modules/profiles/application/mappers/ProfileMapper';
 
 @Injectable()

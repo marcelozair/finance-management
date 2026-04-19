@@ -5,8 +5,8 @@ import { ProfileController } from './presentation/ProfileController';
 import { GetAllProfilesUseCase } from './application/useCases/GetAllProfilesUseCase';
 import { UpdateProfileUseCase } from './application/useCases/UpdateProfileUseCase';
 import { ProfileRepository } from './domain/interfaces/ProfileRepository';
-import { ProfileRepositoryImpl } from 'src/shared/infrastructure/database/repositories/ProfileRepositoryImpl';
-import { ProfileEntity } from 'src/shared/infrastructure/database/entities/profile.entity';
+import { ProfileRepositoryImpl } from 'src/infrastructure/database/repositories/ProfileRepositoryImpl';
+import { ProfileEntity } from 'src/infrastructure/database/entities/ProfileEntity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ProfileEntity])],

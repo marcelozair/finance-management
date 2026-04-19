@@ -18,7 +18,10 @@ export const createTransactionSchema = yup
       .typeError("Amount must be a number")
       .positive("Amount must be positive")
       .required("Amount is required"),
-    concept: yup.string().required("Concept is required"),
+    concept: yup
+      .string()
+      .required("Concept is required")
+      .max(30, "Max characters exceeded (Max 30 characters)"),
     type: yup.string().required("Type is required"),
     category: yup.string().required("Category is required"),
     destinationWalletId: yup

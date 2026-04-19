@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { ProfileEntity } from './profile.entity';
+import { ProfileEntity } from './ProfileEntity';
 
 @Entity('users')
 export class UserEntity {

@@ -1,19 +1,18 @@
-import { Button, createListCollection, Flex } from "@chakra-ui/react";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Button, createListCollection, Flex } from "@chakra-ui/react";
 
-import { AmountField } from "@shared/presentation/components/AmountField/AmountField";
+import { CurrencyConfig } from "src/core/const/currencyEnum";
+import { WalletDomain } from "src/modules/wallet/application";
+import { useWalletStore } from "../../../store/useWalletStore";
 import { Modal } from "@shared/presentation/components/Modal/Modal";
-import { SelectField } from "@shared/presentation/components/SelectField/SelectField";
+import { useProfile } from "src/shared/presentation/store/profile/useProfile";
 import { TextField } from "@shared/presentation/components/TextField/TextField";
 import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase";
-import { CurrencyEnum } from "src/core/const/currencyEnum";
-import { WalletDomain } from "src/modules/wallet/application";
+import { AmountField } from "@shared/presentation/components/AmountField/AmountField";
+import { SelectField } from "@shared/presentation/components/SelectField/SelectField";
 import type { CreateWalletDto } from "src/modules/wallet/application/dtos/CreateWalletDto";
-import type { Wallet } from "src/modules/wallet/domain/entities/Wallet";
-import { useWalletStore } from "../../../store/useWalletStore";
-import { useProfile } from "src/shared/presentation/store/profile/useProfile";
 
 enum WalletTypes {
   SAVE = "Save",
@@ -32,9 +31,9 @@ const accountTypesCatalog = createListCollection({
 });
 
 const currenciesCatalog = createListCollection({
-  items: Object.values(CurrencyEnum).map((currency) => ({
-    value: currency as string,
-    label: currency as string,
+  items: Object.values(CurrencyConfig).map((currency) => ({
+    value: currency.currency,
+    label: currency.label,
   })),
 });
 
@@ -66,7 +65,7 @@ export const CreateWalletModal = ({
 }: CreateWalletModalProps) => {
   const walletDomain = new WalletDomain();
 
-  const { addWallet } = useWalletStore();
+  const { addWallet, selectWallet, selectWalletId } = useWalletStore();
   const { profile } = useProfile();
 
   const {
@@ -80,11 +79,20 @@ export const CreateWalletModal = ({
     resolver: yupResolver(createWalletSchema),
   });
 
-  const { execute, loading } = useExecuteUseCase<
-    Wallet,
-    { profileId: number; payload: CreateWalletDto }
-  >({
-    callback: walletDomain.createWallet.bind(walletDomain),
+  const { execute, loading } = useExecuteUseCase<void, CreateWalletDto>({
+    callback: async (payload) => {
+      try {
+        if (profile) {
+          const wallet = await walletDomain.createWallet(profile.id, payload);
+          addWallet(wallet);
+          selectWallet(wallet);
+          selectWalletId(wallet._id);
+        }
+      } finally {
+        reset();
+        onClose();
+      }
+    },
   });
 
   const onSubmit = async (data: CreateWalletForm) => {
@@ -95,12 +103,7 @@ export const CreateWalletModal = ({
       color: "#4A5568",
     };
 
-    const newWallet = await execute({ profileId: profile.id, payload });
-    if (newWallet) {
-      addWallet(newWallet);
-      reset();
-      onClose();
-    }
+    execute(payload);
   };
 
   const handleClose = () => {

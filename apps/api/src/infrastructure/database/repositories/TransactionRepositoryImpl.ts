@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Amount } from 'src/modules/wallets/domain/vo/Amount';
-import { TransactionEntity } from '../entities/transaction.entity';
+import { TransactionEntity } from '../entities/TransactionEntity';
 import { Transaction } from 'src/modules/wallets/domain/entities/Transaction';
 import { TransactionEnum } from 'src/modules/wallets/domain/vo/TransactionType';
 import { TransactionRepository } from 'src/modules/wallets/domain/interfaces/TransactionRepository';

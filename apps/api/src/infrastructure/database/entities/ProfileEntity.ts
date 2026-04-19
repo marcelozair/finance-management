@@ -10,9 +10,9 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-import { CurrencyEnum } from 'src/core/constant/currency.enum';
-import { UserEntity } from './user.entity';
-import { WalletEntity } from './wallet.entity';
+import { UserEntity } from './UserEntity';
+import { WalletEntity } from './WalletEntity';
+import { CurrencyEnum } from 'src/shared/constant/CurrencyEnum';
 
 @Entity('profiles')
 export class ProfileEntity {

@@ -3,8 +3,6 @@ import { TransactionType } from '../vo/TransactionType';
 import { TransactionCategory } from '../vo/TransactionCategory';
 
 export class Transaction {
-  private readonly formattedBalance: string;
-
   constructor(
     private readonly id: number,
     private readonly walletId: number,
@@ -15,7 +13,7 @@ export class Transaction {
     private readonly destinationWalletId: number | null = null,
   ) {
     this.validateBusinessRules();
-    this.formattedBalance = String(this.amount.getValue());
+    // this.formattedBalance = String(this.amount.getValue());
     // this.formattedBalance = new Intl.NumberFormat(this.locale, {
     //   style: 'currency',
     //   currency: this.currency.getValue(),
@@ -81,9 +79,5 @@ export class Transaction {
 
   get _type() {
     return this.type.getValue();
-  }
-
-  get _formattedBalance() {
-    return this.formattedBalance;
   }
 }

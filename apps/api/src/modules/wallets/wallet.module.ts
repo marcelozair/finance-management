@@ -8,12 +8,12 @@ import { GetWalletUseCase } from './application/useCases/GetWalletsUseCase';
 import { CreateWalletUseCase } from './application/useCases/CreateWalletUseCase';
 import { TransactionRepository } from './domain/interfaces/TransactionRepository';
 import { GetTransactionsUseCase } from './application/useCases/GetTransactionsUseCase';
-import { WalletEntity } from 'src/shared/infrastructure/database/entities/wallet.entity';
-import { ProfileEntity } from 'src/shared/infrastructure/database/entities/profile.entity';
+import { WalletEntity } from 'src/infrastructure/database/entities/WalletEntity';
+import { ProfileEntity } from 'src/infrastructure/database/entities/ProfileEntity';
 import { CreateTransactionUseCase } from './application/useCases/CreateTransactionUseCase';
-import { TransactionEntity } from 'src/shared/infrastructure/database/entities/transaction.entity';
-import { WalletRepositoryImpl } from 'src/shared/infrastructure/database/repositories/WalletRepositoryImpl';
-import { TransactionRepositoryImpl } from 'src/shared/infrastructure/database/repositories/TransactionRepositoryImpl';
+import { TransactionEntity } from 'src/infrastructure/database/entities/TransactionEntity';
+import { WalletRepositoryImpl } from 'src/infrastructure/database/repositories/WalletRepositoryImpl';
+import { TransactionRepositoryImpl } from 'src/infrastructure/database/repositories/TransactionRepositoryImpl';
 
 @Module({
   controllers: [WalletController],

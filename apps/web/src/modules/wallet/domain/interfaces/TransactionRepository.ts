@@ -3,5 +3,5 @@ import type { CreateTransactionDto } from "../../application/dtos/CreateTransact
 
 export interface TransactionRepository {
   getAll(walletId: number): Promise<Transaction[]>;
-  create(walletId: number, payload: CreateTransactionDto): Promise<void>;
+  create(walletId: number, payload: CreateTransactionDto): Promise<Transaction>;
 }

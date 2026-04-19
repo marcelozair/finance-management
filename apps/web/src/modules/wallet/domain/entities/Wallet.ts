@@ -1,4 +1,4 @@
-import type { Amount } from "../vo/Amount";
+import { Amount } from "../vo/Amount";
 import type { Currency } from "../vo/Currency";
 
 export class Wallet {
@@ -6,8 +6,7 @@ export class Wallet {
     private readonly id: number,
     private readonly name: string,
     private readonly type: string,
-    private readonly balance: Amount,
-    private readonly formattedBalance: string,
+    private balance: Amount,
     private readonly currency: Currency,
     private readonly color: string,
   ) {}
@@ -36,7 +35,14 @@ export class Wallet {
     return this.currency;
   }
 
-  get _formattedBalance() {
-    return this.formattedBalance;
+  cloneWithBalance(balance: Amount) {
+    return new Wallet(
+      this._id,
+      this._name,
+      this._type,
+      balance,
+      this._currency,
+      this.color,
+    );
   }
 }

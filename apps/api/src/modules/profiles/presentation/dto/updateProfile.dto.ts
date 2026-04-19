@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator';
-import { CurrencyEnum } from 'src/core/constant/currency.enum';
+import { CurrencyEnum } from 'src/shared/constant/CurrencyEnum';
 
 export class UpdateProfileDTO {
   @IsOptional()

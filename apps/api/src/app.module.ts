@@ -7,8 +7,8 @@ import { I18nModule, AcceptLanguageResolver } from 'nestjs-i18n';
 import { AuthModule } from './modules/auth/auth.module';
 import { WalletModule } from './modules/wallets/wallet.module';
 import { ProfilesModule } from './modules/profiles/profiles.module';
-import { DatabaseModule } from './shared/infrastructure/database/database.module';
-import { SharedSecurityModule } from './shared/infrastructure/security/security.module';
+import { DatabaseModule } from './infrastructure/database/database.module';
+import { SharedSecurityModule } from './infrastructure/security/security.module';
 
 @Module({
   imports: [

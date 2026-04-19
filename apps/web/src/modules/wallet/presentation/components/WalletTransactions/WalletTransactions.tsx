@@ -78,7 +78,7 @@ export const WalletTransactions = () => {
       {transactions.length > 0 && (
         <Flex flexDirection="column" mt={5}>
           {transactions.map((transaction) => (
-            <TransactionCard transaction={transaction} />
+            <TransactionCard key={transaction._id} transaction={transaction} />
           ))}
         </Flex>
       )}

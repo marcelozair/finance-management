@@ -1,9 +1,11 @@
 import { Amount } from '../../domain/vo/Amount';
 import { Currency } from '../../domain/vo/Currency';
 import { Wallet } from '../../domain/entities/Wallet';
+import { WalletMapper } from '../mappers/WalletMapper';
 import { WalletName } from '../../domain/vo/WalletName';
 import { WalletType } from '../../domain/vo/WalletType';
 import { WalletColor } from '../../domain/vo/WalletColor';
+import { WalletDto } from '../../presentation/dtos/WalletDto';
 import { CreateWalletDTO } from '../../presentation/dtos/CreateWalletDto';
 import { WalletRepository } from '../../domain/interfaces/WalletRepository';
 import { TransactionRepository } from '../../domain/interfaces/TransactionRepository';
@@ -20,7 +22,10 @@ export class CreateWalletUseCase {
    * @param {CreateWalletDTO} wallet user credentials
    * @returns {Promise<CreateWalletDTO>} user payload and authorization
    */
-  async execute(profileId: number, wallet: CreateWalletDTO): Promise<Wallet> {
+  async execute(
+    profileId: number,
+    wallet: CreateWalletDTO,
+  ): Promise<WalletDto> {
     const newWallet = Wallet.forCreate(
       new WalletName(wallet.name),
       new WalletType(wallet.walletType),
@@ -49,6 +54,6 @@ export class CreateWalletUseCase {
       new WalletColor(createdWallet._color),
     );
 
-    return resultWallet;
+    return WalletMapper.toDTO(resultWallet);
   }
 }

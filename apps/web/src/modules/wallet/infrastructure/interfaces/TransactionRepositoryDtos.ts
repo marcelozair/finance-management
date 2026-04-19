@@ -1,10 +1,9 @@
 export interface TransactionDTO {
   id: number;
-  walletId: number;
-  amount: number;
-  formattedAmount: string;
-  concept: string;
   type: string;
+  amount: number;
+  concept: string;
+  walletId: number;
   category: string;
   destinationWalletId: number | null;
 }

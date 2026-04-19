@@ -10,9 +10,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { ResHandler } from 'src/core/utils/response-handler';
-import { UserId } from 'src/core/decorators/UserDecorator';
-import { AuthGuard } from 'src/shared/infrastructure/security/AuthGuard';
+import { ResHandler } from 'src/shared/utils/response-handler';
+import { UserId } from 'src/shared/decorators/UserDecorator';
+import { AuthGuard } from 'src/infrastructure/security/AuthGuard';
 import { GetAllProfilesUseCase } from '../application/useCases/GetAllProfilesUseCase';
 import { UpdateProfileUseCase } from '../application/useCases/UpdateProfileUseCase';
 import { UpdateProfileDTO } from './dto/updateProfile.dto';

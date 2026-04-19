@@ -3,9 +3,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Email } from 'src/modules/users/domain/vo';
-import { UserEntity } from '../entities/user.entity';
+import { UserEntity } from '../entities/UserEntity';
 import { User } from 'src/modules/users/domain/entities/User';
-import { EncryptHandler } from 'src/core/utils/EncryptHandler';
+import { EncryptHandler } from 'src/shared/utils/EncryptHandler';
 import { UserMapper } from 'src/modules/users/application/mappers/user.mapper';
 import { UserRepository } from 'src/modules/users/domain/interfaces/UserRepository';
 import { ConfigService } from '@nestjs/config';

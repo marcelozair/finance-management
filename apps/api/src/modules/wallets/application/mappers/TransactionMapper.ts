@@ -2,7 +2,7 @@ import { Amount } from '../../domain/vo/Amount';
 import { Transaction } from '../../domain/entities/Transaction';
 import { TransactionType } from '../../domain/vo/TransactionType';
 import { TransactionCategory } from '../../domain/vo/TransactionCategory';
-import { TransactionEntity } from 'src/shared/infrastructure/database/entities/transaction.entity';
+import { TransactionEntity } from 'src/infrastructure/database/entities/TransactionEntity';
 import { TransactionDTO } from '../../presentation/dtos/TransactionDto';
 
 export class TransactionMapper {
@@ -26,7 +26,6 @@ export class TransactionMapper {
       concept: entity._concept,
       walletId: entity._walletId,
       category: entity._category,
-      formattedAmount: entity._formattedBalance,
       destinationWalletId: entity._destinationWalletId,
     };
   }

@@ -21,6 +21,7 @@ import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase"
 import { AmountField } from "@shared/presentation/components/AmountField/AmountField";
 import { SelectField } from "@shared/presentation/components/SelectField/SelectField";
 import type { CreateTransactionDto } from "src/modules/wallet/application/dtos/CreateTransactionDto";
+import { useTransactionStore } from "../../../store/useTransactionStore";
 
 interface CreateTransactionModalProps {
   onClose: () => void;
@@ -39,7 +40,8 @@ export const CreateTransactionModal = ({
     }),
   );
 
-  const { wallets, selectedWalletId } = useWalletStore();
+  const { addTransaction } = useTransactionStore();
+  const { wallets, selectedWalletId, updateWallets } = useWalletStore();
 
   const {
     register,
@@ -57,7 +59,13 @@ export const CreateTransactionModal = ({
     callback: async (transaction: CreateTransactionDto) => {
       try {
         if (selectedWalletId) {
-          await domain.createTransaction(selectedWalletId, transaction);
+          const createdTransaction = await domain.createTransaction(
+            selectedWalletId,
+            transaction,
+          );
+
+          addTransaction(createdTransaction);
+          updateWallets(createdTransaction);
         }
       } finally {
         handleClose();

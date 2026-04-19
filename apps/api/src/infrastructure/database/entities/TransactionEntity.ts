@@ -9,7 +9,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-import { WalletEntity } from './wallet.entity';
+import { WalletEntity } from './WalletEntity';
 import { TransactionEnum } from 'src/modules/wallets/domain/vo/TransactionType';
 
 @Entity('transactions')

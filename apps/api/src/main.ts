@@ -5,7 +5,7 @@ import { ValidationError } from 'class-validator';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 
 import { AppModule } from './app.module';
-import { ResponseInterceptor } from './core/middleware/responseInterceptor.middleware';
+import { ResponseInterceptor } from './shared/middleware/ResponseInterceptorMiddleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

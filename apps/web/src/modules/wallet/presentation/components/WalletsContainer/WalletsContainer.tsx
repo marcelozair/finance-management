@@ -18,8 +18,12 @@ export const WalletsContainer = () => {
 
   const { profile } = useProfile();
   const { setTransactions } = useTransactionStore();
-  const { wallets, setWallets, selectWallet, selectedWalletId } =
-    useWalletStore();
+  const {
+    wallets,
+    setWallets,
+    selectWalletId: selectWallet,
+    selectedWalletId,
+  } = useWalletStore();
   const [createModal, setCreateModal] = useState(false);
 
   const { execute, loading } = useExecuteUseCase<void, number>({

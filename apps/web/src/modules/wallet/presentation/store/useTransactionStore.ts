@@ -5,6 +5,7 @@ import { transactionsAtom, transactionStore } from "./transactionStore";
 
 interface UseTransactionStore {
   transactions: Transaction[];
+  addTransaction: (transaction: Transaction) => void;
   setTransactions: (transactions: Transaction[]) => void;
 }
 
@@ -13,12 +14,17 @@ export const useTransactionStore = (): UseTransactionStore => {
     store: transactionStore,
   });
 
+  const addTransaction = (transaction: Transaction) => {
+    setTransactions((prev) => [...prev, transaction]);
+  };
+
   // const addWallet = (wallet: Wallet) => {
   //   setWalletsAtom((prev) => [...prev, wallet]);
   // };
 
   return {
     transactions,
+    addTransaction,
     setTransactions: (transaction: Transaction[]) =>
       setTransactions([...transaction]),
     // setWallets,

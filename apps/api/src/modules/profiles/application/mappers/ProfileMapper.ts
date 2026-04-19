@@ -1,6 +1,6 @@
 import { Profile } from '../../domain/entities/Profile';
 import { Currency } from 'src/modules/wallets/domain/vo/Currency';
-import { ProfileEntity } from 'src/shared/infrastructure/database/entities/profile.entity';
+import { ProfileEntity } from 'src/infrastructure/database/entities/ProfileEntity';
 import { ProfileDto } from '../../presentation/dto/ProfileDto';
 
 export class ProfileMapper {

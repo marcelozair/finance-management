@@ -10,7 +10,6 @@ export class TransactionMapper {
       transaction.id,
       transaction.walletId,
       new Amount(transaction.amount),
-      transaction.formattedAmount,
       transaction.concept,
       new TransactionType(transaction.type),
       new TransactionCategory(transaction.category),

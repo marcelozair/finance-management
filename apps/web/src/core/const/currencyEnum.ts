@@ -1,34 +1,44 @@
-export enum CurrencyEnum {
-  USD = "USD", // US Dollar
-  EUR = "EUR", // Euro
-  GBP = "GBP", // British Pound
-  PEN = "PEN", // Peruvian Sol
-  MXN = "MXN", // Mexican Peso
-  JPY = "JPY", // Japanese Yen
-  // CNY = 'CNY', // Chinese Yuan
-  // AUD = 'AUD', // Australian Dollar
-  // CAD = 'CAD', // Canadian Dollar
-  // CHF = 'CHF', // Swiss Franc
-  // SEK = 'SEK', // Swedish Krona
-  // NZD = 'NZD', // New Zealand Dollar
-  // BRL = 'BRL', // Brazilian Real
-  // INR = 'INR', // Indian Rupee
-  // RUB = 'RUB', // Russian Ruble
-  // ZAR = 'ZAR', // South African Rand
-  // SGD = 'SGD', // Singapore Dollar
-  // HKD = 'HKD', // Hong Kong Dollar
-  // KRW = 'KRW', // South Korean Won
-  // CLP = 'CLP', // Chilean Peso
-  // ARS = 'ARS', // Argentine Peso
-  // COP = 'COP', // Colombian Peso
-  // TRY = 'TRY', // Turkish Lira
-  // AED = 'AED', // UAE Dirham
-  // PLN = 'PLN', // Polish Złoty
-  // THB = 'THB', // Thai Baht
-  // VND = 'VND', // Vietnamese Dong
-  // NGN = 'NGN', // Nigerian Naira
-  // EGP = 'EGP', // Egyptian Pound
-  // TWD = 'TWD', // New Taiwan Dollar
-  // CZK = 'CZK', // Czech Koruna
-  // HUF = 'HUF', // Hungarian Forint
+interface CurrencyConfigType {
+  [key: string]: {
+    label: string;
+    locale: string;
+    currency: string;
+  };
 }
+
+export const CurrencyConfig: CurrencyConfigType = {
+  USD: {
+    label: "US Dollar",
+    locale: "en-US",
+    currency: "USD",
+  },
+  EUR: {
+    label: "Euro",
+    locale: "de-DE", // or "fr-FR" depending on your preference
+    currency: "EUR",
+  },
+  GBP: {
+    label: "British Pound",
+    locale: "en-GB",
+    currency: "GBP",
+  },
+  PEN: {
+    label: "Peruvian Sol",
+    locale: "es-PE",
+    currency: "PEN",
+  },
+  MXN: {
+    label: "Mexican Peso",
+    locale: "es-MX",
+    currency: "MXN",
+  },
+  JPY: {
+    label: "Japanese Yen",
+    locale: "ja-JP",
+    currency: "JPY",
+  },
+} as const;
+
+export const AvailableCurrencies = Object.keys(CurrencyConfig);
+export type CurrencyKey = keyof typeof CurrencyConfig;
+export type Currency = (typeof CurrencyConfig)[CurrencyKey];

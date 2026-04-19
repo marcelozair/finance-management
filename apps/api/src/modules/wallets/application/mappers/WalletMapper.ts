@@ -5,7 +5,7 @@ import { WalletColor } from '../../domain/vo/WalletColor';
 import { WalletName } from '../../domain/vo/WalletName';
 import { WalletType, WalletTypes } from '../../domain/vo/WalletType';
 import { WalletDto } from '../../presentation/dtos/WalletDto';
-import { WalletEntity } from 'src/shared/infrastructure/database/entities/wallet.entity';
+import { WalletEntity } from 'src/infrastructure/database/entities/WalletEntity';
 
 export class WalletMapper {
   static toDTO(wallet: Wallet): WalletDto {
@@ -16,7 +16,6 @@ export class WalletMapper {
       type: wallet._type,
       currency: wallet._currency,
       balance: wallet._balance,
-      formattedBalance: wallet._formattedBalance,
     };
   }
 

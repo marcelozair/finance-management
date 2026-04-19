@@ -7,6 +7,7 @@ import { GetTransactionUseCase } from "./useCases/GetTransactionsUseCase";
 import { CreateTransactionUseCase } from "./useCases/CreateTransactionUseCase";
 import { WalletRepositoryImpl } from "../infrastructure/repositories/WalletRepositoryImpl";
 import { TransactionRepositoryImpl } from "../infrastructure/repositories/TransactionRepositoryImpl";
+import type { Transaction } from "../domain/entities/Transaction";
 
 export class WalletDomain {
   private readonly getWalletUseCase: GetWalletUseCase;
@@ -34,7 +35,7 @@ export class WalletDomain {
   public createTransaction(
     walletId: number,
     transaction: CreateTransactionDto,
-  ): Promise<void> {
+  ): Promise<Transaction> {
     return this.createTransactionUseCase.execute(walletId, transaction);
   }
 
@@ -42,10 +43,10 @@ export class WalletDomain {
     return this.getWalletUseCase.execute(profileId);
   }
 
-  public createWallet(params: {
-    profileId: number;
-    payload: CreateWalletDto;
-  }): Promise<Wallet> {
-    return this.createWalletUseCase.execute(params.profileId, params.payload);
+  public createWallet(
+    profileId: number,
+    payload: CreateWalletDto,
+  ): Promise<Wallet> {
+    return this.createWalletUseCase.execute(profileId, payload);
   }
 }

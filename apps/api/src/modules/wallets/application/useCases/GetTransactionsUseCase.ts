@@ -13,7 +13,6 @@ export class GetTransactionsUseCase {
   async execute(walletId: number): Promise<TransactionDTO[]> {
     const transactions =
       await this.transactionRepository.findByWallet(walletId);
-
     return transactions.map((trans) => TransactionMapper.toDto(trans));
   }
 }

@@ -10,10 +10,10 @@ import {
   OneToMany,
 } from 'typeorm';
 
-import { ProfileEntity } from './profile.entity';
-import { CurrencyEnum } from 'src/core/constant/currency.enum';
+import { ProfileEntity } from './ProfileEntity';
+import { TransactionEntity } from './TransactionEntity';
+import { CurrencyEnum } from 'src/shared/constant/CurrencyEnum';
 import { WalletTypes } from 'src/modules/wallets/domain/vo/WalletType';
-import { TransactionEntity } from './transaction.entity';
 
 @Entity('wallets')
 export class WalletEntity {

@@ -2,7 +2,7 @@ import { I18nService } from 'nestjs-i18n';
 import { BadRequestException, Logger } from '@nestjs/common';
 
 import { SignUpDTO } from '../../presentation/dto/signup.dto';
-import { EncryptHandler } from 'src/core/utils/EncryptHandler';
+import { EncryptHandler } from 'src/shared/utils/EncryptHandler';
 import { AuthVerifyService } from '../../domain/services/AuthVerifyService';
 import { SignUpResponseDTO } from '../../presentation/dto/signupResponse.dto';
 import { UserMapper } from 'src/modules/users/application/mappers/user.mapper';

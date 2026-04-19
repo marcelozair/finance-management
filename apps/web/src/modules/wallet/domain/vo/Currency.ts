@@ -1,5 +1,5 @@
-import { CurrencyEnum } from "src/core/const/currencyEnum";
 import { ValueObject } from "src/core/domain/ValueObject";
+import { AvailableCurrencies } from "src/core/const/currencyEnum";
 import { InvalidCurrencyError } from "../exceptions/InvalidCurrencyError";
 
 export class Currency extends ValueObject<string> {
@@ -12,9 +12,7 @@ export class Currency extends ValueObject<string> {
   }
 
   private static isValid(value: string): boolean {
-    const currencies = Object.values(CurrencyEnum);
-    if (!currencies.includes(value as CurrencyEnum)) return false;
-
+    if (!AvailableCurrencies.includes(value)) return false;
     return true;
   }
 }

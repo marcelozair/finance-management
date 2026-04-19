@@ -7,7 +7,7 @@ class MissingProfileInRequest extends Error {
 }
 
 export const Profile = createParamDecorator(
-  (data: string, ctx: ExecutionContext) => {
+  (_: string, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest<Request>();
     if (!request['profileId']) throw new MissingProfileInRequest();
     return request['profileId'] as number;

@@ -54,7 +54,12 @@ export class TransactionRepositoryImpl
   async create(
     walletId: number,
     transaction: CreateTransactionDto,
-  ): Promise<void> {
-    await this.post(`${walletId}/transactions`, transaction);
+  ): Promise<Transaction> {
+    const response = await this.post<ApiRes<TransactionDTO>>(
+      `${walletId}/transactions`,
+      transaction,
+    );
+
+    return TransactionMapper.toDomain(response.data);
   }
 }

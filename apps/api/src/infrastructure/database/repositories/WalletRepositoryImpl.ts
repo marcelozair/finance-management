@@ -2,7 +2,7 @@ import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { WalletEntity } from '../entities/wallet.entity';
+import { WalletEntity } from '../entities/WalletEntity';
 import { Wallet } from 'src/modules/wallets/domain/entities/Wallet';
 import { WalletMapper } from 'src/modules/wallets/application/mappers/WalletMapper';
 import { WalletRepository } from 'src/modules/wallets/domain/interfaces/WalletRepository';

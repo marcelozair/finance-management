@@ -48,9 +48,7 @@ export class WalletRepositoryImpl
 
   async getAll(profileId: number): Promise<Wallet[]> {
     this.client.defaults.headers.common["profile-id"] = profileId;
-
     const response = await this.get<ApiRes<WalletDto[]>>("");
-
     return response.data.map((wallet) => WalletMapper.toDomain(wallet));
   }
 

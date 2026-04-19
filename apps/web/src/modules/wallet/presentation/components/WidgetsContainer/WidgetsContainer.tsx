@@ -1,5 +1,5 @@
 import { Grid, GridItem } from "@chakra-ui/react";
-import { ChartsContainer } from "../ChartsContainer/ChartsContainer";
+// import { ChartsContainer } from "../ChartsContainer/ChartsContainer";
 import { WalletTransactions } from "../WalletTransactions/WalletTransactions";
 
 export const WidgetsContainer = () => {
@@ -12,9 +12,7 @@ export const WidgetsContainer = () => {
       <GridItem colSpan={{ lg: 6 }}>
         <WalletTransactions />
       </GridItem>
-      <GridItem colSpan={{ lg: 2 }}>
-        <ChartsContainer />
-      </GridItem>
+      <GridItem colSpan={{ lg: 2 }}>{/* <ChartsContainer /> */}</GridItem>
     </Grid>
   );
 };

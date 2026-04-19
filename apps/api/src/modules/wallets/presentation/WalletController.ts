@@ -11,10 +11,10 @@ import {
 } from '@nestjs/common';
 
 import { CreateWalletDTO } from './dtos/CreateWalletDto';
-import { ResHandler } from 'src/core/utils/response-handler';
-import { Profile } from 'src/core/decorators/ProfileDecorator';
+import { ResHandler } from 'src/shared/utils/response-handler';
+import { Profile } from 'src/shared/decorators/ProfileDecorator';
 import { CreateTransactionDTO } from './dtos/CreateTransactionDto';
-import { AuthGuard } from 'src/shared/infrastructure/security/AuthGuard';
+import { AuthGuard } from 'src/infrastructure/security/AuthGuard';
 import { GetWalletUseCase } from '../application/useCases/GetWalletsUseCase';
 import { CreateWalletUseCase } from '../application/useCases/CreateWalletUseCase';
 import { GetTransactionsUseCase } from '../application/useCases/GetTransactionsUseCase';
