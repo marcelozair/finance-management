@@ -3,6 +3,11 @@ import { Amount } from '../../../wallets/domain/vo/Amount';
 import { TransactionType } from '../vo/TransactionType';
 import { Category } from './Category';
 import { SubCategory } from './SubCategory';
+import { InvalidTransferTransaction } from '../exceptions/TransactionException';
+
+export const TransferTransaction = new TransactionType('transfer');
+export const IncomeTransaction = new TransactionType('income');
+export const ExpenseTransaction = new TransactionType('expense');
 
 export class Transaction {
   constructor(
@@ -42,6 +47,24 @@ export class Transaction {
       subCategoryId,
       destinationWalletId,
     );
+  }
+
+  createDestinationTransaction() {
+    if (this._type.equals(TransferTransaction) && this._destinationWalletId) {
+      return new Transaction(
+        0,
+        this._destinationWalletId,
+        this._amount,
+        this._concept,
+        this._type,
+        this._date,
+        this._categoryId,
+        this._subCategoryId,
+        this._destinationWalletId,
+      );
+    }
+
+    throw new InvalidTransferTransaction();
   }
 
   addCategories(category: Category, subCategory: SubCategory) {

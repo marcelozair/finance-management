@@ -1,5 +1,10 @@
-import { TransactionType } from 'src/modules/transactions/domain/vo/TransactionType';
-import { Transaction } from '../../../transactions/domain/entities/Transaction';
+import {
+  Transaction,
+  ExpenseTransaction,
+  IncomeTransaction,
+  TransferTransaction,
+} from '../../../transactions/domain/entities/Transaction';
+
 import { Amount } from '../vo/Amount';
 import { WalletTypes } from '../vo/WalletType';
 
@@ -36,15 +41,15 @@ export class WalletBalanceService {
     transactions: Transaction[],
   ): Amount {
     return transactions.reduce((balance, transaction) => {
-      if (transaction._type.equals(new TransactionType('income'))) {
+      if (transaction._type.equals(IncomeTransaction)) {
         return balance.add(transaction._amount);
       }
 
-      if (transaction._type.equals(new TransactionType('expense'))) {
+      if (transaction._type.equals(ExpenseTransaction)) {
         return balance.subtract(transaction._amount);
       }
 
-      if (transaction._type.equals(new TransactionType('transfer'))) {
+      if (transaction._type.equals(TransferTransaction)) {
         // Business Rule: Credit wallets do not support transfers
         if (walletType === WalletTypes.CREDIT) {
           throw new Error(
@@ -52,12 +57,16 @@ export class WalletBalanceService {
           );
         }
 
-        // Debit the source wallet
-        if (transaction._walletId === walletId) {
+        // When walletId is different to the destination
+        // it means this is the source account
+        if (
+          transaction._walletId === walletId &&
+          transaction._destinationWalletId != walletId
+        ) {
           return balance.subtract(transaction._amount);
         }
 
-        // Credit the destination wallet
+        // Destination account
         if (transaction._destinationWalletId === walletId) {
           return balance.add(transaction._amount);
         }

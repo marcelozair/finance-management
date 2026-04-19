@@ -39,6 +39,12 @@ export class CreateTransactionUseCase {
       payload.destinationWalletId,
     );
 
+    if (newTrasaction._type.equals(new TransactionType('transfer'))) {
+      await this.transactionRepository.save(
+        newTrasaction.createDestinationTransaction(),
+      );
+    }
+
     const transaction = await this.transactionRepository.save(newTrasaction);
 
     const category = await this.categoryRepository.findById(payload.categoryId);
