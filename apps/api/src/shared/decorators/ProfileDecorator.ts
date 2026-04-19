@@ -1,8 +1,13 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import {
+  HttpException,
+  ExecutionContext,
+  createParamDecorator,
+  HttpStatus,
+} from '@nestjs/common';
 
-class MissingProfileInRequest extends Error {
+class MissingProfileInRequest extends HttpException {
   constructor() {
-    super('Invalid request, profile-id is required');
+    super('Invalid request, profile is required', HttpStatus.CONFLICT);
   }
 }
 

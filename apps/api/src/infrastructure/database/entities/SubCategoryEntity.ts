@@ -5,13 +5,15 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
   OneToMany,
 } from 'typeorm';
-import { SubCategoryEntity } from './SubCategoryEntity';
+import { CategoryEntity } from './CategoryEntity';
 import { TransactionEntity } from './TransactionEntity';
 
-@Entity({ schema: 'finance', name: 'cat_categories' })
-export class CategoryEntity {
+@Entity({ schema: 'finance', name: 'cat_sub_categories' })
+export class SubCategoryEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,15 +21,16 @@ export class CategoryEntity {
   name: string;
 
   @Column()
-  color: string;
-
-  @Column()
   iconName: string;
 
-  @OneToMany(() => SubCategoryEntity, (subCategory) => subCategory.category)
-  subCategories: SubCategoryEntity[];
+  @Column()
+  categoryId: number;
 
-  @OneToMany(() => TransactionEntity, (transaction) => transaction.category)
+  @ManyToOne(() => CategoryEntity, (category) => category.subCategories)
+  @JoinColumn({ name: 'categoryId' })
+  category: CategoryEntity;
+
+  @OneToMany(() => TransactionEntity, (transaction) => transaction.subCategory)
   transactions: TransactionEntity[];
 
   @CreateDateColumn({ name: 'created_at' })

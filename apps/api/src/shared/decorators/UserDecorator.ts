@@ -1,8 +1,16 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import {
+  createParamDecorator,
+  ExecutionContext,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 
-class MissingUserIdInRequest extends Error {
+class MissingUserIdInRequest extends HttpException {
   constructor() {
-    super('Invalid request, userId is required for this operation');
+    super(
+      'Invalid request, userId is required for this operation',
+      HttpStatus.CONFLICT,
+    );
   }
 }
 

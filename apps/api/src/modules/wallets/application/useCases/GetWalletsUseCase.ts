@@ -1,6 +1,5 @@
 import { I18nService } from 'nestjs-i18n';
 
-import { Amount } from '../../domain/vo/Amount';
 import { Currency } from '../../domain/vo/Currency';
 import { Wallet } from '../../domain/entities/Wallet';
 import { WalletMapper } from '../mappers/WalletMapper';
@@ -10,7 +9,7 @@ import { WalletColor } from '../../domain/vo/WalletColor';
 import { WalletDto } from '../../presentation/dtos/WalletDto';
 import { WalletRepository } from '../../domain/interfaces/WalletRepository';
 import { WalletBalanceService } from '../../domain/services/WalletBalanceService';
-import { TransactionRepository } from '../../domain/interfaces/TransactionRepository';
+import { TransactionRepository } from '../../../transactions/domain/interfaces/TransactionRepository';
 
 export class GetWalletUseCase {
   constructor(
@@ -45,7 +44,7 @@ export class GetWalletUseCase {
             new WalletName(wallet._name),
             new WalletType(wallet._type),
             new Currency(wallet._currency),
-            new Amount(balance),
+            balance,
             new WalletColor(wallet._color),
           ),
         );

@@ -19,11 +19,12 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
+
     const token = this.extractTokenFromHeader(request);
     const profileId = this.extracatProfileIdFromHeaders(request);
 
-    if (!token) {
-      throw new UnauthorizedException('Token not found');
+    if (!profileId || !token) {
+      throw new UnauthorizedException();
     }
 
     try {
@@ -32,31 +33,28 @@ export class AuthGuard implements CanActivate {
       });
 
       if (!payload.userId) {
-        throw new UnauthorizedException('Invalid token payload');
+        throw new UnauthorizedException();
       }
 
       request['userId'] = payload.userId;
       request['profileId'] = profileId;
     } catch {
-      throw new UnauthorizedException('Invalid or expired token');
+      throw new UnauthorizedException();
     }
 
     return true;
   }
 
-  private extractTokenFromHeader(request: Request): string | undefined {
+  private extractTokenFromHeader(request: Request): string | null {
     const authorization = request.headers['authorization'];
-    if (!authorization) return undefined;
-
+    if (!authorization) return null;
     const [type, token] = authorization.split(' ');
-    return type === 'Bearer' ? token : undefined;
+    return type === 'Bearer' ? token : null;
   }
 
   private extracatProfileIdFromHeaders(request: Request): number | null {
     const profileId = request.headers['profile-id'];
-
     if (!profileId) return null;
-
     return Number(profileId);
   }
 }

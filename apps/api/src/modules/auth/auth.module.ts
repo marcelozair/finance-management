@@ -7,7 +7,7 @@ import { JwtService as JwtServiceImpl } from '@nestjs/jwt';
 import { JwtService } from './domain/interfaces/JwtService';
 import { TOTPService } from './domain/interfaces/TOTPService';
 import { EncryptHandler } from 'src/shared/utils/EncryptHandler';
-import { AuthController } from './presentation/auth.controller';
+import { AuthController } from './presentation/AuthController';
 import { SignUpUseCase } from './application/useCases/signUp.useCase';
 import { TOTPServiceImpl } from './application/services/TOTPServiceImpl';
 import { VerifyCodeUseCase } from './application/useCases/verifyCode';

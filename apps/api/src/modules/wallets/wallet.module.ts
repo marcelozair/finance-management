@@ -6,28 +6,23 @@ import { WalletController } from './presentation/WalletController';
 import { WalletRepository } from './domain/interfaces/WalletRepository';
 import { GetWalletUseCase } from './application/useCases/GetWalletsUseCase';
 import { CreateWalletUseCase } from './application/useCases/CreateWalletUseCase';
-import { TransactionRepository } from './domain/interfaces/TransactionRepository';
-import { GetTransactionsUseCase } from './application/useCases/GetTransactionsUseCase';
 import { WalletEntity } from 'src/infrastructure/database/entities/WalletEntity';
 import { ProfileEntity } from 'src/infrastructure/database/entities/ProfileEntity';
-import { CreateTransactionUseCase } from './application/useCases/CreateTransactionUseCase';
-import { TransactionEntity } from 'src/infrastructure/database/entities/TransactionEntity';
 import { WalletRepositoryImpl } from 'src/infrastructure/database/repositories/WalletRepositoryImpl';
-import { TransactionRepositoryImpl } from 'src/infrastructure/database/repositories/TransactionRepositoryImpl';
+
+import { TransactionModule } from '../transactions/transaction.module';
+import { TransactionRepository } from '../transactions/domain/interfaces/TransactionRepository';
 
 @Module({
   controllers: [WalletController],
   imports: [
-    TypeOrmModule.forFeature([ProfileEntity, WalletEntity, TransactionEntity]),
+    TypeOrmModule.forFeature([ProfileEntity, WalletEntity]),
+    TransactionModule, // To get TransactionRepository
   ],
   providers: [
     {
       provide: WalletRepository,
       useClass: WalletRepositoryImpl,
-    },
-    {
-      provide: TransactionRepository,
-      useClass: TransactionRepositoryImpl,
     },
     {
       provide: GetWalletUseCase,
@@ -49,20 +44,6 @@ import { TransactionRepositoryImpl } from 'src/infrastructure/database/repositor
         return new CreateWalletUseCase(walletRepo, transactionRepo);
       },
       inject: [WalletRepository, TransactionRepository],
-    },
-    {
-      provide: CreateTransactionUseCase,
-      useFactory: (transactionRepo: TransactionRepository) => {
-        return new CreateTransactionUseCase(transactionRepo);
-      },
-      inject: [TransactionRepository],
-    },
-    {
-      provide: GetTransactionsUseCase,
-      useFactory: (transactionRepo: TransactionRepository) => {
-        return new GetTransactionsUseCase(transactionRepo);
-      },
-      inject: [TransactionRepository],
     },
   ],
 })

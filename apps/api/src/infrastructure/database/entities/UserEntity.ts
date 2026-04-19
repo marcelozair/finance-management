@@ -10,7 +10,7 @@ import {
 
 import { ProfileEntity } from './ProfileEntity';
 
-@Entity('users')
+@Entity({ schema: 'core', name: 'mad_users' })
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;

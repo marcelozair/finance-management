@@ -1,4 +1,4 @@
-import { Amount } from '../vo/Amount';
+import { Amount } from '../../../wallets/domain/vo/Amount';
 import { Transaction } from '../entities/Transaction';
 
 export abstract class TransactionRepository {

@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   CallHandler,
-  ExecutionContext,
   Injectable,
   NestInterceptor,
+  ExecutionContext,
 } from '@nestjs/common';
 import { Observable, map } from 'rxjs';
 import { Response } from 'express';

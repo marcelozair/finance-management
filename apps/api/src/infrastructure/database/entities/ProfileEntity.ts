@@ -14,7 +14,7 @@ import { UserEntity } from './UserEntity';
 import { WalletEntity } from './WalletEntity';
 import { CurrencyEnum } from 'src/shared/constant/CurrencyEnum';
 
-@Entity('profiles')
+@Entity({ schema: 'core', name: 'mad_profiles' })
 export class ProfileEntity {
   @PrimaryGeneratedColumn()
   id: number;

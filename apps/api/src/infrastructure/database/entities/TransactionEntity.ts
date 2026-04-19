@@ -10,9 +10,11 @@ import {
 } from 'typeorm';
 
 import { WalletEntity } from './WalletEntity';
-import { TransactionEnum } from 'src/modules/wallets/domain/vo/TransactionType';
+import { TransactionEnum } from 'src/modules/transactions/domain/vo/TransactionType';
+import { CategoryEntity } from './CategoryEntity';
+import { SubCategoryEntity } from './SubCategoryEntity';
 
-@Entity('transactions')
+@Entity({ schema: 'finance', name: 'mad_transactions' })
 export class TransactionEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -29,8 +31,19 @@ export class TransactionEntity {
   })
   type: string;
 
-  @Column()
-  category: string;
+  @Column({ nullable: true })
+  categoryId: number;
+
+  @ManyToOne(() => CategoryEntity, (category) => category.transactions)
+  @JoinColumn({ name: 'categoryId' })
+  category: CategoryEntity;
+
+  @Column({ nullable: true })
+  subCategoryId: number;
+
+  @ManyToOne(() => SubCategoryEntity, (subCategory) => subCategory.transactions)
+  @JoinColumn({ name: 'subCategoryId' })
+  subCategory: SubCategoryEntity;
 
   /**
    * Source Wallet: Every transaction must belong to a wallet.

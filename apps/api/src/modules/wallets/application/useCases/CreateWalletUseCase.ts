@@ -8,7 +8,7 @@ import { WalletColor } from '../../domain/vo/WalletColor';
 import { WalletDto } from '../../presentation/dtos/WalletDto';
 import { CreateWalletDTO } from '../../presentation/dtos/CreateWalletDto';
 import { WalletRepository } from '../../domain/interfaces/WalletRepository';
-import { TransactionRepository } from '../../domain/interfaces/TransactionRepository';
+import { TransactionRepository } from '../../../transactions/domain/interfaces/TransactionRepository';
 
 export class CreateWalletUseCase {
   constructor(

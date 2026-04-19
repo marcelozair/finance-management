@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+// import { DataSource } from 'typeorm';
+// import { DataSourceOptions } from 'typeorm/browser';
 
 @Module({
   exports: [],
@@ -22,9 +24,22 @@ import { TypeOrmModule } from '@nestjs/typeorm';
           port: configService.get<number>('DATABASE_PORT', 8080),
           logging: ENV === 'development',
           synchronize: ENV === 'development',
-          entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+          entities: [__dirname + '/../**/*Entity{.ts,.js}'],
         };
       },
+      // dataSourceFactory: async (options) => {
+      //   if (!options) {
+      //     throw new Error('DataSource options are not defined');
+      //   }
+      //   const dataSource = new DataSource(options);
+      //   await dataSource.initialize();
+      //   const schemas = ['finance', 'core'];
+      //   for (const schema of schemas) {
+      //     console.log('Creating schemas ....', schema);
+      //     await dataSource.query(`CREATE SCHEMA IF NOT EXISTS "${schema}"`);
+      //   }
+      //   return dataSource;
+      // },
       inject: [ConfigService],
     }),
   ],

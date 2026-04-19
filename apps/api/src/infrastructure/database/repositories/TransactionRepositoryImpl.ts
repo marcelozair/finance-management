@@ -4,10 +4,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { Amount } from 'src/modules/wallets/domain/vo/Amount';
 import { TransactionEntity } from '../entities/TransactionEntity';
-import { Transaction } from 'src/modules/wallets/domain/entities/Transaction';
-import { TransactionEnum } from 'src/modules/wallets/domain/vo/TransactionType';
-import { TransactionRepository } from 'src/modules/wallets/domain/interfaces/TransactionRepository';
-import { TransactionMapper } from 'src/modules/wallets/application/mappers/TransactionMapper';
+import { Transaction } from 'src/modules/transactions/domain/entities/Transaction';
+import { TransactionEnum } from 'src/modules/transactions/domain/vo/TransactionType';
+import { TransactionRepository } from 'src/modules/transactions/domain/interfaces/TransactionRepository';
+import { TransactionMapper } from 'src/modules/transactions/application/mappers/TransactionMapper';
 
 @Injectable()
 export class TransactionRepositoryImpl implements TransactionRepository {
@@ -18,7 +18,8 @@ export class TransactionRepositoryImpl implements TransactionRepository {
     // Implementation for creating an initial transaction with a zero amount
     const initialTransaction = this.repository.create({
       walletId,
-      category: 'initial',
+      categoryId: null as any,
+      subCategoryId: null as any,
       amount: amount.getValue(),
       concept: 'Initial Balance',
       type: TransactionEnum.INCOME,
@@ -34,10 +35,11 @@ export class TransactionRepositoryImpl implements TransactionRepository {
   async save(transaction: Transaction): Promise<Transaction> {
     const transactionPayload = this.repository.create({
       walletId: transaction._walletId,
-      amount: transaction._amount,
+      amount: transaction._amount.getValue(),
       concept: transaction._concept,
-      type: transaction._type,
-      category: transaction._category,
+      type: transaction._type.getValue(),
+      categoryId: transaction._categoryId,
+      subCategoryId: transaction._subCategoryId,
       destinationWalletId: transaction._destinationWalletId as
         | number
         | undefined,
@@ -57,6 +59,7 @@ export class TransactionRepositoryImpl implements TransactionRepository {
     const entities = await this.repository.find({
       where: { walletId: walletId },
       order: { createdAt: 'DESC' },
+      relations: ['category', 'subCategory'],
     });
 
     return entities.map((entity) => TransactionMapper.entityToDomain(entity));

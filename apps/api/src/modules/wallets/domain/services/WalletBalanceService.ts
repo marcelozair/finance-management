@@ -1,4 +1,6 @@
-import { Transaction } from '../entities/Transaction';
+import { TransactionType } from 'src/modules/transactions/domain/vo/TransactionType';
+import { Transaction } from '../../../transactions/domain/entities/Transaction';
+import { Amount } from '../vo/Amount';
 import { WalletTypes } from '../vo/WalletType';
 
 /**
@@ -32,17 +34,17 @@ export class WalletBalanceService {
     walletId: number,
     walletType: WalletTypes,
     transactions: Transaction[],
-  ): number {
+  ): Amount {
     return transactions.reduce((balance, transaction) => {
-      if (transaction._type === 'income') {
-        return balance + transaction._amount;
+      if (transaction._type.equals(new TransactionType('income'))) {
+        return balance.add(transaction._amount);
       }
 
-      if (transaction._type === 'expense') {
-        return balance - transaction._amount;
+      if (transaction._type.equals(new TransactionType('expense'))) {
+        return balance.subtract(transaction._amount);
       }
 
-      if (transaction._type === 'transfer') {
+      if (transaction._type.equals(new TransactionType('transfer'))) {
         // Business Rule: Credit wallets do not support transfers
         if (walletType === WalletTypes.CREDIT) {
           throw new Error(
@@ -52,16 +54,16 @@ export class WalletBalanceService {
 
         // Debit the source wallet
         if (transaction._walletId === walletId) {
-          return balance - transaction._amount;
+          return balance.subtract(transaction._amount);
         }
 
         // Credit the destination wallet
         if (transaction._destinationWalletId === walletId) {
-          return balance + transaction._amount;
+          return balance.add(transaction._amount);
         }
       }
 
       return balance;
-    }, 0);
+    }, new Amount(0));
   }
 }

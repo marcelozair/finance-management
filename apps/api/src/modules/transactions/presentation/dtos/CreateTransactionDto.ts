@@ -1,6 +1,5 @@
 import { IsString, IsNumber, IsEnum, IsOptional } from 'class-validator';
 import { TransactionEnum } from '../../domain/vo/TransactionType';
-import { TransactionCategoryEnum } from '../../domain/vo/TransactionCategory';
 
 export class CreateTransactionDTO {
   @IsString()
@@ -12,8 +11,11 @@ export class CreateTransactionDTO {
   @IsEnum(TransactionEnum)
   type: string;
 
-  @IsEnum(TransactionCategoryEnum)
-  category: string;
+  @IsNumber()
+  categoryId: number;
+
+  @IsNumber()
+  subCategoryId: number;
 
   @IsNumber()
   @IsOptional()
