@@ -1,4 +1,4 @@
-import { ValueObject } from 'src/core/domain/ValueObject';
+import { ValueObject } from 'src/core/domain/vo/ValueObject';
 import { CurrencyEnum } from 'src/shared/constant/CurrencyEnum';
 import { InvalidCurrencyError } from '../exceptions/InvalidCurrencyError';
 

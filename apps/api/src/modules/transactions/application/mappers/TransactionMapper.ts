@@ -1,10 +1,11 @@
-import { Amount } from '../../../wallets/domain/vo/Amount';
 import { Category } from '../../domain/entities/Category';
+import { Amount } from '../../../wallets/domain/vo/Amount';
+import { StringDate } from 'src/core/domain/vo/StringDate';
 import { SubCategory } from '../../domain/entities/SubCategory';
 import { Transaction } from '../../domain/entities/Transaction';
 import { TransactionType } from '../../domain/vo/TransactionType';
-import { TransactionEntity } from 'src/infrastructure/database/entities/TransactionEntity';
 import { TransactionDTO } from '../../presentation/dtos/TransactionDto';
+import { TransactionEntity } from 'src/infrastructure/database/entities/TransactionEntity';
 
 export class TransactionMapper {
   static entityToDomain(entity: TransactionEntity): Transaction {
@@ -14,6 +15,7 @@ export class TransactionMapper {
       new Amount(Number(entity.amount)), // Ensuring decimal from DB is a Number
       entity.concept,
       new TransactionType(entity.type as any),
+      new StringDate(entity.date.toISOString()),
       entity.categoryId,
       entity.subCategoryId,
       entity.destinationWalletId,
@@ -41,6 +43,7 @@ export class TransactionMapper {
       type: entity._type.getValue(),
       amount: entity._amount.getValue(),
       concept: entity._concept,
+      date: entity._date.toISOString(),
       walletId: entity._walletId,
       category: entity._category
         ? {

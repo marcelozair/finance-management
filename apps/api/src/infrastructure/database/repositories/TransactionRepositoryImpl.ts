@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -8,6 +8,7 @@ import { Transaction } from 'src/modules/transactions/domain/entities/Transactio
 import { TransactionEnum } from 'src/modules/transactions/domain/vo/TransactionType';
 import { TransactionRepository } from 'src/modules/transactions/domain/interfaces/TransactionRepository';
 import { TransactionMapper } from 'src/modules/transactions/application/mappers/TransactionMapper';
+import { PaginationOptionsDto } from 'src/core/dtos/PaginationDto';
 
 @Injectable()
 export class TransactionRepositoryImpl implements TransactionRepository {
@@ -23,6 +24,7 @@ export class TransactionRepositoryImpl implements TransactionRepository {
       amount: amount.getValue(),
       concept: 'Initial Balance',
       type: TransactionEnum.INCOME,
+      date: new Date(),
     });
 
     await this.repository.save(initialTransaction);
@@ -37,6 +39,7 @@ export class TransactionRepositoryImpl implements TransactionRepository {
       walletId: transaction._walletId,
       amount: transaction._amount.getValue(),
       concept: transaction._concept,
+      date: transaction._date.toDate(),
       type: transaction._type.getValue(),
       categoryId: transaction._categoryId,
       subCategoryId: transaction._subCategoryId,
@@ -46,20 +49,44 @@ export class TransactionRepositoryImpl implements TransactionRepository {
     });
 
     const savedEntity = await this.repository.save(transactionPayload);
-
-    // Return the domain version of the saved data (including DB-generated ID/dates)
     return TransactionMapper.entityToDomain(savedEntity);
+  }
+
+  /**
+   * This method return the count from total transactions by Wallet
+   * @param {number} walletId Wallet ID
+   * @returns {number} Total transaction count
+   */
+  async countByWallet(walletId: number): Promise<number> {
+    return this.repository.count({
+      where: { walletId: walletId },
+    });
   }
 
   /**
    * Retrieves all transactions for a specific wallet,
    * ordered by most recent to oldest.
    */
-  async findByWallet(walletId: number): Promise<Transaction[]> {
+  async findByWallet(
+    walletId: number,
+    paginationOptions?: PaginationOptionsDto,
+  ): Promise<Transaction[]> {
+    const paginationConfig: FindManyOptions<TransactionEntity> = {};
+
+    if (paginationOptions) {
+      paginationConfig.take = paginationOptions.limit;
+      paginationConfig.skip =
+        (paginationOptions.page - 1) * paginationOptions.limit;
+    }
+
+    console.log('Pagination config');
+    console.log(paginationConfig);
+
     const entities = await this.repository.find({
       where: { walletId: walletId },
       order: { createdAt: 'DESC' },
       relations: ['category', 'subCategory'],
+      ...paginationConfig,
     });
 
     return entities.map((entity) => TransactionMapper.entityToDomain(entity));

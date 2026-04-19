@@ -7,6 +7,7 @@ import {
   Inject,
   Param,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 
@@ -28,8 +29,16 @@ export class TransactionController {
 
   @Get('/')
   @HttpCode(HttpStatus.OK)
-  async getTransactions(@Param('walletId') walletId: number) {
-    const response = await this.getTransactionsUseCase.execute(walletId);
+  async getTransactions(
+    @Param('walletId') walletId: number,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 20,
+  ) {
+    const response = await this.getTransactionsUseCase.execute(walletId, {
+      limit: Number(limit),
+      page: Number(page),
+    });
+
     return ResHandler(response, 'Transactions obtained successfully');
   }
 

@@ -10,6 +10,7 @@ import {
   CategoryNotFoundError,
   SubCategoryNotFoundError,
 } from '../../domain/exceptions/CategoryExceptions';
+import { StringDate } from 'src/core/domain/vo/StringDate';
 
 export class CreateTransactionUseCase {
   constructor(
@@ -32,6 +33,7 @@ export class CreateTransactionUseCase {
       new Amount(payload.amount),
       payload.concept,
       new TransactionType(payload.type),
+      new StringDate(payload.date),
       payload.categoryId,
       payload.subCategoryId,
       payload.destinationWalletId,

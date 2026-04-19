@@ -1,3 +1,4 @@
+import { StringDate } from 'src/core/domain/vo/StringDate';
 import { Amount } from '../../../wallets/domain/vo/Amount';
 import { TransactionType } from '../vo/TransactionType';
 import { Category } from './Category';
@@ -10,6 +11,7 @@ export class Transaction {
     private readonly amount: Amount,
     private readonly concept: string,
     private readonly type: TransactionType,
+    private readonly date: StringDate,
     private readonly categoryId: number,
     private readonly subCategoryId: number,
     private readonly destinationWalletId: number | null = null,
@@ -24,6 +26,7 @@ export class Transaction {
     amount: Amount,
     concept: string,
     type: TransactionType,
+    date: StringDate,
     categoryId: number,
     subCategoryId: number,
     destinationWalletId?: number | null,
@@ -34,6 +37,7 @@ export class Transaction {
       amount,
       concept,
       type,
+      date,
       categoryId,
       subCategoryId,
       destinationWalletId,
@@ -47,6 +51,7 @@ export class Transaction {
       this._amount,
       this._concept,
       this._type,
+      this._date,
       this._categoryId,
       this._subCategoryId,
       this._destinationWalletId,
@@ -107,5 +112,9 @@ export class Transaction {
 
   get _type() {
     return this.type;
+  }
+
+  get _date() {
+    return this.date;
   }
 }

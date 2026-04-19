@@ -34,6 +34,9 @@ export class TransactionEntity {
   @Column({ nullable: true })
   categoryId: number;
 
+  @Column({ name: 'date' })
+  date: Date;
+
   @ManyToOne(() => CategoryEntity, (category) => category.transactions)
   @JoinColumn({ name: 'categoryId' })
   category: CategoryEntity;

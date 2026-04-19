@@ -1,4 +1,4 @@
-import { ValueObject } from 'src/core/domain/ValueObject';
+import { ValueObject } from 'src/core/domain/vo/ValueObject';
 
 export class WalletColor extends ValueObject<string> {
   private readonly color: string;
