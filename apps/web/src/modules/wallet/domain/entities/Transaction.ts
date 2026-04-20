@@ -1,6 +1,12 @@
 import type { Amount } from "../vo/Amount";
-import type { TransactionType } from "../vo/TransactionType";
-import type { TransactionCategory } from "../vo/TransactionCategory";
+import type { Category } from "./Category";
+import type { SubCategory } from "./SubCategory";
+import { TransactionType } from "../vo/TransactionType";
+import type { StringDate } from "src/core/domain/vo/StringDate";
+
+export const TransferTransaction = new TransactionType("transfer");
+export const IncomeTransaction = new TransactionType("income");
+export const ExpenseTransaction = new TransactionType("expense");
 
 export class Transaction {
   constructor(
@@ -8,8 +14,10 @@ export class Transaction {
     private readonly walletId: number,
     private readonly amount: Amount,
     private readonly concept: string,
+    private readonly date: StringDate,
     private readonly type: TransactionType,
-    private readonly category: TransactionCategory,
+    private readonly category: Category | null = null,
+    private readonly subCategory: SubCategory | null = null,
     private readonly destinationWalletId: number | null = null,
   ) {
     this.validateBusinessRules();
@@ -19,8 +27,10 @@ export class Transaction {
     walletId: number,
     amount: Amount,
     concept: string,
+    date: StringDate,
     type: TransactionType,
-    category: TransactionCategory,
+    category: Category | null = null,
+    subCategory: SubCategory | null = null,
     destinationWalletId?: number | null,
   ) {
     return new Transaction(
@@ -28,8 +38,10 @@ export class Transaction {
       walletId,
       amount,
       concept,
+      date,
       type,
       category,
+      subCategory,
       destinationWalletId,
     );
   }
@@ -61,7 +73,15 @@ export class Transaction {
   }
 
   get _category() {
-    return this.category.getValue();
+    return this.category;
+  }
+
+  get _subCategory() {
+    return this.subCategory;
+  }
+
+  get _date() {
+    return this.date;
   }
 
   get _amount() {
@@ -73,6 +93,6 @@ export class Transaction {
   }
 
   get _type() {
-    return this.type.getValue();
+    return this.type;
   }
 }

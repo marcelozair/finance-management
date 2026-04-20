@@ -1,14 +1,14 @@
 import { atom, createStore } from "jotai";
-import type { Transaction } from "../../domain/entities/Transaction";
+import type { TransactionsByDate } from "../../domain/interfaces/TransactionRepositoryDtos";
 
 export const transactionStore = createStore();
 
 /**
  * Transactions list available for customer profile
  */
-export const transactionsAtom = atom<Transaction[]>([]);
+export const transactionsByDateAtom = atom<TransactionsByDate[]>([]);
 
 /**
  * Initialize default state
  */
-transactionStore.set(transactionsAtom, []);
+transactionStore.set(transactionsByDateAtom, []);

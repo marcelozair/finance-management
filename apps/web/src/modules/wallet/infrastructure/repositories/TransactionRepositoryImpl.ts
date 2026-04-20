@@ -1,62 +1,51 @@
-import {
-  DEFAULT_LANGUAGE,
-  LANGUAGE_STORAGE_KEY,
-} from "../../../../core/const/appConfig";
-
+import type {
+  TransactionDTO,
+  TransactionList,
+  ResponseTransactionList,
+} from "../../domain/interfaces/TransactionRepositoryDtos";
 import { ApiService } from "../../../../core/services/ApiService";
 import type { Transaction } from "../../domain/entities/Transaction";
-import type { ApiRes } from "../../../../core/interfaces/IApiResponse";
-import { serviceLocator } from "../../../../core/services/ServiceLocator";
-import { CreateApiClient } from "../../../../core/services/CreateApiClient";
-import { API_WALLETS_BASE_URL } from "../../../../core/const/apiConfiguration";
-import type { TransactionDTO } from "../interfaces/TransactionRepositoryDtos";
+import type { APIClient } from "src/infrastructure/config/APIClient";
+import type { FailureHandler } from "src/core/services/FailureHandler";
 import { TransactionMapper } from "../../application/mappers/TransactionMapper";
-import type { TransactionRepository } from "../../domain/interfaces/TransactionRepository";
-import { SessionCookieStore } from "../../../auth/infrastructure/services/SessionCookieStore";
 import type { CreateTransactionDto } from "../../application/dtos/CreateTransactionDto";
+import type { TransactionRepository } from "../../domain/interfaces/TransactionRepository";
 
 export class TransactionRepositoryImpl
   extends ApiService
   implements TransactionRepository
 {
-  constructor() {
-    const failureHandler = serviceLocator.getFailureHandler();
-    const localStorage = serviceLocator.getLocalStorage();
-
-    const sessionStoreService = new SessionCookieStore();
-
-    const ApiClient = new CreateApiClient({
-      baseUrl: API_WALLETS_BASE_URL,
-      language: localStorage.get<string>(
-        LANGUAGE_STORAGE_KEY,
-        DEFAULT_LANGUAGE,
-      ),
-    });
-
-    const session = sessionStoreService.get();
-
-    if (session?.authorizationToken) {
-      ApiClient.apiClient.defaults.headers.common["Authorization"] =
-        `Bearer ${session.authorizationToken}`;
-    }
-
-    super(ApiClient, failureHandler);
+  constructor(APIClient: APIClient, failureHandler: FailureHandler) {
+    super(APIClient, failureHandler);
   }
 
-  async getAll(walletId: number): Promise<Transaction[]> {
-    const response = await this.get<ApiRes<TransactionDTO[]>>(
-      `${walletId}/transactions`,
-    );
+  async getAll(walletId: number): Promise<TransactionList> {
+    const path = `wallet/${walletId}/transactions`;
+    const response = await this.get<ResponseTransactionList>(path);
 
-    return response.data.map((trans) => TransactionMapper.toDomain(trans));
+    const transactionList: TransactionList = {
+      metadata: response.data.metadata,
+      dates: Object.entries(response.data.transactions).map(
+        ([date, transactions]) => {
+          return {
+            date,
+            transactions: transactions.map((transaction) =>
+              TransactionMapper.toDomain(transaction),
+            ),
+          };
+        },
+      ),
+    };
+
+    return transactionList;
   }
 
   async create(
     walletId: number,
     transaction: CreateTransactionDto,
   ): Promise<Transaction> {
-    const response = await this.post<ApiRes<TransactionDTO>>(
-      `${walletId}/transactions`,
+    const response = await this.post<TransactionDTO>(
+      `wallet/${walletId}/transactions`,
       transaction,
     );
 

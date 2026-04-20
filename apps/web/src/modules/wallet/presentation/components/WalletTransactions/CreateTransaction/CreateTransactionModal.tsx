@@ -13,8 +13,8 @@ import {
   type CreateTransactionForm,
 } from "./ValidationForm";
 
-import { WalletDomain } from "src/modules/wallet/application";
 import { useWalletStore } from "../../../store/useWalletStore";
+import { useWalletDomain } from "../../../hooks/useWalletDomain";
 import { Modal } from "@shared/presentation/components/Modal/Modal";
 import { TextField } from "@shared/presentation/components/TextField/TextField";
 import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase";
@@ -32,7 +32,7 @@ export const CreateTransactionModal = ({
   onClose,
   isOpen,
 }: CreateTransactionModalProps) => {
-  const domain = new WalletDomain();
+  const domain = useWalletDomain();
 
   const [walletsCatalog, setWalletsCatalog] = useState(
     createListCollection<{ label: string; value: string }>({

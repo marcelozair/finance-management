@@ -7,14 +7,16 @@ import {
 import {
   DEFAULT_LANGUAGE,
   LANGUAGE_STORAGE_KEY,
-} from "../../../../core/const/appConfig";
+} from "../../../../shared/const/appConfig";
 
-import { ApiService } from "../../../../core/services/ApiService";
-import type { ApiRes } from "../../../../core/interfaces/IApiResponse";
+import {
+  ApiService,
+  type APIResponse,
+} from "../../../../core/services/ApiService";
 import type { SessionUserDTO, SignUpResponseDTO } from "../dtos/AuthDTO";
 import type { VerifyCodeDTO } from "../../application/dtos/VerifyCodeDTO";
 import { serviceLocator } from "../../../../core/services/ServiceLocator";
-import { API_AUTH_BASE_URL } from "../../../../core/const/apiConfiguration";
+import { API_AUTH_BASE_URL } from "../../../../shared/const/apiConfiguration";
 import { CreateApiClient } from "../../../../core/services/CreateApiClient";
 import type { AuthRepository } from "../../domain/interfaces/AuthRepository";
 import type { SignUpCredentialsDTO } from "../../application/dtos/SignUpCredentialsDTO";
@@ -36,15 +38,15 @@ export class AuthRepositoryImpl extends ApiService implements AuthRepository {
     super(ApiClient, failureHandler);
   }
 
-  signIn(body: SignInCredentialsDTO): Promise<ApiRes<SessionUserDTO>> {
-    return this.post<ApiRes<SessionUserDTO>>(signInEndpoint, body);
+  signIn(body: SignInCredentialsDTO): Promise<APIResponse<SessionUserDTO>> {
+    return this.post<SessionUserDTO>(signInEndpoint, body);
   }
 
-  signUp(body: SignUpCredentialsDTO): Promise<ApiRes<SignUpResponseDTO>> {
-    return this.post<ApiRes<SignUpResponseDTO>>(signUpEndpoint, body);
+  signUp(body: SignUpCredentialsDTO): Promise<APIResponse<SignUpResponseDTO>> {
+    return this.post<SignUpResponseDTO>(signUpEndpoint, body);
   }
 
-  verifyCode(body: VerifyCodeDTO): Promise<ApiRes<SessionUserDTO>> {
-    return this.post<ApiRes<SessionUserDTO>>(verifyCode, body);
+  verifyCode(body: VerifyCodeDTO): Promise<APIResponse<SessionUserDTO>> {
+    return this.post<SessionUserDTO>(verifyCode, body);
   }
 }

@@ -1,9 +1,16 @@
 import { Box, HStack, VStack, Text } from "@chakra-ui/react";
-import { RenderIcon } from "@shared/presentation/components/RenderIcon/RenderIcon";
-import { formatMoney } from "src/core/utils/currency";
-import { Transaction } from "src/modules/wallet/domain/entities/Transaction";
+
+import {
+  Transaction,
+  ExpenseTransaction,
+  IncomeTransaction,
+  TransferTransaction,
+} from "src/modules/wallet/domain/entities/Transaction";
+
+import { formatMoney } from "@shared/utils/currency";
 import { useWalletStore } from "../../../store/useWalletStore";
-import { TransactionEnum } from "../CreateTransaction/TransactionCatalogs";
+import { RenderIcon } from "@shared/presentation/components/RenderIcon/RenderIcon";
+import type { TransactionType } from "src/modules/wallet/domain/vo/TransactionType";
 
 interface TransactionProps {
   transaction: Transaction;
@@ -12,17 +19,17 @@ interface TransactionProps {
 export const TransactionCard = ({ transaction }: TransactionProps) => {
   const { selectedWallet } = useWalletStore();
 
-  const getAmountColor = (transactionType: string): string => {
-    switch (transactionType) {
-      case TransactionEnum.INCOME:
-        return "green.500";
-      case TransactionEnum.EXPENSE:
-        return "red.500";
-      case TransactionEnum.TRANSFER:
-        return "gray.700";
-    }
-
+  const getAmountColor = (transactionType: TransactionType): string => {
+    if (transactionType.equals(IncomeTransaction)) return "green.500";
+    if (transactionType.equals(ExpenseTransaction)) return "red.500";
+    if (transactionType.equals(TransferTransaction)) return "gray.700";
     return "gray.700";
+  };
+
+  const getAmountOperation = (transactionType: TransactionType): string => {
+    if (transactionType.equals(IncomeTransaction)) return "+";
+    if (transactionType.equals(ExpenseTransaction)) return "-";
+    return "";
   };
 
   return (
@@ -31,7 +38,7 @@ export const TransactionCard = ({ transaction }: TransactionProps) => {
         {/* Left section */}
         <HStack>
           <Box
-            bg={transaction._category.color}
+            bg={transaction._category?._color || "gray.700"}
             borderRadius="8px"
             w="40px"
             h="40px"
@@ -40,7 +47,7 @@ export const TransactionCard = ({ transaction }: TransactionProps) => {
             justifyContent="center"
           >
             <RenderIcon
-              name={transaction._category.icon}
+              name={transaction._category?._iconName || "wallet"}
               className="text-white"
             />
           </Box>
@@ -51,7 +58,7 @@ export const TransactionCard = ({ transaction }: TransactionProps) => {
             </Text>
 
             <Text color="gray.400" fontSize="12px">
-              {transaction._category.label}
+              {transaction._category?._name || "Other"}
             </Text>
 
             {/* ✅ New date */}
@@ -68,9 +75,7 @@ export const TransactionCard = ({ transaction }: TransactionProps) => {
             fontWeight="500"
             fontSize="14px"
           >
-            {transaction._type === TransactionEnum.INCOME && "+"}
-            {transaction._type === TransactionEnum.EXPENSE && "-"}
-            {transaction._type === TransactionEnum.TRANSFER && ""}
+            {getAmountOperation(transaction._type)}
             {selectedWallet?._currency
               ? formatMoney(transaction._amount, selectedWallet?._currency)
               : transaction._amount.getValue()}

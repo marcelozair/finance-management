@@ -7,7 +7,6 @@ export class ConfigurationService {
 
   constructor() {
     this.env = import.meta.env;
-
     this.ENV = this.getenv<EnvironmentType>("VITE_ENV", "DEVELOPMENT");
   }
 

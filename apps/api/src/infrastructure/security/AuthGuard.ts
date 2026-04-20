@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
     const token = this.extractTokenFromHeader(request);
     const profileId = this.extracatProfileIdFromHeaders(request);
 
-    if (!profileId || !token) {
+    if (!token) {
       throw new UnauthorizedException();
     }
 

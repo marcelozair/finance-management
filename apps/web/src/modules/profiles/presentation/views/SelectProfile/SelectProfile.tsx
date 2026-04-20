@@ -1,18 +1,15 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
 import { SimpleGrid, Spinner, Center, Button, Flex } from "@chakra-ui/react";
 
+import { ProfileDomain } from "../../../application";
 import { ProfileCard } from "./components/ProfileCard";
 import type { Profile } from "../../../domain/entities/Profile";
 import { CreateProfileCard } from "./components/CreateProfileCard";
-
-import { ProfileDomain } from "../../../application";
-import type { ApiRes } from "../../../../../core/interfaces/IApiResponse";
-import { useProfile } from "../../../../../shared/presentation/store/profile/useProfile";
-import { useExecuteUseCase } from "../../../../../shared/presentation/hooks/useExecuteUseCase";
-
 import { Heading } from "../../../../../shared/presentation/components/content/Heading";
+import { useProfile } from "../../../../../shared/presentation/store/profile/useProfile";
 import { SubHeading } from "../../../../../shared/presentation/components/content/SubHeading";
+import { useExecuteUseCase } from "../../../../../shared/presentation/hooks/useExecuteUseCase";
 
 export const SelectProfileView = () => {
   const profileDomain = new ProfileDomain();
@@ -23,28 +20,19 @@ export const SelectProfileView = () => {
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [fetchError, setFetchError] = useState<string | null>(null);
 
-  const { execute, loading } = useExecuteUseCase<ApiRes<Profile[]>, void>({
-    callback: () => {
-      return profileDomain.getProfiles();
+  const { execute, loading } = useExecuteUseCase<void, void>({
+    callback: async () => {
+      try {
+        const profiles = await profileDomain.getProfiles();
+        setProfiles(profiles);
+      } catch {
+        setFetchError("Failed to load profiles");
+      }
     },
   });
 
   useEffect(() => {
-    const fetchProfiles = async () => {
-      try {
-        const response = await execute();
-
-        if (response.statusCode === 200 && response.data) {
-          setProfiles(response.data);
-        } else {
-          setFetchError(response.message || "Failed to load profiles");
-        }
-      } catch {
-        setFetchError("Network error while connecting to the server.");
-      }
-    };
-
-    fetchProfiles();
+    execute();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

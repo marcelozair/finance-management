@@ -1,4 +1,4 @@
-import { ValueObject } from "src/core/domain/ValueObject";
+import { ValueObject } from "src/core/domain/vo/ValueObject";
 
 export enum TransactionEnum {
   INCOME = "income",

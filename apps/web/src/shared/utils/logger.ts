@@ -1,5 +1,3 @@
-// logger.ts
-
 export enum LogLevel {
   TRACE = 0,
   DEBUG = 1,

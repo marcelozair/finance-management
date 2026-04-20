@@ -1,35 +1,36 @@
 import { useEffect, useState } from "react";
 import { TbFilterPlus, TbTableExport, TbTableImport } from "react-icons/tb";
 
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
+import { formatPrettyDate } from "@shared/utils/dates";
 import { TransactionCard } from "./Transaction/Transaction";
 import { useWalletStore } from "../../store/useWalletStore";
-import { WalletDomain } from "src/modules/wallet/application";
+import { useWalletDomain } from "../../hooks/useWalletDomain";
 import { NoTransactions } from "./NoTransactions/NoTransactions";
 import { useTransactionStore } from "../../store/useTransactionStore";
 import { TransactionCardSkeleton } from "./Transaction/TransactionSkeleton";
 import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase";
 import { CreateTransactionModal } from "./CreateTransaction/CreateTransactionModal";
 import { CreateTransactionButton } from "./CreateTransaction/CreateTransactionButton";
+import { useConfig } from "@shared/presentation/store/appConfig/useAppConfig";
 
 interface GetAllTransactionParams {
   walletId: number;
 }
 
 export const WalletTransactions = () => {
-  const domain = new WalletDomain();
-
+  const config = useConfig();
+  const domain = useWalletDomain();
   const { selectedWalletId } = useWalletStore();
-  const { transactions, setTransactions } = useTransactionStore();
+  const { transactionsByDate, setTransactions } = useTransactionStore();
 
   const [transactionModal, setTransactionModal] = useState(false);
 
   const { loading, execute } = useExecuteUseCase<void, GetAllTransactionParams>(
     {
       callback: async (params: GetAllTransactionParams): Promise<void> => {
-        const transactions = await domain.getAllTransactions(params.walletId);
-
-        setTransactions(transactions);
+        const response = await domain.getAllTransactions(params.walletId);
+        setTransactions(response.dates);
       },
     },
   );
@@ -57,7 +58,7 @@ export const WalletTransactions = () => {
         </Flex>
       </Flex>
 
-      {!!transactions.length && (
+      {!!transactionsByDate.length && (
         <CreateTransactionButton onClick={() => setTransactionModal(true)} />
       )}
 
@@ -72,13 +73,23 @@ export const WalletTransactions = () => {
         </Flex>
       )}
 
-      {!transactions.length && !loading && (
+      {!transactionsByDate.length && !loading && (
         <NoTransactions openModal={() => setTransactionModal(true)} />
       )}
-      {transactions.length > 0 && (
+      {transactionsByDate.length > 0 && (
         <Flex flexDirection="column" mt={5}>
-          {transactions.map((transaction) => (
-            <TransactionCard key={transaction._id} transaction={transaction} />
+          {transactionsByDate.map((group) => (
+            <>
+              <Text p="14px 16px" fontSize="sm" color="gray.500">
+                {formatPrettyDate(group.date, config.system.lang)}
+              </Text>
+              {group.transactions.map((transaction) => (
+                <TransactionCard
+                  key={transaction._id}
+                  transaction={transaction}
+                />
+              ))}
+            </>
           ))}
         </Flex>
       )}

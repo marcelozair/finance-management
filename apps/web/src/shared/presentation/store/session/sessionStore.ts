@@ -1,7 +1,7 @@
 import { atom, createStore } from "jotai";
 
-import type { Session } from "@shared/domain/entities/Session";
-import type { User } from "@shared/domain/entities/User";
+import type { Session } from "src/core/domain/entities/Session";
+import type { User } from "src/core/domain/entities/User";
 
 /**
  * Create Global Store instance

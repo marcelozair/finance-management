@@ -1,5 +1,6 @@
 import { Button, Box, VStack, Text } from "@chakra-ui/react";
-import { formatMoney } from "src/core/utils/currency";
+
+import { formatMoney } from "@shared/utils/currency";
 import type { Wallet } from "src/modules/wallet/domain/entities/Wallet";
 
 interface WalletCardProps {

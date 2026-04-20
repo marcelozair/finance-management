@@ -1,16 +1,15 @@
 import {
   DEFAULT_LANGUAGE,
   LANGUAGE_STORAGE_KEY,
-} from "../../../../core/const/appConfig";
-import { API_PROFILES_BASE_URL } from "../../../../core/const/apiConfiguration";
+} from "../../../../shared/const/appConfig";
+
+import type { Profile } from "../../domain/entities/Profile";
 import { ApiService } from "../../../../core/services/ApiService";
+import { getProfilesEndpoint } from "../endpoints/profileEndpoint";
 import { serviceLocator } from "../../../../core/services/ServiceLocator";
 import { CreateApiClient } from "../../../../core/services/CreateApiClient";
-import type { ApiRes } from "../../../../core/interfaces/IApiResponse";
-
+import { API_PROFILES_BASE_URL } from "../../../../shared/const/apiConfiguration";
 import type { ProfileRepository } from "../../domain/interfaces/ProfileRepository";
-import type { Profile } from "../../domain/entities/Profile";
-import { getProfilesEndpoint } from "../endpoints/profileEndpoint";
 import { SessionCookieStore } from "../../../auth/infrastructure/services/SessionCookieStore";
 
 export class ProfileRepositoryImpl
@@ -40,7 +39,8 @@ export class ProfileRepositoryImpl
     super(ApiClient, failureHandler);
   }
 
-  getProfiles(): Promise<ApiRes<Profile[]>> {
-    return this.get<ApiRes<Profile[]>>(getProfilesEndpoint);
+  async getProfiles(): Promise<Profile[]> {
+    const response = await this.get<Profile[]>(getProfilesEndpoint);
+    return response.data;
   }
 }

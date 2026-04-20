@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, createListCollection, Flex } from "@chakra-ui/react";
 
-import { CurrencyConfig } from "src/core/const/currencyEnum";
-import { WalletDomain } from "src/modules/wallet/application";
+import { CurrencyConfig } from "@shared/const/currencyEnum";
 import { useWalletStore } from "../../../store/useWalletStore";
+import { useWalletDomain } from "../../../hooks/useWalletDomain";
 import { Modal } from "@shared/presentation/components/Modal/Modal";
 import { useProfile } from "src/shared/presentation/store/profile/useProfile";
 import { TextField } from "@shared/presentation/components/TextField/TextField";
@@ -63,7 +63,7 @@ export const CreateWalletModal = ({
   onClose,
   isOpen,
 }: CreateWalletModalProps) => {
-  const walletDomain = new WalletDomain();
+  const walletDomain = useWalletDomain();
 
   const { addWallet, selectWallet, selectWalletId } = useWalletStore();
   const { profile } = useProfile();

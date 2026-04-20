@@ -7,10 +7,12 @@ import {
 
 import { useEffect } from "react";
 
-import type { User } from "@shared/domain/entities/User";
-import type { Session } from "@shared/domain/entities/Session";
+import type { User } from "src/core/domain/entities/User";
+import type { Session } from "src/core/domain/entities/Session";
 import type { SessionStore } from "src/modules/auth/domain/interfaces/SessionStore";
 import { useAtom } from "jotai";
+import { AuthenticatedAPIClientImpl } from "src/infrastructure/config/APIClient";
+import { serviceLocator, ServiceName } from "src/core/services/ServiceLocator";
 
 /**
  * Dependencies that the hook needs. You can provide them via context or
@@ -40,9 +42,22 @@ export const useSession = ({ sessionStoreService }: UseSessionDeps) => {
     store: sessionStore,
   });
 
+  const createAuthenticatedAPIClient = (authorizationToken: string) => {
+    // Create Authenticated APIClient
+    const AuthenticatedAPIClient = new AuthenticatedAPIClientImpl({
+      authorization: authorizationToken,
+    });
+
+    serviceLocator.register(
+      ServiceName.AuthenticatedAPIClient,
+      AuthenticatedAPIClient,
+    );
+  };
+
   const setUserSession = (session: Session, user: User) => {
     sessionStore.set(userSessionAtom, user);
     setSession(session);
+    createAuthenticatedAPIClient(session.authorizationToken);
   };
 
   const checkExistSession = async () => {
@@ -50,6 +65,7 @@ export const useSession = ({ sessionStoreService }: UseSessionDeps) => {
 
     if (localSession) {
       setSession(localSession);
+      createAuthenticatedAPIClient(localSession.authorizationToken);
     }
 
     setLoading(false);

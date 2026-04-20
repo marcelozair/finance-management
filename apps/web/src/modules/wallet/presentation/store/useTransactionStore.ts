@@ -1,21 +1,25 @@
 import { useAtom } from "jotai";
 
 import type { Transaction } from "../../domain/entities/Transaction";
-import { transactionsAtom, transactionStore } from "./transactionStore";
+import { transactionsByDateAtom, transactionStore } from "./transactionStore";
+import type { TransactionsByDate } from "../../domain/interfaces/TransactionRepositoryDtos";
 
 interface UseTransactionStore {
-  transactions: Transaction[];
+  transactionsByDate: TransactionsByDate[];
   addTransaction: (transaction: Transaction) => void;
-  setTransactions: (transactions: Transaction[]) => void;
+  setTransactions: (grouped: TransactionsByDate[]) => void;
 }
 
 export const useTransactionStore = (): UseTransactionStore => {
-  const [transactions, setTransactions] = useAtom(transactionsAtom, {
-    store: transactionStore,
-  });
+  const [transactionsByDate, setTransactions] = useAtom(
+    transactionsByDateAtom,
+    {
+      store: transactionStore,
+    },
+  );
 
   const addTransaction = (transaction: Transaction) => {
-    setTransactions((prev) => [...prev, transaction]);
+    // setTransactions((prev) => [...prev, transaction]);
   };
 
   // const addWallet = (wallet: Wallet) => {
@@ -23,10 +27,10 @@ export const useTransactionStore = (): UseTransactionStore => {
   // };
 
   return {
-    transactions,
+    transactionsByDate,
     addTransaction,
-    setTransactions: (transaction: Transaction[]) =>
-      setTransactions([...transaction]),
+    setTransactions: (grouped: TransactionsByDate[]) =>
+      setTransactions(grouped),
     // setWallets,
     // addWallet,
     // selectWallet,

@@ -1,23 +1,23 @@
-import { Flex, ScrollArea } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { Flex, ScrollArea } from "@chakra-ui/react";
 
 import { WalletCard } from "./WalletCard/WalletCard";
+import { useWalletStore } from "../../store/useWalletStore";
+import { useWalletDomain } from "../../hooks/useWalletDomain";
 import { WalletCardSkeleton } from "./WalletCard/WalletCardSkeleton";
+import { useTransactionStore } from "../../store/useTransactionStore";
 import { CreateWalletCard } from "./CreateWalletCard/CreateWalletCard";
 import { CreateWalletModal } from "./CreateWalletModal/CreateWalletModal";
-import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase";
-import { WalletDomain } from "src/modules/wallet/application";
-import { useWalletStore } from "../../store/useWalletStore";
 import { useProfile } from "@shared/presentation/store/profile/useProfile";
-import { useTransactionStore } from "../../store/useTransactionStore";
+import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase";
 
 const SKELETON_COUNT = 3;
 
 export const WalletsContainer = () => {
-  const walletDomain = new WalletDomain();
-
   const { profile } = useProfile();
+  const walletDomain = useWalletDomain();
   const { setTransactions } = useTransactionStore();
+
   const {
     wallets,
     setWallets,

@@ -32,6 +32,10 @@ export const useProfile = () => {
 
     if (newProfile) {
       localStorage.save(LOCAL_STORAGE_PROFILE_KEY, newProfile);
+
+      // Adding Profile ID into API Client Instance
+      const APIClient = serviceLocator.getAuthenticatedAPIClient();
+      APIClient.updateProfileId(newProfile.id);
     } else {
       window.localStorage.removeItem(LOCAL_STORAGE_PROFILE_KEY);
     }
