@@ -5,6 +5,7 @@ import { Button, createListCollection, Flex } from "@chakra-ui/react";
 
 import { CurrencyConfig } from "@shared/const/currencyEnum";
 import { useWalletStore } from "../../../store/useWalletStore";
+import { Currency } from "src/core/domain/vo/Currency";
 import { useWalletDomain } from "../../../hooks/useWalletDomain";
 import { Modal } from "@shared/presentation/components/Modal/Modal";
 import { useProfile } from "src/shared/presentation/store/profile/useProfile";
@@ -65,8 +66,8 @@ export const CreateWalletModal = ({
 }: CreateWalletModalProps) => {
   const walletDomain = useWalletDomain();
 
-  const { addWallet, selectWallet, selectWalletId } = useWalletStore();
   const { profile } = useProfile();
+  const { addWallet, selectWallet, selectWalletId } = useWalletStore();
 
   const {
     register,
@@ -76,6 +77,9 @@ export const CreateWalletModal = ({
     reset,
   } = useForm<CreateWalletForm>({
     mode: "onChange",
+    defaultValues: {
+      currency: "USD",
+    },
     resolver: yupResolver(createWalletSchema),
   });
 
@@ -120,26 +124,12 @@ export const CreateWalletModal = ({
         <form id="create-wallet-form" onSubmit={handleSubmit(onSubmit)}>
           <Flex gap={4} flexDirection="column">
             <TextField
-              label="Wallet Name"
+              label="Name"
               placeholder="Enter wallet name"
               error={errors.name?.message}
               {...register("name")}
             />
-            <AmountField
-              label="Initial Balance"
-              placeholder="Enter initial balance"
-              error={errors.initialBalance?.message}
-              {...register("initialBalance")}
-            />
-            <SelectField
-              label="Account Type"
-              placeholder="Select account type"
-              options={accountTypesCatalog}
-              error={errors.walletType?.message}
-              onSelect={(value: string) =>
-                setValue("walletType", value, { shouldValidate: true })
-              }
-            />
+
             <SelectField
               label="Currency"
               placeholder="Select currency"
@@ -148,6 +138,24 @@ export const CreateWalletModal = ({
               onSelect={(value: string) =>
                 setValue("currency", value, { shouldValidate: true })
               }
+            />
+
+            <SelectField
+              label="Account type"
+              placeholder="Select account type"
+              options={accountTypesCatalog}
+              error={errors.walletType?.message}
+              onSelect={(value: string) =>
+                setValue("walletType", value, { shouldValidate: true })
+              }
+            />
+
+            <AmountField
+              label="Initial balance"
+              currency={new Currency("USD")}
+              placeholder="Enter initial balance"
+              error={errors.initialBalance?.message}
+              {...register("initialBalance")}
             />
           </Flex>
         </form>

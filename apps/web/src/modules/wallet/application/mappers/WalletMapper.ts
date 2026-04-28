@@ -1,6 +1,6 @@
 import { Wallet } from "../../domain/entities/Wallet";
-import { Amount } from "../../domain/vo/Amount";
-import { Currency } from "../../domain/vo/Currency";
+import { Amount } from "../../../../core/domain/vo/Amount";
+import { Currency } from "../../../../core/domain/vo/Currency";
 import type { WalletDto } from "../../infrastructure/interfaces/WalletRepositoryDtos";
 
 export class WalletMapper {

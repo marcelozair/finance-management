@@ -1,34 +1,23 @@
 import { useAtom } from "jotai";
 
 import {
-  walletsAtom,
-  walletStore,
-  selectedWalletAtom,
-  selectedWalletIdAtom,
-} from "./walletStore";
+  IncomeTransaction,
+  type Transaction,
+} from "src/modules/transaction/domain/entities/Transaction";
 
 import type { Wallet } from "../../domain/entities/Wallet";
-import type { Transaction } from "../../domain/entities/Transaction";
-import { TransactionEnum } from "../components/WalletTransactions/CreateTransaction/TransactionCatalogs";
-
+import { walletsAtom, walletStore, selectedWalletAtom } from "./walletStore";
 interface UseWalletStore {
   wallets: Wallet[];
   selectedWallet: Wallet | null;
-  selectedWalletId: number | null;
   addWallet: (wallets: Wallet) => void;
   selectWallet: (wallet: Wallet) => void;
   setWallets: (wallets: Wallet[]) => void;
-  selectWalletId: (walletId: number) => void;
-
   updateWallets: (transaction: Transaction) => void;
 }
 
 export const useWalletStore = (): UseWalletStore => {
   const [wallets, setWalletsAtom] = useAtom(walletsAtom, {
-    store: walletStore,
-  });
-
-  const [selectedWalletId, selectWalletId] = useAtom(selectedWalletIdAtom, {
     store: walletStore,
   });
 
@@ -40,7 +29,6 @@ export const useWalletStore = (): UseWalletStore => {
     setWalletsAtom([...walletsList]);
 
     if (!wallets.length && walletsList[0]) {
-      selectWalletId(walletsList[0]._id);
       selectWallet(walletsList[0]);
     }
   };
@@ -58,7 +46,7 @@ export const useWalletStore = (): UseWalletStore => {
         const isDestination = wallet._id === transaction._destinationWalletId;
 
         if (isSource) {
-          if (transaction._type === TransactionEnum.INCOME) {
+          if (transaction._type === IncomeTransaction) {
             newBalance = newBalance.add(transaction._amount);
           } else {
             newBalance = newBalance.subtract(transaction._amount);
@@ -84,7 +72,5 @@ export const useWalletStore = (): UseWalletStore => {
     selectWallet,
     updateWallets,
     selectedWallet,
-    selectWalletId,
-    selectedWalletId,
   };
 };

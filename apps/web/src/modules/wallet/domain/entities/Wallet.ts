@@ -1,5 +1,5 @@
-import { Amount } from "../vo/Amount";
-import type { Currency } from "../vo/Currency";
+import { Amount } from "../../../../core/domain/vo/Amount";
+import type { Currency } from "../../../../core/domain/vo/Currency";
 
 export class Wallet {
   constructor(

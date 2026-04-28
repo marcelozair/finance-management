@@ -49,7 +49,10 @@ export const SelectField = ({
         <Select.HiddenSelect />
         <Select.Control>
           <Select.Trigger>
-            <Select.ValueText placeholder={placeholder} color={"gray.400"} />
+            <Select.ValueText
+              placeholder={placeholder}
+              color={value === "" ? "gray.400" : "black"}
+            />
           </Select.Trigger>
           <Select.IndicatorGroup>
             <Select.Indicator />
