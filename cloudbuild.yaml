@@ -43,3 +43,6 @@ steps:
       - "--allow-unauthenticated"
       - "--project=$PROJECT_ID"
       - '--set-env-vars=DATABASE_CONNECTION=$_DATABASE_CONNECTION,AUTHORIZATION_SECRET=$_AUTHORIZATION_SECRET,JWT_SECRET=$_JWT_SECRET,MASTER_PASSWORD=$_MASTER_PASSWORD'
+
+options:
+  logging: CLOUD_LOGGING_ONLY

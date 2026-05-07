@@ -1,7 +1,7 @@
 # ================================
 # Stage 1: Builder
 # ================================
-FROM node:23-alpine AS builder
+FROM node:24-alpine AS builder
 
 WORKDIR /app
 
@@ -12,11 +12,8 @@ COPY turbo.json ./
 # Copy the specific app package.json
 COPY apps/api/package*.json ./apps/api/
 
-# Copy workspace packages if any (adjust paths as needed)
-# COPY packages/shared/package*.json ./packages/shared/
-
 # Install all dependencies from root (monorepo install)
-RUN npm ci
+RUN yarn install
 
 # Copy full source code
 COPY . .
@@ -28,7 +25,7 @@ RUN npx turbo run build --filter=api
 # ================================
 # Stage 2: Production
 # ================================
-FROM node:23-alpine AS production
+FROM node:24-alpine AS production
 
 WORKDIR /app
 
@@ -46,7 +43,7 @@ COPY turbo.json ./
 COPY apps/api/package*.json ./apps/api/
 
 # Install only production dependencies from root
-RUN npm ci --only=production && npm cache clean --force
+RUN yarn install --production --frozen-lockfile
 
 # Copy built app from builder stage
 COPY --from=builder /app/apps/api/dist ./apps/api/dist
