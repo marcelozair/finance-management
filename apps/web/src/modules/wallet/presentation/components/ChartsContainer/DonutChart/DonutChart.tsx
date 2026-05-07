@@ -1,6 +1,5 @@
 import { Chart, useChart } from "@chakra-ui/charts";
-import { Box, Flex, Heading, IconButton } from "@chakra-ui/react";
-import { FaExpand } from "react-icons/fa";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 
 export const DonutChart = () => {
@@ -16,9 +15,9 @@ export const DonutChart = () => {
     <Box borderWidth="1px" p={3} borderColor="border.disabled" rounded="lg">
       <Flex h="20px" alignItems="center" justifyContent="space-between" mb={2}>
         <Heading size="sm">Expenses by categories</Heading>
-        <IconButton aria-label="Expand view" variant="ghost" size="xs">
+        {/* <IconButton aria-label="Expand view" variant="ghost" size="xs">
           <FaExpand />
-        </IconButton>
+        </IconButton> */}
       </Flex>
       <hr />
       <Heading size="lg" mt={2} color="red">

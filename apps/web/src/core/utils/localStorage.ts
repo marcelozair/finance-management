@@ -19,7 +19,7 @@ export class LocalStorageService {
    * @param {string} key Key to retrieve
    * @returns {T | null} Parsed value
    */
-  get<T>(key: string, defaultValue?: T): T {
+  get<T>(key: string, defaultValue?: T | null): T {
     const raw = localStorage.getItem(key);
     if (raw === null) return defaultValue as T;
 

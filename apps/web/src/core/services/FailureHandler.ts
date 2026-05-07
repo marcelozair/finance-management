@@ -29,7 +29,8 @@ import {
 
 import type { IFailureHandler } from "../interfaces/IFailureHanlder";
 import type { CustomErrorMessages } from "../interfaces/ICustomErrorMessages";
-import { toaster } from "../../shared/ui/Toaster";
+
+import { toaster } from "@shared/presentation/ui/Toaster";
 
 export class FailureHandler implements IFailureHandler {
   private mapStatusCodeToException(statusCode: number): ServerException {

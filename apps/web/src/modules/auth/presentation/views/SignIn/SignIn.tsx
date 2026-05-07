@@ -1,34 +1,52 @@
-import { Link, redirect } from "react-router";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  Text,
+  Link as LinkChakra,
+} from "@chakra-ui/react";
 
-import "./../../styles/signIn.css";
-import { AuthDomain } from "../../../domain";
+import { AuthDomain } from "../../../application";
 import type { ISignInForm } from "../../interfaces/ISignInForm";
 import { signInValidator } from "../../validator/signInValidator";
-import type { User } from "../../../../user/domain/entities/User";
-import { EmailField } from "../../../../../shared/components/EmailField/EmailField";
-import { PasswordField } from "../../../../../shared/components/PasswordField/PasswordField";
-import { useExecuteUseCase } from "../../../../../core/hook/useExecuteUseCase";
+
+import { useSession } from "@shared/presentation/store/session/useSession";
+import { EmailField } from "@shared/presentation/components/EmailField/EmailField";
+import { PasswordField } from "@shared/presentation/components/PasswordField/PasswordField";
+
+import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase";
+import type { SessionUserDTO } from "src/modules/auth/infrastructure/dtos/AuthDTO";
+
+import { SessionCookieStore } from "src/modules/auth/infrastructure/services/SessionCookieStore";
+
+import "./../../styles/signIn.css";
 
 export const SignInView = () => {
   const authDomain = new AuthDomain();
+
+  const navigate = useNavigate();
+  const sessionStoreService = new SessionCookieStore();
+  const { setUserSession } = useSession({ sessionStoreService });
 
   const { register, formState, handleSubmit } = useForm<ISignInForm>({
     mode: "onChange",
     resolver: yupResolver(signInValidator),
   });
 
-  const { execute, loading } = useExecuteUseCase<User, ISignInForm>({
+  const { execute, loading } = useExecuteUseCase<SessionUserDTO, ISignInForm>({
     callback: (params: ISignInForm) => {
       return authDomain.signIn(params);
     },
   });
 
   const signIn = async (values: ISignInForm) => {
-    await execute({ ...values });
-    redirect("admin/wallets");
+    const { session, user } = await execute({ ...values });
+    setUserSession(session, user);
+    navigate("/admin/select-profile");
   };
 
   return (
@@ -38,8 +56,8 @@ export const SignInView = () => {
       >
         <GridItem
           colSpan={{ lg: 4 }}
+          className="sign-in__banner"
           display={{ base: "none", lg: "block" }}
-          clasName="sign-in__banner"
         ></GridItem>
         <GridItem
           placeItems="center"
@@ -53,41 +71,52 @@ export const SignInView = () => {
             maxWidth="450px"
             h="100%"
           >
-            <h2 className="sign-in-form__title">Sign in to SientePE</h2>
-            <p className="sign-in-form__description">Welcome back</p>
+            <h2 className="sign-in-form__title">SIGN IN.</h2>
+            <p className="sign-in-form__description">Welcome Back</p>
+            <form onSubmit={handleSubmit(signIn)}>
+              <Flex direction="column" gap={5}>
+                <EmailField
+                  label="Email"
+                  placeholder="Enter your email"
+                  error={formState.errors.email?.message}
+                  {...register("email")}
+                />
 
-            <Flex direction="column" gap={5}>
-              <EmailField
-                label="Email"
-                placeholder="Enter your email"
-                error={formState.errors.email?.message}
-                {...register("email")}
-              />
+                <PasswordField
+                  label="Password"
+                  placeholder="Enter your password"
+                  error={formState.errors.password?.message}
+                  {...register("password")}
+                />
+                <Text fontSize="sm" color="gray.400">
+                  Forgot password?{" "}
+                  <Link to="auth/sing-up">
+                    <LinkChakra variant="underline" color="dark">
+                      Reset here.
+                    </LinkChakra>
+                  </Link>
+                </Text>
 
-              <PasswordField
-                label="Password"
-                placeholder="Enter your password"
-                error={formState.errors.password?.message}
-                {...register("password")}
-              />
+                <Button
+                  w="100%"
+                  type="submit"
+                  loading={loading}
+                  disabled={!formState.isValid}
+                  onClick={handleSubmit(signIn)}
+                >
+                  Sign in
+                </Button>
 
-              <Link to="auth/sing-up" className="sign-in-form__forgot-password">
-                Forgot password?
-              </Link>
-
-              <Button
-                w="100%"
-                loading={loading}
-                disabled={!formState.isValid}
-                onClick={handleSubmit(signIn)}
-              >
-                Sign in
-              </Button>
-
-              <Text fontSize={14} textAlign="center">
-                Don't have an account? <Link to="/auth/sign-up">Sign up.</Link>
-              </Text>
-            </Flex>
+                <Text fontSize="sm" textAlign="center" color="gray.400">
+                  Don't have an account?{" "}
+                  <Link to="/auth/sign-up">
+                    <LinkChakra variant="underline" color="primary">
+                      Sign up.
+                    </LinkChakra>
+                  </Link>
+                </Text>
+              </Flex>
+            </form>
           </Flex>
         </GridItem>
       </Grid>

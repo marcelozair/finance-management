@@ -1,32 +1,60 @@
-import { useState } from "react";
 import { Grid, GridItem } from "@chakra-ui/react";
 
-import { EnumStatusSignUp } from "../../interfaces/ISignUpForm";
-import { RegisterForm } from "../../components/RegisterForm/RegisterForm";
+import { VerifyCode } from "../../components/VerifyCode";
+import { SignUpTOTP } from "../../components/SignUpTOTP";
+import { RegisterForm } from "../../components/RegisterForm";
+import { useAtomNavigator } from "@shared/presentation/hooks/useAtomNavigator";
 
 import "./../../styles/signIn.css";
 
+export interface SignUpAtomCtx {
+  secret: string;
+  userId: number;
+}
+
+export interface SignUpAtomsProps {
+  context: SignUpAtomCtx;
+  navigate: (view: TypeSignUpViews) => void;
+  updateCtx: (values: Partial<SignUpAtomCtx>) => void;
+}
+
+export type TypeSignUpViews =
+  | "user-sign-up"
+  | "user-register-totp"
+  | "user-verification-totp";
+
 export const SignUpView = () => {
-  const [step, setStep] = useState<EnumStatusSignUp>(EnumStatusSignUp.REGISTER);
+  const { CurrentComponent } = useAtomNavigator<TypeSignUpViews, SignUpAtomCtx>(
+    {
+      defaultView: "user-sign-up",
+      atomsView: {
+        "user-sign-up": RegisterForm,
+        "user-register-totp": SignUpTOTP,
+        "user-verification-totp": VerifyCode,
+      },
+    },
+  );
 
   return (
-    <main className="auth">
+    <main>
       <Grid
-        gridTemplateColumns={{ lg: "repeat(6, 1fr)", base: "repeat(1, 1fr)" }}
+        gridTemplateColumns={{
+          md: "repeat(6, 1fr)",
+          base: "1fr",
+        }}
+        minH="100vh"
       >
-        <GridItem
-          colSpan={{ lg: 4 }}
-          className="sign-in__banner"
-          display={{ base: "none", lg: "block" }}
-        ></GridItem>
+        <GridItem bg="black" colSpan={{ xl: 4, md: 3, base: 0 }}></GridItem>
         <GridItem
           placeItems="center"
+          width="100%"
+          paddingY={5}
           className="sign-in__form"
-          colSpan={{ lg: 2, base: 1 }}
+          colSpan={{ xl: 2, md: 3, base: 1 }}
+          minH={0}
+          overflowY="auto"
         >
-          {step === EnumStatusSignUp.REGISTER && (
-            <RegisterForm next={() => setStep(EnumStatusSignUp.VERIFICATION)} />
-          )}
+          <CurrentComponent />
         </GridItem>
       </Grid>
     </main>

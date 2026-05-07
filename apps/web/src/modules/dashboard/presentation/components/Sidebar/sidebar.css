@@ -2,7 +2,7 @@
 @import "./../../../../../app.css";
 
 .sidebar{
-  @apply w-full h-screen border-r-1 px-2 py-5 border-gray-200;
+  @apply w-full h-screen px-2 py-5;
 }
 
 .sidebar__logo {
@@ -26,5 +26,5 @@
 }
 
 .sidebar__menu-link {
-  @apply flex items-center gap-2 text-gray-600  duration-300 ease-in-out;
+  @apply flex items-center gap-2 text-gray-800  duration-300 ease-in-out dark:text-gray-200;
 }
