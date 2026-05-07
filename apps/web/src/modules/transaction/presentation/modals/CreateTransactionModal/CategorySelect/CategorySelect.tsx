@@ -1,19 +1,18 @@
+import { useMemo } from "react";
 import {
+  Box,
+  Flex,
+  Portal,
   Select,
   createListCollection,
-  Flex,
   type CollectionOptions,
-  Portal,
-  Box,
 } from "@chakra-ui/react";
 import { RenderIcon } from "@shared/presentation/components/RenderIcon/RenderIcon";
-
-import { useMemo } from "react";
 
 import type {
   SubCategoryDto,
   CategoryWihtSubCategoriesDto,
-} from "src/modules/transaction/domain/interfaces/GroupedTransactionsDto";
+} from "src/modules/transaction/domain/interfaces/CategoryWithSubCategoryDto";
 
 interface CategorySelectProps {
   categories: CategoryWihtSubCategoriesDto[];
@@ -110,7 +109,7 @@ export const CategorySelect = ({
                   <Select.ItemGroup key={category.id}>
                     <Select.ItemGroupLabel>
                       <Flex align="center" gap={2}>
-                        <RenderIcon name={category.iconName} color="black" />
+                        <RenderIcon name={category.iconName} />
                         {category.name}
                       </Flex>
                     </Select.ItemGroupLabel>

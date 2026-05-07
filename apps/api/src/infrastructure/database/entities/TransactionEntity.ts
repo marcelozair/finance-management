@@ -10,9 +10,9 @@ import {
 } from 'typeorm';
 
 import { WalletEntity } from './WalletEntity';
-import { TransactionEnum } from 'src/modules/transactions/domain/vo/TransactionType';
 import { CategoryEntity } from './CategoryEntity';
 import { SubCategoryEntity } from './SubCategoryEntity';
+import { TransactionEnum } from '../../../modules/transactions/domain/vo/TransactionType';
 
 @Entity({ schema: 'finance', name: 'mad_transactions' })
 export class TransactionEntity {

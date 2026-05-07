@@ -2,14 +2,13 @@ import { useAtom } from "jotai";
 import { useEffect } from "react";
 
 import {
+  profileStore,
   activeProfileAtom,
   loadingProfileAtom,
-  profileStore,
 } from "./profileStore";
+import { LOCAL_STORAGE_PROFILE_KEY } from "@shared/const/localStorage";
 import { serviceLocator } from "../../../../core/services/ServiceLocator";
 import type { Profile } from "../../../../modules/profiles/domain/entities/Profile";
-
-const LOCAL_STORAGE_PROFILE_KEY = "selected-profile";
 
 /**
  * Custom hook to manage the global Profile state and Local Storage synchronization.
@@ -32,7 +31,6 @@ export const useProfile = () => {
 
     if (newProfile) {
       localStorage.save(LOCAL_STORAGE_PROFILE_KEY, newProfile);
-
       // Adding Profile ID into API Client Instance
       const APIClient = serviceLocator.getAuthenticatedAPIClient();
       APIClient.updateProfileId(newProfile.id);

@@ -1,6 +1,7 @@
 import { Button, Box, VStack, Text } from "@chakra-ui/react";
 
 import { formatMoney } from "@shared/utils/currency";
+import { Amount } from "src/core/domain/vo/Amount";
 import type { Wallet } from "src/modules/wallet/domain/entities/Wallet";
 
 interface WalletCardProps {
@@ -71,7 +72,10 @@ export const WalletCard = ({ selected, wallet, onClick }: WalletCardProps) => {
             color: "gray.50",
           }}
         >
-          {formatMoney(wallet._balance, wallet._currency)}
+          {formatMoney(
+            new Amount(Math.abs(wallet._balance.getValue())),
+            wallet._currency,
+          )}
         </Text>
       </VStack>
     </Button>

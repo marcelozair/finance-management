@@ -2,9 +2,8 @@ import { ValueObject } from 'src/core/domain/vo/ValueObject';
 
 export class Amount extends ValueObject<number> {
   constructor(value: number) {
-    if (!Amount.isValid(value)) {
-      throw new Error('Invalid amount');
-    }
+    console.log(value);
+    if (!Amount.isValid(value)) throw new Error('Invalid amount');
     super(value);
   }
 

@@ -10,6 +10,7 @@ import { WalletDto } from '../../presentation/dtos/WalletDto';
 import { WalletRepository } from '../../domain/interfaces/WalletRepository';
 import { WalletBalanceService } from '../../domain/services/WalletBalanceService';
 import { TransactionRepository } from '../../../transactions/domain/interfaces/TransactionRepository';
+import { Amount } from '../../domain/vo/Amount';
 
 export class GetWalletUseCase {
   constructor(
@@ -46,6 +47,7 @@ export class GetWalletUseCase {
             new Currency(wallet._currency),
             balance,
             new WalletColor(wallet._color),
+            wallet._creditLine ? new Amount(wallet._creditLine) : null,
           ),
         );
       }),

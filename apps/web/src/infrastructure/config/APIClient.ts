@@ -5,7 +5,7 @@ import { API_BASE_URL } from "@shared/const/apiConfiguration";
 
 export interface AuthenticatedAPIClientConfig {
   language?: string;
-  profileId?: number;
+  profileId?: number | null;
   authorization?: string;
 }
 
@@ -35,13 +35,13 @@ export class AuthenticatedAPIClientImpl extends APIClient {
     const language = config.language;
 
     // Creating Axios instance (Authenticated already)
-    // Integrate Profile-Id Value for API operations.
+    // Integrate profile-id Value for API operations.
     const instance = axios.create({
       baseURL: API_BASE_URL,
       headers: {
         "Content-Type": "application/json",
         "Accept-Language": language,
-        "Profile-Id": config.profileId,
+        "profile-id": config.profileId,
         Authorization: `Bearer ${config.authorization}`,
       },
     });

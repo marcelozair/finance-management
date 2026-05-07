@@ -13,6 +13,8 @@ import type { SessionStore } from "src/modules/auth/domain/interfaces/SessionSto
 import { useAtom } from "jotai";
 import { AuthenticatedAPIClientImpl } from "src/infrastructure/config/APIClient";
 import { serviceLocator, ServiceName } from "src/core/services/ServiceLocator";
+import type { Profile } from "src/modules/profiles/domain/entities/Profile";
+import { LOCAL_STORAGE_PROFILE_KEY } from "@shared/const/localStorage";
 
 /**
  * Dependencies that the hook needs. You can provide them via context or
@@ -42,10 +44,14 @@ export const useSession = ({ sessionStoreService }: UseSessionDeps) => {
     store: sessionStore,
   });
 
-  const createAuthenticatedAPIClient = (authorizationToken: string) => {
+  const createAuthenticatedAPIClient = (
+    authorizationToken: string,
+    profileId: number | null,
+  ) => {
     // Create Authenticated APIClient
     const AuthenticatedAPIClient = new AuthenticatedAPIClientImpl({
       authorization: authorizationToken,
+      profileId: profileId,
     });
 
     serviceLocator.register(
@@ -55,20 +61,39 @@ export const useSession = ({ sessionStoreService }: UseSessionDeps) => {
   };
 
   const setUserSession = (session: Session, user: User) => {
+    const localStorage = serviceLocator.getLocalStorage();
+    const storedProfile = localStorage.get<Profile>(
+      LOCAL_STORAGE_PROFILE_KEY,
+      null as null,
+    );
+
     sessionStore.set(userSessionAtom, user);
     setSession(session);
-    createAuthenticatedAPIClient(session.authorizationToken);
+    createAuthenticatedAPIClient(
+      session.authorizationToken,
+      storedProfile?.id || null,
+    );
   };
 
   const checkExistSession = async () => {
-    const localSession = sessionStoreService.get();
+    if (!session) {
+      const localSession = sessionStoreService.get();
+      const localStorage = serviceLocator.getLocalStorage();
+      const storedProfile = localStorage.get<Profile>(
+        LOCAL_STORAGE_PROFILE_KEY,
+        null as null,
+      );
 
-    if (localSession) {
-      setSession(localSession);
-      createAuthenticatedAPIClient(localSession.authorizationToken);
+      if (localSession) {
+        setSession(localSession);
+        createAuthenticatedAPIClient(
+          localSession.authorizationToken,
+          storedProfile?.id || null,
+        );
+      }
+
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   useEffect(() => {

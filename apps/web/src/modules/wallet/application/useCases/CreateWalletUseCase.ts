@@ -5,7 +5,7 @@ import type { CreateWalletDto } from "../dtos/CreateWalletDto";
 export class CreateWalletUseCase {
   constructor(private readonly walletRepository: WalletRepository) {}
 
-  public execute(profileId: number, payload: CreateWalletDto): Promise<Wallet> {
-    return this.walletRepository.create(profileId, payload);
+  public execute(payload: CreateWalletDto): Promise<Wallet> {
+    return this.walletRepository.create(payload);
   }
 }

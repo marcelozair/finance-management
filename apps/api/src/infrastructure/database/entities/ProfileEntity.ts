@@ -12,7 +12,7 @@ import {
 
 import { UserEntity } from './UserEntity';
 import { WalletEntity } from './WalletEntity';
-import { CurrencyEnum } from 'src/shared/constant/CurrencyEnum';
+import { CurrencyEnum } from '../../../shared/constant/CurrencyEnum';
 
 @Entity({ schema: 'core', name: 'mad_profiles' })
 export class ProfileEntity {

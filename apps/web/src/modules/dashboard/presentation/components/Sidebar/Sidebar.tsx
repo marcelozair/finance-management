@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { TbWallet } from "react-icons/tb";
+import { CiLogout } from "react-icons/ci";
+import { useNavigate } from "react-router";
 import { TbSettings } from "react-icons/tb";
 import { TbSmartHome } from "react-icons/tb";
-import { Box, Flex, Text } from "@chakra-ui/react";
 import { TbDiamondFilled } from "react-icons/tb";
-import { CiLogout } from "react-icons/ci";
+import { Box, Flex, Text } from "@chakra-ui/react";
+
 import { useSession } from "@shared/presentation/store/session/useSession";
 import { SessionCookieStore } from "src/modules/auth/infrastructure/services/SessionCookieStore";
-import { useNavigate } from "react-router";
 
 export const Sidebar = () => {
   const navigate = useNavigate();

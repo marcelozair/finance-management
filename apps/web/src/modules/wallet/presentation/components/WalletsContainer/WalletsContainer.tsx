@@ -7,12 +7,10 @@ import { useWalletDomain } from "../../hooks/useWalletDomain";
 import { WalletCardSkeleton } from "./WalletCard/WalletCardSkeleton";
 import { CreateWalletCard } from "./CreateWalletCard/CreateWalletCard";
 import { CreateWalletModal } from "./CreateWalletModal/CreateWalletModal";
-import { useProfile } from "@shared/presentation/store/profile/useProfile";
 import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase";
 import { useTransactionStore } from "../../../../transaction/presentation/store/useTransactionStore";
 
 export const WalletsContainer = () => {
-  const { profile } = useProfile();
   const walletDomain = useWalletDomain();
   const { updateTransactions } = useTransactionStore();
 
@@ -21,24 +19,25 @@ export const WalletsContainer = () => {
 
   const [createModal, setCreateModal] = useState(false);
 
-  const { execute, loading } = useExecuteUseCase<void, number>({
-    callback: async (profileId: number) => {
-      const wallets = await walletDomain.getAll(profileId);
+  const { execute, loading } = useExecuteUseCase<void, void>({
+    callback: async () => {
+      const wallets = await walletDomain.getAll();
       setWallets(wallets);
     },
   });
 
   const handleWalletSelection = (walletId: number) => {
     if (selectedWallet && selectedWallet._id != walletId) {
-      updateTransactions([]);
-      selectWallet(selectedWallet);
+      const wallet = wallets.find(({ _id }) => _id === walletId);
+      if (wallet) {
+        updateTransactions([]);
+        selectWallet(wallet);
+      }
     }
   };
 
   useEffect(() => {
-    if (profile && profile.id) {
-      execute(profile.id);
-    }
+    execute();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -52,6 +52,7 @@ export const SelectField = ({
             <Select.ValueText
               placeholder={placeholder}
               color={value === "" ? "gray.400" : "black"}
+              _dark={{ color: value === "" ? "gray.200" : "white" }}
             />
           </Select.Trigger>
           <Select.IndicatorGroup>

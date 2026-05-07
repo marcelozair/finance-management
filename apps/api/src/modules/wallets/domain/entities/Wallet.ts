@@ -21,15 +21,33 @@ export class Wallet {
     private readonly currency: Currency,
     private readonly balance: Amount,
     private readonly color: WalletColor,
-  ) {}
+    private readonly creditLine: Amount | null,
+  ) {
+    this.validate();
+  }
+
+  private validate(): void {
+    if (this.type.isCredit && !this.creditLine) {
+      throw new Error('Credit line is required for credit wallets.');
+    }
+  }
 
   static forCreate(
     name: WalletName,
     walletType: WalletType,
     currency: Currency,
     color: WalletColor,
+    creditLine: Amount | null,
   ) {
-    return new Wallet(0, name, walletType, currency, new Amount(0), color);
+    return new Wallet(
+      0,
+      name,
+      walletType,
+      currency,
+      new Amount(0),
+      color,
+      creditLine,
+    );
   }
 
   get _id() {
@@ -54,5 +72,9 @@ export class Wallet {
 
   get _currency() {
     return this.currency.getValue();
+  }
+
+  get _creditLine() {
+    return this.creditLine ? this.creditLine.getValue() : null;
   }
 }

@@ -1,14 +1,22 @@
 import { Amount } from "../../../../core/domain/vo/Amount";
 import type { Currency } from "../../../../core/domain/vo/Currency";
 
+export enum WalletTypes {
+  SAVE = "Save",
+  CREDIT = "Credit",
+  DEBIT = "Debit",
+  CASH = "Cash",
+}
+
 export class Wallet {
   constructor(
     private readonly id: number,
     private readonly name: string,
     private readonly type: string,
-    private balance: Amount,
+    private readonly balance: Amount,
     private readonly currency: Currency,
     private readonly color: string,
+    private readonly creditLine: Amount | null,
   ) {}
 
   get _id() {
@@ -35,6 +43,10 @@ export class Wallet {
     return this.currency;
   }
 
+  get _creditLine() {
+    return this.creditLine;
+  }
+
   cloneWithBalance(balance: Amount) {
     return new Wallet(
       this._id,
@@ -42,7 +54,8 @@ export class Wallet {
       this._type,
       balance,
       this._currency,
-      this.color,
+      this._color,
+      this._creditLine,
     );
   }
 }

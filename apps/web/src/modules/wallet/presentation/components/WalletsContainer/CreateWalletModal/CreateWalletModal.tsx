@@ -46,6 +46,16 @@ const createWalletSchema = yup.object().shape({
     .required("Initial balance is required"),
   walletType: yup.string().required("Account type is required"),
   currency: yup.string().required("Currency is required"),
+  creditLine: yup
+    .number()
+    .nullable()
+    .default(null)
+    .typeError("Credit line must be a number")
+    .when("walletType", {
+      then: (schema) => schema.required("Credit Line wallet is required"),
+      otherwise: (schema) => schema.notRequired(),
+      is: (value: string) => value === WalletTypes.CREDIT,
+    }),
 });
 
 interface CreateWalletForm {
@@ -53,6 +63,7 @@ interface CreateWalletForm {
   initialBalance: number;
   walletType: string;
   currency: string;
+  creditLine: number | null;
 }
 
 interface CreateWalletModalProps {
@@ -67,17 +78,19 @@ export const CreateWalletModal = ({
   const walletDomain = useWalletDomain();
 
   const { profile } = useProfile();
-  const { addWallet, selectWallet, selectWalletId } = useWalletStore();
+  const { addWallet, selectWallet } = useWalletStore();
 
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors, isValid },
     reset,
   } = useForm<CreateWalletForm>({
     mode: "onChange",
     defaultValues: {
+      initialBalance: 0,
       currency: "USD",
     },
     resolver: yupResolver(createWalletSchema),
@@ -86,12 +99,9 @@ export const CreateWalletModal = ({
   const { execute, loading } = useExecuteUseCase<void, CreateWalletDto>({
     callback: async (payload) => {
       try {
-        if (profile) {
-          const wallet = await walletDomain.createWallet(profile.id, payload);
-          addWallet(wallet);
-          selectWallet(wallet);
-          selectWalletId(wallet._id);
-        }
+        const wallet = await walletDomain.createWallet(payload);
+        addWallet(wallet);
+        selectWallet(wallet);
       } finally {
         reset();
         onClose();
@@ -105,6 +115,8 @@ export const CreateWalletModal = ({
     const payload: CreateWalletDto = {
       ...data,
       color: "#4A5568",
+      initialBalance:
+        data.walletType === WalletTypes.CREDIT ? 0 : data.initialBalance,
     };
 
     execute(payload);
@@ -150,13 +162,29 @@ export const CreateWalletModal = ({
               }
             />
 
-            <AmountField
-              label="Initial balance"
-              currency={new Currency("USD")}
-              placeholder="Enter initial balance"
-              error={errors.initialBalance?.message}
-              {...register("initialBalance")}
-            />
+            {watch("walletType") !== WalletTypes.CREDIT && (
+              <AmountField
+                label="Initial balance"
+                currency={new Currency("USD")}
+                placeholder="Enter initial balance"
+                error={errors.initialBalance?.message}
+                {...register("initialBalance")}
+              />
+            )}
+
+            {watch("walletType") === WalletTypes.CREDIT && (
+              <AmountField
+                label="Credit Line"
+                currency={
+                  watch("currency")
+                    ? new Currency(watch("currency"))
+                    : new Currency("USD")
+                }
+                placeholder="Enter credit limit"
+                error={errors.creditLine?.message}
+                {...register("creditLine")}
+              />
+            )}
           </Flex>
         </form>
       }

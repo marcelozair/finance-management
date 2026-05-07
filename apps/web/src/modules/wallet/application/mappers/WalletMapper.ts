@@ -12,6 +12,7 @@ export class WalletMapper {
       new Amount(wallet.balance),
       new Currency(wallet.currency),
       wallet.color,
+      wallet.creditLine ? new Amount(wallet.creditLine) : null,
     );
   }
 }

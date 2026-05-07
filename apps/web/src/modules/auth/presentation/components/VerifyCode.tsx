@@ -2,15 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Button, Link, PinInput, Text } from "@chakra-ui/react";
 
-import { AuthDomain } from "../../application";
 import { AuthWrapper } from "./AuthWrapper";
+import { AuthDomain } from "../../application";
 import type { SignUpAtomsProps } from "../views/SignUp/SignUp";
 import type { SessionUserDTO } from "../../infrastructure/dtos/AuthDTO";
 import type { VerifyCodeDTO } from "../../application/dtos/VerifyCodeDTO";
 import { Heading } from "@shared/presentation/components/content/Heading";
-import { useSession } from "@shared/presentation/store/session/useSession";
 import { SubHeading } from "@shared/presentation/components/content/SubHeading";
 import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase";
+import { useSession } from "@shared/presentation/store/session/useSession";
 import { SessionCookieStore } from "../../infrastructure/services/SessionCookieStore";
 
 export const VerifyCode = (props: SignUpAtomsProps) => {
@@ -36,20 +36,20 @@ export const VerifyCode = (props: SignUpAtomsProps) => {
       token: code,
       userId: props.context.userId || 1,
     });
-
     setUserSession(session, user);
     navigate("/admin/select-profile");
   };
 
   return (
     <AuthWrapper>
-      <Heading textAlign={{ base: "center", sm: "left" }} mb={4}>
+      <Heading textAlign={"left"} mdDown={{ textAlign: "center" }} mb={4}>
         Confirm Code
       </Heading>
       <SubHeading
+        width="80%"
+        textAlign={"left"}
+        mdDown={{ textAlign: "center", width: "100%" }}
         mb={8}
-        textAlign={{ base: "center", sm: "left" }}
-        width={{ base: "100%", sm: "80%" }}
       >
         Please insert into your verification code from your authenticator app.
       </SubHeading>
@@ -73,17 +73,6 @@ export const VerifyCode = (props: SignUpAtomsProps) => {
         </PinInput.Control>
       </PinInput.Root>
 
-      <Text mt={8} textStyle="sm" color="gray.400">
-        Didn't get the code?{" "}
-        <Link
-          variant="underline"
-          color="primary"
-          onClick={() => props.navigate("user-register-totp")}
-        >
-          Scan again
-        </Link>
-      </Text>
-
       <Button
         w="100%"
         mt={4}
@@ -93,6 +82,16 @@ export const VerifyCode = (props: SignUpAtomsProps) => {
       >
         Continue
       </Button>
+      <Text mt={8} textStyle="sm" color="gray.400" textAlign={"center"}>
+        Didn't get the code?{" "}
+        <Link
+          variant="underline"
+          color="primary"
+          onClick={() => props.navigate("user-register-totp")}
+        >
+          Scan again
+        </Link>
+      </Text>
     </AuthWrapper>
   );
 };

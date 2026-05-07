@@ -12,25 +12,26 @@ import { useTransactionStore } from "../../store/useTransactionStore";
 import { RenderIcon } from "@shared/presentation/components/RenderIcon/RenderIcon";
 import { useWalletStore } from "src/modules/wallet/presentation/store/useWalletStore";
 import type { TransactionType } from "src/modules/transaction/domain/vo/TransactionType";
+import { useMemo } from "react";
+import { useConfig } from "@shared/presentation/store/appConfig/useAppConfig";
 
 interface TransactionProps {
   selected: boolean;
   transaction: Transaction;
 }
 
-export const TransactionCard = ({
-  transaction,
-  selected,
-}: TransactionProps) => {
+export const TransactionCard = ({ transaction }: TransactionProps) => {
   const { selectedWallet } = useWalletStore();
+  const { system } = useConfig();
   const { selectTransaction } = useTransactionStore();
 
-  const getAmountColor = (transactionType: TransactionType): string => {
-    if (transactionType.equals(IncomeTransaction)) return "green.500";
-    if (transactionType.equals(ExpenseTransaction)) return "red.500";
-    if (transactionType.equals(TransferTransaction)) return "gray.700";
+  const amountColor = useMemo((): string => {
+    if (transaction._type.equals(IncomeTransaction)) return "green.500";
+    if (transaction._type.equals(ExpenseTransaction)) return "red.500";
+    if (transaction._type.equals(TransferTransaction))
+      return system.theme === "dark" ? "gray.200" : "gray.700";
     return "gray.700";
-  };
+  }, [transaction, system]);
 
   const getAmountOperation = (transactionType: TransactionType): string => {
     if (transactionType.equals(IncomeTransaction)) return "+";
@@ -70,7 +71,7 @@ export const TransactionCard = ({
           </Box>
 
           <VStack align="start" gap={0}>
-            <Text color="black" fontWeight="600" fontSize="14px">
+            <Text fontWeight="600" fontSize="14px">
               {transaction._concept}
             </Text>
 
@@ -88,11 +89,7 @@ export const TransactionCard = ({
 
         {/* Right section */}
         <VStack align="end" gap={0}>
-          <Text
-            color={getAmountColor(transaction._type)}
-            fontWeight="500"
-            fontSize="14px"
-          >
+          <Text color={amountColor} fontWeight="500" fontSize="14px">
             {getAmountOperation(transaction._type)}
             {selectedWallet?._currency
               ? formatMoney(transaction._amount, selectedWallet?._currency)

@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 import { Button, Flex, createListCollection } from "@chakra-ui/react";
 import { TiArrowRepeat, TiChartArea, TiChartLine } from "react-icons/ti";
 
@@ -7,12 +8,12 @@ import {
   type CreateTransactionForm,
 } from "./ValidationForm";
 
-import { useEffect, useMemo, useState } from "react";
 import { Currency } from "src/core/domain/vo/Currency";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CategorySelect } from "./CategorySelect/CategorySelect";
 import { Modal } from "@shared/presentation/components/Modal/Modal";
 import { useTransactionStore } from "../../store/useTransactionStore";
+import { useTransactionDomain } from "../../hooks/useTransactionDomain";
 import { TransactionEnum } from "./CategorySelect/TransactionCatalogs";
 import { TransactionType } from "./TransactionTypeSelect/TransactionType";
 import { TextField } from "@shared/presentation/components/TextField/TextField";
@@ -21,7 +22,6 @@ import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase"
 import { AmountField } from "@shared/presentation/components/AmountField/AmountField";
 import { SelectField } from "@shared/presentation/components/SelectField/SelectField";
 import { useWalletStore } from "../../../../wallet/presentation/store/useWalletStore";
-import { useWalletDomain } from "../../../../wallet/presentation/hooks/useWalletDomain";
 import type { CreateTransactionDto } from "src/modules/transaction/domain/interfaces/CreateTransactionDto";
 
 interface CreateTransactionModalProps {
@@ -33,7 +33,7 @@ export const CreateTransactionModal = ({
   onClose,
   isOpen,
 }: CreateTransactionModalProps) => {
-  const domain = useWalletDomain();
+  const domain = useTransactionDomain();
 
   const [walletsCatalog, setWalletsCatalog] = useState(
     createListCollection<{ label: string; value: string }>({
@@ -42,13 +42,11 @@ export const CreateTransactionModal = ({
   );
 
   const { addTransaction, categories, setCategories } = useTransactionStore();
-  const { wallets, selectedWalletId, selectedWallet, updateWallets } =
-    useWalletStore();
+  const { wallets, selectedWallet, updateWallets } = useWalletStore();
 
   const {
     register,
     handleSubmit,
-    getValues,
     setValue,
     watch,
     formState: { errors, isValid },
@@ -58,12 +56,14 @@ export const CreateTransactionModal = ({
     resolver: yupResolver(createTransactionSchema),
   });
 
+  const transactionType = watch("type");
+
   const { execute, loading } = useExecuteUseCase<void, CreateTransactionDto>({
     callback: async (transaction: CreateTransactionDto) => {
       try {
-        if (selectedWalletId) {
+        if (selectedWallet && selectedWallet._id) {
           const createdTransaction = await domain.createTransaction(
-            selectedWalletId,
+            selectedWallet._id,
             transaction,
           );
 
@@ -79,10 +79,6 @@ export const CreateTransactionModal = ({
   const setTransactionType = (transactionType: string) => {
     setValue("type", transactionType);
   };
-
-  const transactionType = useMemo(() => {
-    return getValues("type");
-  }, [watch("type")]);
 
   const onSubmit = (data: CreateTransactionForm) => {
     const isoDate = new Date(data.date).toISOString();
@@ -184,7 +180,7 @@ export const CreateTransactionModal = ({
                 }
               }}
             />
-            {watch("type") === TransactionEnum.TRANSFER && (
+            {transactionType === TransactionEnum.TRANSFER && (
               <SelectField
                 label="Destination Wallet"
                 placeholder="Select destination wallet"

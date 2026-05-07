@@ -25,7 +25,7 @@ export const TransactionType = ({
         transform: "translateY(-1px)",
         opacity: 1,
       }}
-      bg={color + ".200"}
+      bg={color + ".400"}
       border="solid 2px"
       borderColor={color + ".500"}
       display="flex"
@@ -39,8 +39,8 @@ export const TransactionType = ({
       p="10px"
       rounded="md"
     >
-      <Icon size={25} />
-      <Text fontWeight="bold" textAlign="center">
+      <Icon size={25} color="black" />
+      <Text fontWeight="bold" color="black" textAlign="center">
         {label}
       </Text>
     </Box>

@@ -31,6 +31,7 @@ export class CreateWalletUseCase {
       new WalletType(wallet.walletType),
       new Currency(wallet.currency),
       new WalletColor(wallet.color),
+      wallet.creditLine ? new Amount(wallet.creditLine) : null,
     );
 
     const createdWallet = await this.walletRepository.save(
@@ -52,6 +53,7 @@ export class CreateWalletUseCase {
       new Currency(createdWallet._currency),
       new Amount(wallet.initialBalance),
       new WalletColor(createdWallet._color),
+      wallet.creditLine ? new Amount(wallet.creditLine) : null,
     );
 
     return WalletMapper.toDTO(resultWallet);

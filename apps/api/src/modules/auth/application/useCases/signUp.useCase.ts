@@ -85,6 +85,7 @@ export class SignUpUseCase {
       new WalletType(WalletTypes.CASH),
       currency,
       new WalletColor('#37943F'),
+      null,
     );
 
     await this.walletRepo.save(profile._id, defaultWallet);

@@ -1,4 +1,4 @@
-import { IsEnum, IsString, IsNumber } from 'class-validator';
+import { IsEnum, IsString, IsNumber, IsOptional } from 'class-validator';
 
 import { WalletTypes } from '../../domain/vo/WalletType';
 import { CurrencyEnum } from 'src/shared/constant/CurrencyEnum';
@@ -18,4 +18,8 @@ export class CreateWalletDTO {
 
   @IsEnum(WalletTypes)
   walletType: WalletTypes;
+
+  @IsOptional()
+  @IsNumber()
+  creditLine?: number;
 }

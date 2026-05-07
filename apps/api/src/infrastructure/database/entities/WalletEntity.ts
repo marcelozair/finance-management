@@ -12,8 +12,8 @@ import {
 
 import { ProfileEntity } from './ProfileEntity';
 import { TransactionEntity } from './TransactionEntity';
-import { CurrencyEnum } from 'src/shared/constant/CurrencyEnum';
-import { WalletTypes } from 'src/modules/wallets/domain/vo/WalletType';
+import { CurrencyEnum } from '../../../shared/constant/CurrencyEnum';
+import { WalletTypes } from '../../../modules/wallets/domain/vo/WalletType';
 
 @Entity({ schema: 'finance', name: 'mad_wallets' })
 export class WalletEntity {
@@ -31,6 +31,9 @@ export class WalletEntity {
 
   @Column({ enum: CurrencyEnum, type: 'enum' })
   currency: string;
+
+  @Column({ type: 'decimal', precision: 12, scale: 2, nullable: true })
+  creditLine?: number;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
