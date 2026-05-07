@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import type { LocalStorageService } from "../utils/localStorage";
-import type { LoggerService } from "../utils/logger";
 import { FailureHandler } from "./FailureHandler";
 
+import type { LoggerService } from "@shared/utils/logger";
+import type { LocalStorageService } from "@shared/utils/localStorage";
+import type { APIClient } from "src/infrastructure/config/APIClient";
+
 export enum ServiceName {
-  FailureHandler = "FailureHandler",
   LocalStorage = "LocalStorage",
   LoggerService = "LoggerService",
+  FailureHandler = "FailureHandler",
+  AuthenticatedAPIClient = "AuthenticatedAPIClient",
 }
 
 class ServiceLocator {
@@ -39,6 +42,10 @@ class ServiceLocator {
 
   getLogger(): LoggerService {
     return this.get<LoggerService>(ServiceName.LoggerService);
+  }
+
+  getAuthenticatedAPIClient(): APIClient {
+    return this.get<APIClient>(ServiceName.AuthenticatedAPIClient);
   }
 }
 

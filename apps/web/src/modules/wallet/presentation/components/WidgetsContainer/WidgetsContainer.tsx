@@ -1,6 +1,6 @@
 import { Grid, GridItem } from "@chakra-ui/react";
-// import { ChartsContainer } from "../ChartsContainer/ChartsContainer";
-import { WalletTransactions } from "../WalletTransactions/WalletTransactions";
+import { WalletInfo } from "../WalletsContainer/WalletInfo/WalletInfo";
+import { TransactionsView } from "src/modules/transaction/presentation/view/TransactionsView";
 
 export const WidgetsContainer = () => {
   return (
@@ -10,7 +10,8 @@ export const WidgetsContainer = () => {
       gridTemplateColumns={{ lg: "repeat(8, 1fr)", base: "repeat(1, 1fr)" }}
     >
       <GridItem colSpan={{ lg: 6 }}>
-        <WalletTransactions />
+        <WalletInfo />
+        <TransactionsView />
       </GridItem>
       <GridItem colSpan={{ lg: 2 }}>{/* <ChartsContainer /> */}</GridItem>
     </Grid>

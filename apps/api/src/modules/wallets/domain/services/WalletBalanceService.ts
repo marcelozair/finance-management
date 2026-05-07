@@ -40,7 +40,7 @@ export class WalletBalanceService {
     walletType: WalletTypes,
     transactions: Transaction[],
   ): Amount {
-    return transactions.reduce((balance, transaction) => {
+    const balance = transactions.reduce((balance, transaction) => {
       if (transaction._type.equals(IncomeTransaction)) {
         return balance.add(transaction._amount);
       }
@@ -74,5 +74,13 @@ export class WalletBalanceService {
 
       return balance;
     }, new Amount(0));
+
+    if (walletType === WalletTypes.CREDIT && balance.getValue() > 0) {
+      throw new Error(
+        `Business Rule Violation: Credit wallet (id: ${walletId}) cannot have a positive balance.`,
+      );
+    }
+
+    return balance;
   }
 }

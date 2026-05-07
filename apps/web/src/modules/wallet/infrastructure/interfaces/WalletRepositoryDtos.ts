@@ -5,6 +5,7 @@ export interface WalletDto {
   balance: number;
   currency: string;
   color: string;
+  creditLine: number | null;
 }
 
 export interface CreateWalletPayload {
@@ -13,4 +14,5 @@ export interface CreateWalletPayload {
   currency: string;
   walletType: string;
   initialBalance: number;
+  creditLine: number | null;
 }

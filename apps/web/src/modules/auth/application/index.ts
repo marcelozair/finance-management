@@ -22,8 +22,11 @@ export class AuthDomain {
     const sessionStore = new SessionCookieStore();
 
     this.signUpUseCase = new SignUpUseCase(authRepository);
-    this.verifyCodeUseCase = new VerifyCodeUseCase(authRepository);
     this.signInUseCase = new SignInUseCase(authRepository, sessionStore);
+    this.verifyCodeUseCase = new VerifyCodeUseCase(
+      authRepository,
+      sessionStore,
+    );
   }
 
   public async signIn(body: SignInCredentialsDTO): Promise<SessionUserDTO> {

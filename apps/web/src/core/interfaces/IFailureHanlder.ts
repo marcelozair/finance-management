@@ -8,6 +8,6 @@ export interface IFailureHandler {
   logAndMapExceptionToFailure(e: any): Failure;
   handleServerFailure(
     failure: Failure | null,
-    customErrorMessages: CustomErrorMessages
+    customErrorMessages: CustomErrorMessages,
   ): Promise<void>;
 }

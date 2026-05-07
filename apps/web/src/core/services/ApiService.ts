@@ -12,6 +12,13 @@ export enum HttpMethod {
   DELETE = "delete",
 }
 
+export interface APIResponse<T> {
+  message: string;
+  statusCode: number;
+  error?: string;
+  data: T;
+}
+
 export class BaseService {
   protected client: AxiosInstance;
   private failureHandler: IFailureHandler;
@@ -27,7 +34,7 @@ export class BaseService {
     endpoint: string,
     data?: any,
     params?: any,
-  ): Promise<T> {
+  ): Promise<APIResponse<T>> {
     try {
       const endpointParsed = `/${endpoint}`;
 
@@ -42,30 +49,38 @@ export class BaseService {
         });
       }
 
-      return response.data;
+      return response.data as APIResponse<T>;
     } catch (error: any) {
       throw this.failureHandler.mapErrorToException(error);
     }
   }
 
-  async get<T>(endpoint: string, params?: any): Promise<T> {
+  async get<T>(endpoint: string, params?: any): Promise<APIResponse<T>> {
     return this.sendRequest<T>(HttpMethod.GET, endpoint, params);
   }
 
-  async post<T>(endpoint: string, body?: any): Promise<T> {
+  async post<T>(endpoint: string, body?: any): Promise<APIResponse<T>> {
     return this.sendRequest<T>(HttpMethod.POST, endpoint, body);
   }
 
-  async put<T>(endpoint: string, body?: any): Promise<T> {
+  async put<T>(endpoint: string, body?: any): Promise<APIResponse<T>> {
     return this.sendRequest<T>(HttpMethod.PUT, endpoint, body);
   }
 
-  async delete<T>(endpoint: string, id: string, body?: any): Promise<T> {
+  async delete<T>(
+    endpoint: string,
+    id: string,
+    body?: any,
+  ): Promise<APIResponse<T>> {
     const endpointWithId = `${endpoint}/${id}`;
     return this.sendRequest<T>(HttpMethod.DELETE, endpointWithId, body);
   }
 
-  async update<T>(endpoint: string, id: string, body?: any): Promise<T> {
+  async update<T>(
+    endpoint: string,
+    id: string,
+    body?: any,
+  ): Promise<APIResponse<T>> {
     const endpointWithId = `${endpoint}/${id}`;
     return this.sendRequest<T>(HttpMethod.PUT, endpointWithId, body);
   }

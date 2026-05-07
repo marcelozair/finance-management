@@ -7,7 +7,6 @@ export abstract class Failure {
   }
 }
 
-// Server Failures
 export class ServerFailure extends Failure {}
 
 export class NetworkUnavailableFailure extends ServerFailure {}

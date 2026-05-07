@@ -17,12 +17,4 @@ export class CreateApiClient {
       },
     });
   }
-
-  /**
-   * Update the Accept-Language header property to request API
-   * @param language language for Accept-Language header property
-   */
-  updateAcceptLanguage(language: string): void {
-    this.apiClient.defaults.headers.common["Accept-Language"] = language;
-  }
 }

@@ -1,26 +1,25 @@
+import {
+  Flex,
+  Grid,
+  Text,
+  Button,
+  GridItem,
+  Link as LinkChakra,
+} from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {
-  Button,
-  Flex,
-  Grid,
-  GridItem,
-  Text,
-  Link as LinkChakra,
-} from "@chakra-ui/react";
 
 import { AuthDomain } from "../../../application";
 import type { ISignInForm } from "../../interfaces/ISignInForm";
 import { signInValidator } from "../../validator/signInValidator";
-
+import { Heading } from "@shared/presentation/components/content/Heading";
 import { useSession } from "@shared/presentation/store/session/useSession";
-import { EmailField } from "@shared/presentation/components/EmailField/EmailField";
-import { PasswordField } from "@shared/presentation/components/PasswordField/PasswordField";
-
+import { SubHeading } from "@shared/presentation/components/content/SubHeading";
 import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase";
+import { EmailField } from "@shared/presentation/components/EmailField/EmailField";
 import type { SessionUserDTO } from "src/modules/auth/infrastructure/dtos/AuthDTO";
-
+import { PasswordField } from "@shared/presentation/components/PasswordField/PasswordField";
 import { SessionCookieStore } from "src/modules/auth/infrastructure/services/SessionCookieStore";
 
 import "./../../styles/signIn.css";
@@ -71,8 +70,12 @@ export const SignInView = () => {
             maxWidth="450px"
             h="100%"
           >
-            <h2 className="sign-in-form__title">SIGN IN.</h2>
-            <p className="sign-in-form__description">Welcome Back</p>
+            <Heading textAlign="left" mb={2}>
+              SIGN IN
+            </Heading>
+            <SubHeading textAlign="left" mb={8}>
+              Welcome Back! Please enter your details.
+            </SubHeading>
             <form onSubmit={handleSubmit(signIn)}>
               <Flex direction="column" gap={5}>
                 <EmailField

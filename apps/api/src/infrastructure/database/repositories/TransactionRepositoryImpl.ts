@@ -79,9 +79,6 @@ export class TransactionRepositoryImpl implements TransactionRepository {
         (paginationOptions.page - 1) * paginationOptions.limit;
     }
 
-    console.log('Pagination config');
-    console.log(paginationConfig);
-
     const entities = await this.repository.find({
       where: { walletId: walletId },
       order: { createdAt: 'DESC' },

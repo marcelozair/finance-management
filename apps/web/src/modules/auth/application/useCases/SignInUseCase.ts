@@ -5,8 +5,8 @@ import { SessionMapper } from "../mappers/SessionMapper";
 import type { SessionUserDTO } from "../../infrastructure/dtos/AuthDTO";
 
 export class SignInUseCase {
-  private readonly authRepository: AuthRepository;
   private readonly sessionStore: SessionStore;
+  private readonly authRepository: AuthRepository;
 
   constructor(authRepository: AuthRepository, sessionStore: SessionStore) {
     this.authRepository = authRepository;

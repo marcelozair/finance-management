@@ -1,78 +1,73 @@
-import { Flex, ScrollArea } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { Flex, ScrollArea } from "@chakra-ui/react";
 
 import { WalletCard } from "./WalletCard/WalletCard";
+import { useWalletStore } from "../../store/useWalletStore";
+import { useWalletDomain } from "../../hooks/useWalletDomain";
 import { WalletCardSkeleton } from "./WalletCard/WalletCardSkeleton";
 import { CreateWalletCard } from "./CreateWalletCard/CreateWalletCard";
 import { CreateWalletModal } from "./CreateWalletModal/CreateWalletModal";
 import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase";
-import { WalletDomain } from "src/modules/wallet/application";
-import { useWalletStore } from "../../store/useWalletStore";
-import { useProfile } from "@shared/presentation/store/profile/useProfile";
-import { useTransactionStore } from "../../store/useTransactionStore";
-
-const SKELETON_COUNT = 3;
+import { useTransactionStore } from "../../../../transaction/presentation/store/useTransactionStore";
 
 export const WalletsContainer = () => {
-  const walletDomain = new WalletDomain();
+  const walletDomain = useWalletDomain();
+  const { updateTransactions } = useTransactionStore();
 
-  const { profile } = useProfile();
-  const { setTransactions } = useTransactionStore();
-  const {
-    wallets,
-    setWallets,
-    selectWalletId: selectWallet,
-    selectedWalletId,
-  } = useWalletStore();
+  const { wallets, setWallets, selectedWallet, selectWallet } =
+    useWalletStore();
+
   const [createModal, setCreateModal] = useState(false);
 
-  const { execute, loading } = useExecuteUseCase<void, number>({
-    callback: async (profileId: number) => {
-      const wallets = await walletDomain.getAll(profileId);
+  const { execute, loading } = useExecuteUseCase<void, void>({
+    callback: async () => {
+      const wallets = await walletDomain.getAll();
       setWallets(wallets);
     },
   });
 
   const handleWalletSelection = (walletId: number) => {
-    setTransactions([]);
-    selectWallet(walletId);
+    if (selectedWallet && selectedWallet._id != walletId) {
+      const wallet = wallets.find(({ _id }) => _id === walletId);
+      if (wallet) {
+        updateTransactions([]);
+        selectWallet(wallet);
+      }
+    }
   };
 
   useEffect(() => {
-    if (profile && profile.id) execute(profile.id);
+    execute();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <>
-      <ScrollArea.Root size="xs">
-        <ScrollArea.Viewport>
-          <ScrollArea.Content py="4">
-            <Flex gap="2" flexWrap="nowrap">
-              <CreateWalletModal
-                isOpen={createModal}
-                onClose={() => setCreateModal(false)}
-              />
-
-              <CreateWalletCard openModal={() => setCreateModal(true)} />
-
-              {loading
-                ? Array.from({ length: SKELETON_COUNT }).map((_, i) => (
-                    <WalletCardSkeleton key={`skeleton-${i}`} />
-                  ))
-                : wallets.map((wallet) => (
-                    <WalletCard
-                      onClick={() => handleWalletSelection(wallet._id)}
-                      selected={wallet._id === selectedWalletId}
-                      key={wallet._id}
-                      wallet={wallet}
-                    />
-                  ))}
-            </Flex>
-          </ScrollArea.Content>
-        </ScrollArea.Viewport>
-        <ScrollArea.Scrollbar orientation="horizontal" />
-        <ScrollArea.Corner />
-      </ScrollArea.Root>
-    </>
+    <ScrollArea.Root size="xs">
+      <ScrollArea.Viewport>
+        <ScrollArea.Content py="4">
+          <Flex gap="2" flexWrap="nowrap">
+            <CreateWalletModal
+              isOpen={createModal}
+              onClose={() => setCreateModal(false)}
+            />
+            <CreateWalletCard openModal={() => setCreateModal(true)} />
+            {loading
+              ? new Array(3).map((_, i) => (
+                  <WalletCardSkeleton key={`skeleton-${i}`} />
+                ))
+              : wallets.map((wallet) => (
+                  <WalletCard
+                    wallet={wallet}
+                    key={wallet._id}
+                    selected={wallet._id === selectedWallet?._id}
+                    onClick={() => handleWalletSelection(wallet._id)}
+                  />
+                ))}
+          </Flex>
+        </ScrollArea.Content>
+      </ScrollArea.Viewport>
+      <ScrollArea.Scrollbar orientation="horizontal" />
+      <ScrollArea.Corner />
+    </ScrollArea.Root>
   );
 };

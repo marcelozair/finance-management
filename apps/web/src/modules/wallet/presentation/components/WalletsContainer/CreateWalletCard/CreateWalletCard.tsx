@@ -1,8 +1,6 @@
 import { FaPlus } from "react-icons/fa";
 import { Center, Text } from "@chakra-ui/react";
 
-import "./CreateWalletCard.css";
-
 interface CreateWalletCardProps {
   openModal: () => void;
 }

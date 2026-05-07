@@ -17,18 +17,22 @@ import { SubHeading } from "@shared/presentation/components/content/SubHeading";
 export const SignUpTOTP = (props: SignUpAtomsProps) => {
   return (
     <AuthWrapper>
-      <Heading textAlign={{ base: "center", sm: "left" }} mb={4}>
+      <Heading textAlign={"left"} mdDown={{ textAlign: "center" }} mb={4}>
         2FA Authentication
       </Heading>
       <SubHeading
-        textAlign={{ base: "center", sm: "left" }}
         mb={8}
-        width={{ base: "100%", sm: "80%" }}
+        textAlign={"left"}
+        mdDown={{ textAlign: "center", width: "100%" }}
       >
         Please use authenticator app to scan and generate your verification code
       </SubHeading>
 
-      <Flex justifyContent={{ base: "center", sm: "flex-start" }}>
+      <Flex
+        justifyContent={"flex-start"}
+        mdDown={{ justifyContent: "center" }}
+        mb={8}
+      >
         <QrCode.Root value={props.context?.secret || "Unknow"} size="xl">
           <QrCode.Frame>
             <QrCode.Pattern />
@@ -37,10 +41,10 @@ export const SignUpTOTP = (props: SignUpAtomsProps) => {
       </Flex>
 
       <SubHeading
-        textAlign={{ base: "center", sm: "left" }}
+        textAlign="left"
+        mdDown={{ textAlign: "center" }}
         mb={4}
         mt={8}
-        width={{ base: "100%", sm: "80%" }}
       >
         If you can't scan the QR, copy this text instead
       </SubHeading>
@@ -61,7 +65,7 @@ export const SignUpTOTP = (props: SignUpAtomsProps) => {
         </InputGroup>
       </Clipboard.Root>
 
-      <SubHeading color="white" mt={8} w="80%">
+      <SubHeading color="white" mt={8}>
         Don't share the generated code with someone else
       </SubHeading>
 

@@ -1,12 +1,5 @@
 export class ServerException extends Error {}
 
-export class ChatException extends Error {
-  constructor(message?: string) {
-    super(message ?? 'Something went wrong during websocket chat streaming');
-    this.name = 'ChatException';
-  }
-}
-
 export class NetworkUnavailableException extends Error {}
 
 export class ResourceNotFoundException extends Error {}

@@ -18,6 +18,7 @@ export class WalletRepositoryImpl implements WalletRepository {
       color: wallet._color,
       currency: wallet._currency,
       type: wallet._type,
+      creditLine: wallet._creditLine ? wallet._creditLine : undefined,
       profileId, // Create Reference for profile
     });
 

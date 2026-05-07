@@ -1,4 +1,4 @@
-import type { User } from "../../../../shared/domain/entities/User";
+import type { User } from "../../../../core/domain/entities/User
 
 export interface AuthResponseDTO {
   authorization: string;

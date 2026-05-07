@@ -7,19 +7,7 @@ import {
 import { ThemeProvider, type ThemeProviderProps } from "next-themes";
 
 export function Provider(props: ThemeProviderProps) {
-  const systemConfig = defineConfig({
-    // theme: {
-    //   tokens: {
-    //     colors: {
-    //       gray: {
-    //         200: {
-    //           value: "",
-    //         },
-    //       },
-    //     },
-    //   },
-    // },
-  });
+  const systemConfig = defineConfig({});
 
   const designSystem = createSystem(defaultConfig, systemConfig);
 

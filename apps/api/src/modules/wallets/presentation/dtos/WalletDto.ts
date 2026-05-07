@@ -5,4 +5,5 @@ export interface WalletDto {
   color: string;
   balance: number;
   currency: string;
+  creditLine: number | null;
 }

@@ -1,0 +1,48 @@
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    id: "build-base-image"
+    waitFor: ["-"]
+    entrypoint: "bash"
+    args:
+      [
+        "-c",
+        "docker build --network=cloudbuild -f Dockerfile -t build/common-image:latest .",
+      ]
+
+  - name: "gcr.io/cloud-builders/docker"
+    id: "build-cloud-run-service-image"
+    waitFor:
+      - build-base-image
+    entrypoint: "bash"
+    args:
+      [
+        "-c",
+        "docker build --network=cloudbuild -t gcr.io/$PROJECT_ID/finance-application-api:$COMMIT_SHA .",
+      ]
+
+  # Push the Docker image to Google Container Registry for the cloud run service
+  - name: "gcr.io/cloud-builders/docker"
+    id: "push-cloud-run-service-image"
+    args: ["push", "gcr.io/$PROJECT_ID/finance-application-api:$COMMIT_SHA"]
+
+  # Deploy the new container image to Cloud Run
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: "deploy-cloud-run-service"
+    waitFor:
+      - "push-cloud-run-service-image"
+    args:
+      - "run"
+      - "deploy"
+      - "finance-application-api"
+      - "--image"
+      - "gcr.io/$PROJECT_ID/finance-application-api:$COMMIT_SHA"
+      - "--region"
+      - "us-central1"
+      - "--service-account"
+      - $_SERVICE_ACCOUNT_ID@$PROJECT_ID.iam.gserviceaccount.com
+      - "--allow-unauthenticated"
+      - "--project=$PROJECT_ID"
+      - '--set-env-vars=DATABASE_PORT=$_DATABASE_PORT,DATABASE_HOST=$_DATABASE_HOST,DATABASE_USER=$_DATABASE_USER,DATABASE_PASSWORD=$_DATABASE_PASSWORD, DATABASE_NAME=$_DATABASE_NAME,AUTHORIZATION_SECRET=$_AUTHORIZATION_SECRET,JWT_SECRET=$_JWT_SECRET,MASTER_PASSWORD=$_MASTER_PASSWORD'
+
+options:
+  logging: CLOUD_LOGGING_ONLY

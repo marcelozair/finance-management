@@ -4,7 +4,7 @@ import type { WalletRepository } from "../../domain/interfaces/WalletRepository"
 export class GetWalletUseCase {
   constructor(private readonly repository: WalletRepository) {}
 
-  execute(profileId: number): Promise<Wallet[]> {
-    return this.repository.getAll(profileId);
+  execute(): Promise<Wallet[]> {
+    return this.repository.getAll();
   }
 }
