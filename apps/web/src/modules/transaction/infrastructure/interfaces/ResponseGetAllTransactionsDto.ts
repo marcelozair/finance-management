@@ -2,8 +2,7 @@ import type {
   CategoryDto,
   SubCategoryDto,
 } from "../../domain/interfaces/CategoryWithSubCategoryDto";
-
-import type { MetaDataPaginationDto } from "src/core/domain/dtos/PaginationDto";
+import type { MetaDataPaginationDto } from "@core/domain/dtos/PaginationDto";
 
 export interface TransactionDTO {
   id: number;

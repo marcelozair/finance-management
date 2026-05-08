@@ -12,7 +12,7 @@ import { RenderIcon } from "@shared/presentation/components/RenderIcon/RenderIco
 import type {
   SubCategoryDto,
   CategoryWihtSubCategoriesDto,
-} from "src/modules/transaction/domain/interfaces/CategoryWithSubCategoryDto";
+} from "@modules/transaction/domain/interfaces/CategoryWithSubCategoryDto";
 
 interface CategorySelectProps {
   categories: CategoryWihtSubCategoriesDto[];

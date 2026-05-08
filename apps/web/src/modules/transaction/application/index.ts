@@ -1,6 +1,6 @@
-import type { APIClient } from "src/infrastructure/config/APIClient";
+import type { APIClient } from "@infrastructure/config/APIClient";
+import type { FailureHandler } from "@core/services/FailureHandler";
 import { GetCategoriesUseCase } from "./useCases/GetCategoriesUseCase";
-import type { FailureHandler } from "src/core/services/FailureHandler";
 import { GetTransactionUseCase } from "./useCases/GetTransactionsUseCase";
 import { CreateTransactionUseCase } from "./useCases/CreateTransactionUseCase";
 import type { CreateTransactionDto } from "../domain/interfaces/CreateTransactionDto";

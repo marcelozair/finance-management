@@ -1,3 +1,6 @@
+import { useAtom } from "jotai";
+import { useEffect } from "react";
+
 import {
   sessionStore,
   userSessionAtom,
@@ -5,16 +8,13 @@ import {
   loadingSessionAtom,
 } from "./sessionStore";
 
-import { useEffect } from "react";
-
-import type { User } from "src/core/domain/entities/User";
-import type { Session } from "src/core/domain/entities/Session";
-import type { SessionStore } from "src/modules/auth/domain/interfaces/SessionStore";
-import { useAtom } from "jotai";
-import { AuthenticatedAPIClientImpl } from "src/infrastructure/config/APIClient";
-import { serviceLocator, ServiceName } from "src/core/services/ServiceLocator";
-import type { Profile } from "src/modules/profiles/domain/entities/Profile";
+import type { User } from "@core/domain/entities/User";
+import type { Session } from "@core/domain/entities/Session";
 import { LOCAL_STORAGE_PROFILE_KEY } from "@shared/const/localStorage";
+import type { Profile } from "@modules/profiles/domain/entities/Profile";
+import { serviceLocator, ServiceName } from "@core/services/ServiceLocator";
+import { AuthenticatedAPIClientImpl } from "@infrastructure/config/APIClient";
+import type { SessionStore } from "@modules/auth/domain/interfaces/SessionStore";
 
 /**
  * Dependencies that the hook needs. You can provide them via context or

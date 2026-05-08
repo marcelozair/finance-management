@@ -3,7 +3,7 @@ import { useAtom } from "jotai";
 import {
   IncomeTransaction,
   type Transaction,
-} from "src/modules/transaction/domain/entities/Transaction";
+} from "@modules/transaction/domain/entities/Transaction";
 
 import type { Wallet } from "../../domain/entities/Wallet";
 import { walletsAtom, walletStore, selectedWalletAtom } from "./walletStore";

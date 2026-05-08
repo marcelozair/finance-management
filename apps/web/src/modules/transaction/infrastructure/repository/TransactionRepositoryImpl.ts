@@ -3,12 +3,12 @@ import type {
   ResponseTransactionList,
 } from "../interfaces/ResponseGetAllTransactionsDto";
 
-import { ApiService } from "../../../../core/services/ApiService";
-import type { APIClient } from "src/infrastructure/config/APIClient";
+import { ApiService } from "@core/services/ApiService";
+import type { APIClient } from "@infrastructure/config/APIClient";
+import type { FailureHandler } from "@core/services/FailureHandler";
 import type { Transaction } from "../../domain/entities/Transaction";
-import type { FailureHandler } from "src/core/services/FailureHandler";
-import type { CreateTransactionDto } from "../../domain/interfaces/CreateTransactionDto";
 import { TransactionMapper } from "../../application/mappers/TransactionMapper";
+import type { CreateTransactionDto } from "../../domain/interfaces/CreateTransactionDto";
 import type { GroupedTransactionsDto } from "../../domain/interfaces/GroupedTransactionsDto";
 import type { TransactionRepository } from "../../domain/interfaces/repositories/TransactionRepository";
 

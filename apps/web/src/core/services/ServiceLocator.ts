@@ -3,8 +3,8 @@
 import { FailureHandler } from "./FailureHandler";
 
 import type { LoggerService } from "@shared/utils/logger";
+import type { APIClient } from "@infrastructure/config/APIClient";
 import type { LocalStorageService } from "@shared/utils/localStorage";
-import type { APIClient } from "src/infrastructure/config/APIClient";
 
 export enum ServiceName {
   LocalStorage = "LocalStorage",

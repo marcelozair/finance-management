@@ -1,9 +1,9 @@
 import type { Wallet } from "../domain/entities/Wallet";
 import type { CreateWalletDto } from "./dtos/CreateWalletDto";
 import { GetWalletUseCase } from "./useCases/GetWalletsUseCase";
-import type { APIClient } from "src/infrastructure/config/APIClient";
+import type { APIClient } from "@infrastructure/config/APIClient";
+import type { FailureHandler } from "@core/services/FailureHandler";
 import { CreateWalletUseCase } from "./useCases/CreateWalletUseCase";
-import type { FailureHandler } from "src/core/services/FailureHandler";
 import { WalletRepositoryImpl } from "../infrastructure/repositories/WalletRepositoryImpl";
 
 export class WalletDomain {

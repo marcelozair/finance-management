@@ -1,8 +1,8 @@
 import type { Category } from "./Category";
 import type { SubCategory } from "./SubCategory";
-import type { Amount } from "src/core/domain/vo/Amount";
+import type { Amount } from "@core/domain/vo/Amount";
 import { TransactionType } from "../vo/TransactionType";
-import type { StringDate } from "src/core/domain/vo/StringDate";
+import type { StringDate } from "@core/domain/vo/StringDate";
 
 export const IncomeTransaction = new TransactionType("income");
 export const ExpenseTransaction = new TransactionType("expense");

@@ -8,7 +8,7 @@ import { TbDiamondFilled } from "react-icons/tb";
 import { Box, Flex, Text } from "@chakra-ui/react";
 
 import { useSession } from "@shared/presentation/store/session/useSession";
-import { SessionCookieStore } from "src/modules/auth/infrastructure/services/SessionCookieStore";
+import { SessionCookieStore } from "@modules/auth/infrastructure/services/SessionCookieStore";
 
 export const Sidebar = () => {
   const navigate = useNavigate();

@@ -1,11 +1,18 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
-import { TbWallet, TbSettings, TbSmartHome, TbDiamondFilled } from "react-icons/tb";
 import { CiLogout } from "react-icons/ci";
-import { Box, Flex, Text } from "@chakra-ui/react";
-import { useSession } from "@shared/presentation/store/session/useSession";
-import { SessionCookieStore } from "src/modules/auth/infrastructure/services/SessionCookieStore";
 import { useNavigate } from "react-router";
+import { Box, Flex, Text } from "@chakra-ui/react";
+
+import {
+  TbWallet,
+  TbSettings,
+  TbSmartHome,
+  TbDiamondFilled,
+} from "react-icons/tb";
+
+import { useSession } from "@shared/presentation/store/session/useSession";
+import { SessionCookieStore } from "@modules/auth/infrastructure/services/SessionCookieStore";
 
 type NavItem = {
   id: string;

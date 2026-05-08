@@ -7,8 +7,8 @@ import {
   loadingProfileAtom,
 } from "./profileStore";
 import { LOCAL_STORAGE_PROFILE_KEY } from "@shared/const/localStorage";
-import { serviceLocator } from "../../../../core/services/ServiceLocator";
-import type { Profile } from "../../../../modules/profiles/domain/entities/Profile";
+import { serviceLocator } from "@core/services/ServiceLocator";
+import type { Profile } from "@modules/profiles/domain/entities/Profile";
 
 /**
  * Custom hook to manage the global Profile state and Local Storage synchronization.

@@ -8,7 +8,7 @@ import { CreateTransactionButton, NoTransactionsTable } from "../components";
 import { useConfig } from "@shared/presentation/store/appConfig/useAppConfig";
 import { TransactionCard } from "../components/TransactionCard/TransactionCard";
 import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase";
-import { useWalletStore } from "src/modules/wallet/presentation/store/useWalletStore";
+import { useWalletStore } from "@modules/wallet/presentation/store/useWalletStore";
 import { TransactionCardSkeleton } from "../components/TransactionCard/TransactionCardSkeleton";
 import { TransactionsPagination } from "../components/TransactionPagination/TransactionsPagination";
 

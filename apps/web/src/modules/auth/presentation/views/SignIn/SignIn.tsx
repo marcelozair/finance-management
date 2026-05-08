@@ -16,13 +16,11 @@ import { signInValidator } from "../../validator/signInValidator";
 import { Heading } from "@shared/presentation/components/content/Heading";
 import { useSession } from "@shared/presentation/store/session/useSession";
 import { SubHeading } from "@shared/presentation/components/content/SubHeading";
+import type { SessionUserDTO } from "@modules/auth/infrastructure/dtos/AuthDTO";
 import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase";
 import { EmailField } from "@shared/presentation/components/EmailField/EmailField";
-import type { SessionUserDTO } from "src/modules/auth/infrastructure/dtos/AuthDTO";
 import { PasswordField } from "@shared/presentation/components/PasswordField/PasswordField";
-import { SessionCookieStore } from "src/modules/auth/infrastructure/services/SessionCookieStore";
-
-import "./../../styles/signIn.css";
+import { SessionCookieStore } from "@modules/auth/infrastructure/services/SessionCookieStore";
 
 export const SignInView = () => {
   const authDomain = new AuthDomain();

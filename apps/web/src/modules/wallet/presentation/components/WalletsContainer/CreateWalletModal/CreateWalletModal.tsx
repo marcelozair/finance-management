@@ -5,15 +5,15 @@ import { Button, createListCollection, Flex } from "@chakra-ui/react";
 
 import { CurrencyConfig } from "@shared/const/currencyEnum";
 import { useWalletStore } from "../../../store/useWalletStore";
-import { Currency } from "src/core/domain/vo/Currency";
 import { useWalletDomain } from "../../../hooks/useWalletDomain";
 import { Modal } from "@shared/presentation/components/Modal/Modal";
-import { useProfile } from "src/shared/presentation/store/profile/useProfile";
 import { TextField } from "@shared/presentation/components/TextField/TextField";
 import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase";
 import { AmountField } from "@shared/presentation/components/AmountField/AmountField";
 import { SelectField } from "@shared/presentation/components/SelectField/SelectField";
-import type { CreateWalletDto } from "src/modules/wallet/application/dtos/CreateWalletDto";
+import { useProfile } from "@shared/presentation/store/profile/useProfile";
+import type { CreateWalletDto } from "@modules/wallet/application/dtos/CreateWalletDto";
+import { Currency } from "@core/domain/vo/Currency";
 
 enum WalletTypes {
   SAVE = "Save",

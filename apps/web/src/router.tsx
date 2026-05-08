@@ -52,6 +52,10 @@ export const router = createBrowserRouter([
     ],
   },
   {
+    path: "/",
+    Component: SignInView,
+  },
+  {
     path: "*",
     element: <Navigate to="/auth/sign-in" replace />,
   },

@@ -4,10 +4,10 @@ import type {
 } from "../interfaces/WalletRepositoryDtos";
 
 import type { Wallet } from "../../domain/entities/Wallet";
+import type { APIClient } from "@infrastructure/config/APIClient";
 import { ApiService } from "../../../../core/services/ApiService";
-import type { APIClient } from "src/infrastructure/config/APIClient";
+import type { FailureHandler } from "@core/services/FailureHandler";
 import { WalletMapper } from "../../application/mappers/WalletMapper";
-import type { FailureHandler } from "src/core/services/FailureHandler";
 import type { WalletRepository } from "../../domain/interfaces/WalletRepository";
 
 export class WalletRepositoryImpl

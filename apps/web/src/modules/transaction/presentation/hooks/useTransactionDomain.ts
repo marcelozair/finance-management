@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { TransactionDomain } from "../../application";
-import { serviceLocator } from "src/core/services/ServiceLocator";
+import { serviceLocator } from "@core/services/ServiceLocator";
 
 export const useTransactionDomain = () => {
   const transactionDomain = useMemo(() => {

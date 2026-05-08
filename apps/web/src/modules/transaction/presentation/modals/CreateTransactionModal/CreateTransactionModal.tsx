@@ -8,7 +8,7 @@ import {
   type CreateTransactionForm,
 } from "./ValidationForm";
 
-import { Currency } from "src/core/domain/vo/Currency";
+import { Currency } from "@core/domain/vo/Currency";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CategorySelect } from "./CategorySelect/CategorySelect";
 import { Modal } from "@shared/presentation/components/Modal/Modal";
@@ -22,7 +22,7 @@ import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase"
 import { AmountField } from "@shared/presentation/components/AmountField/AmountField";
 import { SelectField } from "@shared/presentation/components/SelectField/SelectField";
 import { useWalletStore } from "../../../../wallet/presentation/store/useWalletStore";
-import type { CreateTransactionDto } from "src/modules/transaction/domain/interfaces/CreateTransactionDto";
+import type { CreateTransactionDto } from "@modules/transaction/domain/interfaces/CreateTransactionDto";
 
 interface CreateTransactionModalProps {
   onClose: () => void;

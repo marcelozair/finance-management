@@ -1,6 +1,6 @@
 import { Session } from "../../domain/entities/Session";
 import type { LoggerService } from "@shared/utils/logger";
-import { serviceLocator } from "src/core/services/ServiceLocator";
+import { serviceLocator } from "@core/services/ServiceLocator";
 import type { SessionStore } from "../../domain/interfaces/SessionStore";
 
 export class SessionCookieStore implements SessionStore {

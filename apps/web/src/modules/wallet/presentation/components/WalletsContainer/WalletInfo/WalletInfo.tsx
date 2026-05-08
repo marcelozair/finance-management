@@ -1,12 +1,13 @@
-import { Box, Flex, Heading, Progress } from "@chakra-ui/react";
-import { formatMoney } from "@shared/utils/currency";
 import { useMemo } from "react";
-import { LuBadgeAlert, LuCheckCheck } from "react-icons/lu";
 import { MdDangerous } from "react-icons/md";
-import { Amount } from "src/core/domain/vo/Amount";
-import { Currency } from "src/core/domain/vo/Currency";
+import { Box, Flex, Heading, Progress } from "@chakra-ui/react";
+
+import { Currency } from "@core/domain/vo/Currency";
+import type { Amount } from "@core/domain/vo/Amount";
+import { formatMoney } from "@shared/utils/currency";
+import { LuBadgeAlert, LuCheckCheck } from "react-icons/lu";
 import { useWalletStore } from "../../../store/useWalletStore";
-import { WalletTypes } from "src/modules/wallet/domain/entities/Wallet";
+import { WalletTypes } from "@modules/wallet/domain/entities/Wallet";
 
 interface CreditCardInfoProps {
   balance: Amount;

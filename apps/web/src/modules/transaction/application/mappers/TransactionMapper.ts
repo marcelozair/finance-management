@@ -3,9 +3,9 @@ import type {
   SubCategoryDto,
 } from "../../domain/interfaces/CategoryWithSubCategoryDto";
 
+import { StringDate } from "@core/domain/vo/StringDate";
 import { Category } from "../../domain/entities/Category";
 import { Amount } from "../../../../core/domain/vo/Amount";
-import { StringDate } from "src/core/domain/vo/StringDate";
 import { Transaction } from "../../domain/entities/Transaction";
 import { SubCategory } from "../../domain/entities/SubCategory";
 import { TransactionType } from "../../domain/vo/TransactionType";

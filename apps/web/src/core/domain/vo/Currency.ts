@@ -1,6 +1,6 @@
-import { ValueObject } from "src/core/domain/vo/ValueObject";
+import { ValueObject } from "./ValueObject";
 import { AvailableCurrencies } from "@shared/const/currencyEnum";
-import { InvalidCurrencyError } from "../../../modules/wallet/domain/exceptions/InvalidCurrencyError";
+import { InvalidCurrencyError } from "@modules/wallet/domain/exceptions/InvalidCurrencyError";
 
 export class Currency extends ValueObject<string> {
   constructor(value: string) {

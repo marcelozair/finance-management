@@ -8,7 +8,14 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "paths": {
-      "@shared/*": ["./src/shared/*"]
+      "@shared/*": ["./src/shared/*"],
+      "@core/*": ["./src/core/*"],
+      "@modules/wallet/*": ["./src/modules/wallet/*"],
+      "@modules/transaction/*": ["./src/modules/transaction/*"],
+      "@modules/auth/*": ["./src/modules/auth/*"],
+      "@modules/profiles/*": ["./src/modules/profiles/*"],
+      "@modules/dashboard/*": ["./src/modules/dashboard/*"],
+      "@infrastructure/*": ["./src/infrastructure/*"]
     },
 
     /* Bundler mode */

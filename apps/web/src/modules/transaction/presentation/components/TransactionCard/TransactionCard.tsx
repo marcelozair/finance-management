@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Box, HStack, VStack, Text } from "@chakra-ui/react";
 
 import {
@@ -5,15 +6,14 @@ import {
   IncomeTransaction,
   TransferTransaction,
   type Transaction,
-} from "src/modules/transaction/domain/entities/Transaction";
+} from "@modules/transaction/domain/entities/Transaction";
 
 import { formatMoney } from "@shared/utils/currency";
 import { useTransactionStore } from "../../store/useTransactionStore";
-import { RenderIcon } from "@shared/presentation/components/RenderIcon/RenderIcon";
-import { useWalletStore } from "src/modules/wallet/presentation/store/useWalletStore";
-import type { TransactionType } from "src/modules/transaction/domain/vo/TransactionType";
-import { useMemo } from "react";
 import { useConfig } from "@shared/presentation/store/appConfig/useAppConfig";
+import { RenderIcon } from "@shared/presentation/components/RenderIcon/RenderIcon";
+import { useWalletStore } from "@modules/wallet/presentation/store/useWalletStore";
+import type { TransactionType } from "@modules/transaction/domain/vo/TransactionType";
 
 interface TransactionProps {
   selected: boolean;

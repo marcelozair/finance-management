@@ -1,6 +1,6 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import { WalletInfo } from "../WalletsContainer/WalletInfo/WalletInfo";
-import { TransactionsView } from "src/modules/transaction/presentation/view/TransactionsView";
+import { TransactionsView } from "../../../../transaction/presentation/view/TransactionsView";
 
 export const WidgetsContainer = () => {
   return (

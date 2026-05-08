@@ -1,8 +1,8 @@
 import { Button, Box, VStack, Text } from "@chakra-ui/react";
 
 import { formatMoney } from "@shared/utils/currency";
-import { Amount } from "src/core/domain/vo/Amount";
-import type { Wallet } from "src/modules/wallet/domain/entities/Wallet";
+import { Amount } from "@core/domain/vo/Amount";
+import type { Wallet } from "@modules/wallet/domain/entities/Wallet";
 
 interface WalletCardProps {
   selected: boolean;

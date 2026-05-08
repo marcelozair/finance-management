@@ -1,8 +1,8 @@
-import { ApiService } from "../../../../core/services/ApiService";
-import type { APIClient } from "src/infrastructure/config/APIClient";
-import type { FailureHandler } from "src/core/services/FailureHandler";
+import type { APIClient } from "@infrastructure/config/APIClient";
+import type { FailureHandler } from "@core/services/FailureHandler";
 import type { CategoryRepository } from "../../domain/interfaces/repositories/CategoryRepository";
 import type { CategoryWihtSubCategoriesDto } from "../../domain/interfaces/CategoryWithSubCategoryDto";
+import { ApiService } from "@core/services/ApiService";
 
 export class CategoryRepositoryImpl
   extends ApiService
