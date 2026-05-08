@@ -1,11 +1,10 @@
-import type { ApiRes } from "../../../../core/interfaces/IApiResponse";
-import type { ProfileRepository } from "../../domain/interfaces/ProfileRepository";
 import type { Profile } from "../../domain/entities/Profile";
+import type { ProfileRepository } from "../../domain/interfaces/ProfileRepository";
 
 export class GetProfilesUseCase {
   constructor(private readonly repository: ProfileRepository) {}
 
-  execute(): Promise<ApiRes<Profile[]>> {
+  execute(): Promise<Profile[]> {
     return this.repository.getProfiles();
   }
 }
