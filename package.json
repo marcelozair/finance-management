@@ -21,8 +21,5 @@
     "apps/api",
     "apps/web",
     "packages/*"
-  ],
-  "dependencies": {
-    "api": "^0.0.1"
-  }
+  ]
 }
