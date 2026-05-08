@@ -2,12 +2,12 @@ import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import { ButtonGroup, Flex, IconButton, Pagination } from "@chakra-ui/react";
 
 import { useTransactionStore } from "../../store/useTransactionStore";
+import { useTransactionDomain } from "../../hooks/useTransactionDomain";
 import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase";
 import { useWalletStore } from "../../../../wallet/presentation/store/useWalletStore";
-import { useWalletDomain } from "../../../../wallet/presentation/hooks/useWalletDomain";
 
 export const TransactionsPagination = () => {
-  const domain = useWalletDomain();
+  const domain = useTransactionDomain();
 
   const { selectedWallet } = useWalletStore();
   const { pagination, updateTransactions, updatePagination } =

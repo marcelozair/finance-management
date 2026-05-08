@@ -1,7 +1,6 @@
-import type { ApiRes } from "../../../core/interfaces/IApiResponse";
 import type { Profile } from "../domain/entities/Profile";
-import { ProfileRepositoryImpl } from "../infrastructure/repositories/ProfileRepository";
 import { GetProfilesUseCase } from "./useCases/GetProfilesUseCase";
+import { ProfileRepositoryImpl } from "../infrastructure/repositories/ProfileRepository";
 
 export class ProfileDomain {
   private readonly getProfilesUseCase: GetProfilesUseCase;
@@ -13,7 +12,7 @@ export class ProfileDomain {
     this.getProfilesUseCase = new GetProfilesUseCase(profileRepository);
   }
 
-  public async getProfiles(): Promise<ApiRes<Profile[]>> {
+  public async getProfiles(): Promise<Profile[]> {
     return this.getProfilesUseCase.execute();
   }
 }

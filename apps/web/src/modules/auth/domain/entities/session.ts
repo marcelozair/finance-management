@@ -1,10 +1,8 @@
 export class Session {
-  // Session entity class (Domain)
-  // Handle session details
+  expireIn: number;
   sessionId: string;
   authorizationType: string;
   authorizationToken: string;
-  expireIn: number;
 
   constructor(
     sessionId: string,
