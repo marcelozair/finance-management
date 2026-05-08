@@ -1,8 +1,6 @@
 steps:
   - name: "gcr.io/cloud-builders/docker"
     id: "build-cloud-run-service-image"
-    waitFor:
-      - build-base-image
     entrypoint: "bash"
     args:
       [
