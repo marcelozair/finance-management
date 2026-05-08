@@ -1,4 +1,4 @@
-import { Session } from "../../domain/entities/SessionTmp";
+import { Session } from "../../domain/entities/Session";
 import type { SessionDTO } from "../../infrastructure/dtos/AuthDTO";
 
 export class SessionMapper {

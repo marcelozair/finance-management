@@ -1,4 +1,4 @@
-import type { Session } from "../entities/SessionTmp";
+import type { Session } from "../entities/Session";
 
 /**
  * **SessionStore interface:**
