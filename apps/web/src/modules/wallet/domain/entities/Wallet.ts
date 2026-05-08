@@ -1,5 +1,5 @@
 import type { Amount } from "@core/domain/vo/Amount";
-import type { Currency } from "@shared/const/currencyEnum";
+import type { Currency } from "@core/domain/vo/Currency";
 
 export enum WalletTypes {
   SAVE = "Save",
