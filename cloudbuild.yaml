@@ -5,7 +5,7 @@ steps:
     args:
       [
         "-c",
-        "docker build --network=cloudbuild -t gcr.io/$PROJECT_ID/finance-application-api:$COMMIT_SHA .",
+        "docker build --network=cloudbuild -f ./apps/api/Dockerfile -t gcr.io/$PROJECT_ID/finance-application-api:$COMMIT_SHA .",
       ]
 
   # Push the Docker image to Google Container Registry for the cloud run service
