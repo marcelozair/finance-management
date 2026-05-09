@@ -5,8 +5,6 @@ import { SignUpTOTP } from "../../components/SignUpTOTP";
 import { RegisterForm } from "../../components/RegisterForm";
 import { useAtomNavigator } from "@shared/presentation/hooks/useAtomNavigator";
 
-import "./../../styles/signIn.css";
-
 export interface SignUpAtomCtx {
   secret: string;
   userId: number;
