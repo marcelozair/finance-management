@@ -50,6 +50,7 @@ export const SignUpView = () => {
           className="sign-in__form"
           colSpan={{ xl: 2, md: 3, base: 1 }}
           minH={0}
+          padding={5}
           overflowY="auto"
         >
           <CurrentComponent />
