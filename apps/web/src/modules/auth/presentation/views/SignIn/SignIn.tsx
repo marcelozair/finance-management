@@ -50,6 +50,7 @@ export const SignInView = () => {
     <main className="auth">
       <Grid
         gridTemplateColumns={{ lg: "repeat(6, 1fr)", base: "repeat(1, 1fr)" }}
+        h="100vh"
       >
         <GridItem
           colSpan={{ lg: 4 }}
