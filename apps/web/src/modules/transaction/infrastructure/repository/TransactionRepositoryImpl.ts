@@ -30,16 +30,21 @@ export class TransactionRepositoryImpl
 
     const transactionList: GroupedTransactionsDto = {
       metadata: response.data.metadata,
-      dates: Object.entries(response.data.transactions).map(
-        ([date, transactions]) => {
+      dates: Object.entries(response.data.transactions)
+        .map(([date, transactions]) => {
           return {
             date,
             transactions: transactions.map((transaction) =>
               TransactionMapper.toDomain(transaction),
             ),
           };
-        },
-      ),
+        })
+        .sort((a, b) => {
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+
+          return dateB.getTime() - dateA.getTime();
+        }),
     };
 
     return transactionList;

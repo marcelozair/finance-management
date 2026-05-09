@@ -67,9 +67,6 @@ export const useTransactionStore = (): UseTransactionStore => {
         transaction._date.toISOString(),
       );
 
-      console.log("transactionGrouped", transactionGrouped);
-      console.log(prev);
-
       const existGroupDate = prev.find(
         (group) => group.date === transactionGrouped,
       );
@@ -86,10 +83,17 @@ export const useTransactionStore = (): UseTransactionStore => {
         return prev;
       }
 
-      return [
+      const grouped = [
         ...prev,
         { date: transactionGrouped, transactions: [transaction] },
       ];
+
+      return grouped.sort((a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+
+        return dateB.getTime() - dateA.getTime();
+      });
     });
   };
 

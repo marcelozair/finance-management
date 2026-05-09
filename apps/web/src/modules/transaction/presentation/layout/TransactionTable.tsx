@@ -4,6 +4,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import { formatPrettyDate } from "@shared/utils/dates";
 import { useTransactionStore } from "../store/useTransactionStore";
 import { useTransactionDomain } from "../hooks/useTransactionDomain";
+import { WalletTypes } from "@modules/wallet/domain/entities/Wallet";
 import { CreateTransactionButton, NoTransactionsTable } from "../components";
 import { useConfig } from "@shared/presentation/store/appConfig/useAppConfig";
 import { TransactionCard } from "../components/TransactionCard/TransactionCard";
@@ -11,6 +12,7 @@ import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase"
 import { useWalletStore } from "@modules/wallet/presentation/store/useWalletStore";
 import { TransactionCardSkeleton } from "../components/TransactionCard/TransactionCardSkeleton";
 import { TransactionsPagination } from "../components/TransactionPagination/TransactionsPagination";
+import { CreditCardInfo } from "@modules/wallet/presentation/components/WalletsContainer/WalletInfo/WalletInfo";
 
 export interface TransactionTable {
   openModal: () => void;
@@ -55,13 +57,20 @@ export const TransactionTable = ({ openModal }: TransactionTable) => {
 
   return (
     <>
+      {selectedWallet && selectedWallet._type === WalletTypes.CREDIT && (
+        <CreditCardInfo
+          creditLine={selectedWallet._creditLine}
+          balance={selectedWallet._balance.abs()}
+        />
+      )}
+
       {!!transactionsByDate.length && (
         <CreateTransactionButton onClick={openModal} />
       )}
 
       {loading && (
         <Flex flexDirection="column" mt={5}>
-          {new Array(5).map(() => (
+          {new Array(8).fill(null).map(() => (
             <TransactionCardSkeleton />
           ))}
         </Flex>

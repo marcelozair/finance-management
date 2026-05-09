@@ -66,7 +66,7 @@ export const TransactionCard = ({ transaction }: TransactionProps) => {
           >
             <RenderIcon
               color="white"
-              name={transaction._category?._iconName || "wallet"}
+              name={transaction._subCategory?._iconName || "wallet"}
             />
           </Box>
 

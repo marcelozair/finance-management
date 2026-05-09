@@ -52,9 +52,9 @@ export const WalletsContainer = () => {
             />
             <CreateWalletCard openModal={() => setCreateModal(true)} />
             {loading
-              ? new Array(3).map((_, i) => (
-                  <WalletCardSkeleton key={`skeleton-${i}`} />
-                ))
+              ? Array(3)
+                  .fill(null)
+                  .map((_, i) => <WalletCardSkeleton key={`skeleton-${i}`} />)
               : wallets.map((wallet) => (
                   <WalletCard
                     wallet={wallet}

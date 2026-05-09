@@ -1,13 +1,11 @@
 import { useMemo } from "react";
 import { MdDangerous } from "react-icons/md";
-import { Box, Flex, Heading, Progress } from "@chakra-ui/react";
+import { Box, Heading, Progress } from "@chakra-ui/react";
 
 import { Currency } from "@core/domain/vo/Currency";
 import type { Amount } from "@core/domain/vo/Amount";
 import { formatMoney } from "@shared/utils/currency";
 import { LuBadgeAlert, LuCheckCheck } from "react-icons/lu";
-import { useWalletStore } from "../../../store/useWalletStore";
-import { WalletTypes } from "@modules/wallet/domain/entities/Wallet";
 
 interface CreditCardInfoProps {
   balance: Amount;
@@ -78,33 +76,33 @@ export const CreditCardInfo = ({
   );
 };
 
-export const WalletInfo = () => {
-  const { selectedWallet } = useWalletStore();
+// export const WalletInfo = () => {
+//   const { selectedWallet } = useWalletStore();
 
-  if (selectedWallet) {
-    return (
-      <>
-        <Flex
-          mb={5}
-          alignItems="center"
-          justifyContent="space-between"
-          // direction="columns"
-        >
-          <Heading size="lg">{selectedWallet._name}</Heading>
-          <Heading size="lg" opacity={0.5}>
-            {formatMoney(
-              selectedWallet._balance.abs(),
-              selectedWallet._currency,
-            )}
-          </Heading>
-        </Flex>
-        {selectedWallet._type === WalletTypes.CREDIT && (
-          <CreditCardInfo
-            creditLine={selectedWallet._creditLine}
-            balance={selectedWallet._balance.abs()}
-          />
-        )}
-      </>
-    );
-  }
-};
+//   if (selectedWallet) {
+//     return (
+//       <>
+//         {/* <Flex
+//           mb={5}
+//           alignItems="center"
+//           justifyContent="space-between"
+//           // direction="columns"
+//         >
+//           <Heading size="lg">{selectedWallet._name}</Heading>
+//           <Heading size="lg" opacity={0.5}>
+//             {formatMoney(
+//               selectedWallet._balance.abs(),
+//               selectedWallet._currency,
+//             )}
+//           </Heading>
+//         </Flex> */}
+//         {/* {selectedWallet._type === WalletTypes.CREDIT && (
+//           <CreditCardInfo
+//             creditLine={selectedWallet._creditLine}
+//             balance={selectedWallet._balance.abs()}
+//           />
+//         )} */}
+//       </>
+//     );
+//   }
+// };
