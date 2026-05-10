@@ -1,7 +1,14 @@
 import { FiMoreHorizontal } from "react-icons/fi";
 
+import { TbTax } from "react-icons/tb";
+import { LuCandy } from "react-icons/lu";
+import { RiToothFill } from "react-icons/ri";
 import { IoIosWallet } from "react-icons/io";
+import { GoAlertFill } from "react-icons/go";
 import type { IconType } from "react-icons/lib";
+import { BiSolidTrafficBarrier } from "react-icons/bi";
+import { FaHandHoldingUsd, FaWineBottle } from "react-icons/fa";
+import { PiCookingPotFill, PiStudentBold, PiBankFill } from "react-icons/pi";
 import {
   MdOutlineQuestionMark,
   MdShoppingCart,
@@ -57,6 +64,18 @@ export const ICON_MAP: {
   lifestyle: MdFavorite,
   salary: MdAttachMoney,
   other: FiMoreHorizontal,
+
+  "graduation-cap": PiStudentBold,
+  "hand-coins": FaHandHoldingUsd,
+  tax: TbTax,
+  debt: PiBankFill,
+  snack: LuCandy,
+  wine: FaWineBottle,
+  alert: GoAlertFill,
+
+  gas: PiCookingPotFill,
+  toll: BiSolidTrafficBarrier,
+  tooth: RiToothFill,
 
   cart: MdShoppingCart,
   restaurant: MdRestaurant,

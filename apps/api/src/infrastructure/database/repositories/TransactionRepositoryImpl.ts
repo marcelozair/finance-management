@@ -98,4 +98,9 @@ export class TransactionRepositoryImpl implements TransactionRepository {
 
     return TransactionMapper.entityToDomain(entity);
   }
+
+  async deleteById(id: number): Promise<boolean> {
+    const result = await this.repository.softDelete(id);
+    return result.affected !== undefined && result.affected > 0;
+  }
 }

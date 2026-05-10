@@ -40,7 +40,7 @@ export const SelectProfileView = () => {
     setProfile(profile);
 
     if (activeProfile) {
-      navigate("/admin/wallet");
+      navigate("/admin/dashboard");
     }
   };
 

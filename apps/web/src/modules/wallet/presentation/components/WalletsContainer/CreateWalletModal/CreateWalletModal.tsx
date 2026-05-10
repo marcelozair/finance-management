@@ -165,7 +165,11 @@ export const CreateWalletModal = ({
             {watch("walletType") !== WalletTypes.CREDIT && (
               <AmountField
                 label="Initial balance"
-                currency={new Currency("USD")}
+                currency={
+                  watch("currency")
+                    ? new Currency(watch("currency"))
+                    : new Currency("USD")
+                }
                 placeholder="Enter initial balance"
                 error={errors.initialBalance?.message}
                 {...register("initialBalance")}

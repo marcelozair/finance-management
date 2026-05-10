@@ -9,4 +9,5 @@ export interface TransactionRepository {
     size: number,
   ): Promise<GroupedTransactionsDto>;
   create(walletId: number, payload: CreateTransactionDto): Promise<Transaction>;
+  remove(walletId: number, transactionId: number): Promise<void>;
 }

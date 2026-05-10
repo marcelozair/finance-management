@@ -50,6 +50,10 @@ export class TransactionRepositoryImpl
     return transactionList;
   }
 
+  async remove(walletId: number, transactionId: number): Promise<void> {
+    await this.delete(`wallet/${walletId}/transactions`, String(transactionId));
+  }
+
   async create(
     walletId: number,
     transaction: CreateTransactionDto,

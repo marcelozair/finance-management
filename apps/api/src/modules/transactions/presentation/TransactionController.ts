@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Delete,
   HttpCode,
   HttpStatus,
   Inject,
@@ -17,6 +18,7 @@ import { AuthGuard } from 'src/infrastructure/security/AuthGuard';
 import { CreateTransactionDTO } from './dtos/CreateTransactionDto';
 import { GetTransactionsUseCase } from '../application/useCases/GetTransactionsUseCase';
 import { CreateTransactionUseCase } from '../application/useCases/CreateTransactionUseCase';
+import { DeleteTransactionsUseCase } from '../application/useCases/DeleteTransactionUseCase';
 
 @Controller('wallet/:walletId/transactions')
 @UseGuards(AuthGuard)
@@ -26,6 +28,9 @@ export class TransactionController {
 
   @Inject()
   private readonly createTransactionUseCase: CreateTransactionUseCase;
+
+  @Inject()
+  private readonly deleteTransactionUseCase: DeleteTransactionsUseCase;
 
   @Get('/')
   @HttpCode(HttpStatus.OK)
@@ -53,5 +58,18 @@ export class TransactionController {
       payload,
     );
     return ResHandler(response, 'Transaction created successfully');
+  }
+
+  @Delete('/:transactionId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deleteTransaction(
+    @Param('walletId') walletId: number,
+    @Param('transactionId') transactionId: number,
+  ) {
+    await this.deleteTransactionUseCase.execute(
+      Number(walletId),
+      Number(transactionId),
+    );
+    return ResHandler(null, 'Transaction deleted successfully');
   }
 }

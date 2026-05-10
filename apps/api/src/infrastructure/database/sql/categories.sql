@@ -73,3 +73,29 @@ VALUES
 
 -- Other
 ('Miscellaneous', 'other', 11);
+
+INSERT INTO finance.cat_sub_categories (name, "iconName", "categoryId")
+VALUES
+-- Transport
+('Toll / Peaje', 'toll', 2),
+
+-- Health
+('Dentist', 'tooth', 4),
+
+-- Utilities
+('Gas', 'gas', 6),
+
+-- Education
+('University', 'graduation-cap', 5),
+
+-- Lifestyle / Financial obligations
+('Taxes', 'receipt', 9),
+('Debts', 'debt', 9),
+('Borrowed Money', 'hand-coins', 9);
+
+-- Food
+('Snacks', 'snack', 1),
+('Alcohol', 'wine', 1),
+
+-- Other
+('Emergency', 'alert', 11);

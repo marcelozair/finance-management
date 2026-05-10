@@ -70,8 +70,8 @@ export const TransactionTable = ({ openModal }: TransactionTable) => {
 
       {loading && (
         <Flex flexDirection="column" mt={5}>
-          {new Array(8).fill(null).map(() => (
-            <TransactionCardSkeleton />
+          {new Array(8).fill(null).map((_, index) => (
+            <TransactionCardSkeleton key={index} />
           ))}
         </Flex>
       )}

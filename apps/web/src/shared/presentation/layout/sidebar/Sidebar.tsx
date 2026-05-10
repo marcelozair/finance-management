@@ -73,7 +73,10 @@ export const Sidebar = () => {
               selectedMenu === "dashboard" ? "#e2f2ff" : "transparent"
             }
             color={selectedMenu === "dashboard" ? "#3da9fc" : "gray.800"}
-            onClick={() => setSelectedMenu("dashboard")}
+            onClick={() => {
+              setSelectedMenu("dashboard");
+              navigate("dashboard");
+            }}
             _hover={{
               backgroundColor: "#e2f2ff",
               color: "#3da9fc",
@@ -110,7 +113,10 @@ export const Sidebar = () => {
               selectedMenu === "wallets" ? "#e2f2ff" : "transparent"
             }
             color={selectedMenu === "wallets" ? "#3da9fc" : "gray.800"}
-            onClick={() => setSelectedMenu("wallets")}
+            onClick={() => {
+              setSelectedMenu("wallets");
+              navigate("wallet");
+            }}
             _hover={{
               backgroundColor: "#e2f2ff",
               color: "#3da9fc",

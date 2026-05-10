@@ -3,9 +3,9 @@ import { useAtom } from "jotai";
 import {
   categoriesAtom,
   paginationAtom,
-  selectedTransactionAtom,
   transactionStore,
   transactionsByDateAtom,
+  selectedTransactionAtom,
   type TransactionsPagination,
 } from "./transactionStore";
 
@@ -19,10 +19,11 @@ interface UseTransactionStore {
   transactionsByDate: TransactionsByDateDto[];
   categories: CategoryWihtSubCategoriesDto[];
   addTransaction: (transaction: Transaction) => void;
-  selectTransaction: (transaction: Transaction) => void;
+  selectTransaction: (transaction: Transaction | null) => void;
   updatePagination: (pagination: TransactionsPagination) => void;
   updateTransactions: (grouped: TransactionsByDateDto[]) => void;
   setCategories: (categories: CategoryWihtSubCategoriesDto[]) => void;
+  deleteTransaction: (transactionId: number) => void;
 }
 
 export const useTransactionStore = (): UseTransactionStore => {
@@ -44,7 +45,7 @@ export const useTransactionStore = (): UseTransactionStore => {
     },
   );
 
-  const selectTransaction = (transaction: Transaction) => {
+  const selectTransaction = (transaction: Transaction | null) => {
     transactionSelection(transaction);
   };
 
@@ -97,6 +98,21 @@ export const useTransactionStore = (): UseTransactionStore => {
     });
   };
 
+  const deleteTransaction = (transactionId: number) => {
+    setTransactions((prev) => {
+      return prev
+        .map((group) => {
+          return {
+            ...group,
+            transactions: group.transactions.filter(
+              (transaction) => transaction._id !== transactionId,
+            ),
+          };
+        })
+        .filter((group) => group.transactions.length > 0);
+    });
+  };
+
   const updateTransactions = (grouped: TransactionsByDateDto[]) => {
     setTransactions(grouped);
   };
@@ -107,6 +123,7 @@ export const useTransactionStore = (): UseTransactionStore => {
     addTransaction,
     setCategories,
     selectTransaction,
+    deleteTransaction,
     transactionsByDate,
     updateTransactions,
     selectedTransaction,

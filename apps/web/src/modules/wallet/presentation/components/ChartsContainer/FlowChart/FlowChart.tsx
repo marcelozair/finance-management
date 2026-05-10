@@ -1,5 +1,5 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
 import { Chart, useChart } from "@chakra-ui/charts";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import { Area, AreaChart, CartesianGrid, Tooltip, XAxis } from "recharts";
 
 export const FlowChart = () => {

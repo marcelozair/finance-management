@@ -1,10 +1,10 @@
 import { Outlet } from "react-router";
 import { Grid, GridItem } from "@chakra-ui/react";
 
-import { Sidebar } from "../components/Sidebar/Sidebar";
-import { SidebarMobile } from "../components/Sidebar/SidebarMobile";
+import { Sidebar } from "./sidebar/Sidebar";
+import { SidebarMobile } from "./sidebar/SidebarMobile";
 
-export const DashboardView = () => {
+export const LayoutContainer = () => {
   return (
     <main>
       <Grid

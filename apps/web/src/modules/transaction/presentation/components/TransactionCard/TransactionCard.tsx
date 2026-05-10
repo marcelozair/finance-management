@@ -20,7 +20,10 @@ interface TransactionProps {
   transaction: Transaction;
 }
 
-export const TransactionCard = ({ transaction }: TransactionProps) => {
+export const TransactionCard = ({
+  transaction,
+  selected,
+}: TransactionProps) => {
   const { selectedWallet } = useWalletStore();
   const { system } = useConfig();
   const { selectTransaction } = useTransactionStore();
@@ -41,16 +44,16 @@ export const TransactionCard = ({ transaction }: TransactionProps) => {
 
   return (
     <Box
-      onClick={() => selectTransaction(transaction)}
+      onClick={() => selectTransaction(selected ? null : transaction)}
       p="14px 16px"
       w="100%"
       borderRadius="14px"
       transition="0.3s ease"
       cursor={"pointer"}
-      _hover={{ opacity: 0.5 }}
+      _hover={selected ? undefined : { opacity: 0.5 }}
       borderWidth="2px"
-      borderColor="transparent"
-      // borderColor={selected ? "#3da9fc" : "transparent"}
+      // borderColor="transparent"
+      borderColor={selected ? "border" : "transparent"}
     >
       <HStack justify="space-between">
         {/* Left section */}

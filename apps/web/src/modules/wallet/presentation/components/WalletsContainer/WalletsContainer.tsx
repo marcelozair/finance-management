@@ -12,7 +12,7 @@ import { useTransactionStore } from "../../../../transaction/presentation/store/
 
 export const WalletsContainer = () => {
   const walletDomain = useWalletDomain();
-  const { updateTransactions } = useTransactionStore();
+  const { updateTransactions, selectTransaction } = useTransactionStore();
 
   const { wallets, setWallets, selectedWallet, selectWallet } =
     useWalletStore();
@@ -31,6 +31,7 @@ export const WalletsContainer = () => {
       const wallet = wallets.find(({ _id }) => _id === walletId);
       if (wallet) {
         updateTransactions([]);
+        selectTransaction(null);
         selectWallet(wallet);
       }
     }

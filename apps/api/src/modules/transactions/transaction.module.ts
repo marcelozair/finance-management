@@ -13,6 +13,7 @@ import { CreateTransactionUseCase } from './application/useCases/CreateTransacti
 import { SubCategoryEntity } from 'src/infrastructure/database/entities/SubCategoryEntity';
 import { CategoryRepositoryImpl } from 'src/infrastructure/database/repositories/CategoryRepositoryImpl';
 import { TransactionRepositoryImpl } from 'src/infrastructure/database/repositories/TransactionRepositoryImpl';
+import { DeleteTransactionsUseCase } from './application/useCases/DeleteTransactionUseCase';
 
 @Module({
   controllers: [TransactionController, CategoriesController],
@@ -41,6 +42,13 @@ import { TransactionRepositoryImpl } from 'src/infrastructure/database/repositor
         return new CreateTransactionUseCase(transactionRepo, categoryRepo);
       },
       inject: [TransactionRepository, CategoryRepository],
+    },
+    {
+      provide: DeleteTransactionsUseCase,
+      useFactory: (transactionRepo: TransactionRepository) => {
+        return new DeleteTransactionsUseCase(transactionRepo);
+      },
+      inject: [TransactionRepository],
     },
     {
       provide: GetTransactionsUseCase,

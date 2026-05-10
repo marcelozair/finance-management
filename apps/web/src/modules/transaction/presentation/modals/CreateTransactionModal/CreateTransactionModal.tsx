@@ -68,7 +68,7 @@ export const CreateTransactionModal = ({
           );
 
           addTransaction(createdTransaction);
-          updateWallets(createdTransaction);
+          updateWallets(createdTransaction, "add");
         }
       } finally {
         handleClose();

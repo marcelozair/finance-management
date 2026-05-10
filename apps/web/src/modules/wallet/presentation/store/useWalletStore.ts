@@ -7,13 +7,17 @@ import {
 
 import type { Wallet } from "../../domain/entities/Wallet";
 import { walletsAtom, walletStore, selectedWalletAtom } from "./walletStore";
+
 interface UseWalletStore {
   wallets: Wallet[];
   selectedWallet: Wallet | null;
   addWallet: (wallets: Wallet) => void;
   selectWallet: (wallet: Wallet) => void;
   setWallets: (wallets: Wallet[]) => void;
-  updateWallets: (transaction: Transaction) => void;
+  updateWallets: (
+    transaction: Transaction,
+    operation: "add" | "remove",
+  ) => void;
 }
 
 export const useWalletStore = (): UseWalletStore => {
@@ -37,24 +41,45 @@ export const useWalletStore = (): UseWalletStore => {
     setWalletsAtom((prev) => [...prev, wallet]);
   };
 
-  const updateWallets = (transaction: Transaction) => {
+  const updateWallets = (
+    transaction: Transaction,
+    operation: "add" | "remove",
+  ) => {
     setWalletsAtom((prev) =>
       prev.map((wallet) => {
         let newBalance = wallet._balance;
 
-        const isSource = wallet._id === transaction._walletId;
+        const isSource =
+          wallet._id === transaction._walletId &&
+          wallet._id !== transaction._destinationWalletId;
         const isDestination = wallet._id === transaction._destinationWalletId;
 
         if (isSource) {
-          if (transaction._type === IncomeTransaction) {
-            newBalance = newBalance.add(transaction._amount);
-          } else {
-            newBalance = newBalance.subtract(transaction._amount);
+          if (operation === "add") {
+            if (transaction._type === IncomeTransaction) {
+              newBalance = newBalance.add(transaction._amount);
+            } else {
+              newBalance = newBalance.subtract(transaction._amount);
+            }
+          }
+
+          if (operation === "remove") {
+            if (transaction._type === IncomeTransaction) {
+              newBalance = newBalance.subtract(transaction._amount);
+            } else {
+              newBalance = newBalance.add(transaction._amount);
+            }
           }
         }
 
         if (isDestination) {
-          newBalance = newBalance.add(transaction._amount);
+          if (operation === "add") {
+            newBalance = newBalance.add(transaction._amount);
+          }
+
+          if (operation === "remove") {
+            newBalance = newBalance.subtract(transaction._amount);
+          }
         }
 
         // return new wallet instead of mutating

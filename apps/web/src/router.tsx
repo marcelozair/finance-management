@@ -6,7 +6,8 @@ import { WalletView } from "./modules/wallet/presentation/view/Wallet";
 import { SetUpView } from "./modules/auth/presentation/views/SetUp/SetUp";
 import { SignUpView } from "./modules/auth/presentation/views/SignUp/SignUp";
 import { SignInView } from "./modules/auth/presentation/views/SignIn/SignIn";
-import { DashboardView } from "./modules/dashboard/presentation/view/Dashboard";
+import { LayoutContainer } from "./shared/presentation/layout/LayoutContainer";
+import { DashboardView } from "@modules/dashboard/presentation/view/DashboardView";
 import { SelectProfileView } from "./modules/profiles/presentation/views/SelectProfile/SelectProfile";
 
 export const router = createBrowserRouter([
@@ -39,11 +40,15 @@ export const router = createBrowserRouter([
         Component: ProfileGuard,
         children: [
           {
-            Component: DashboardView,
+            Component: LayoutContainer,
             children: [
               {
                 path: "wallet",
                 Component: WalletView,
+              },
+              {
+                path: "dashboard",
+                Component: DashboardView,
               },
             ],
           },
