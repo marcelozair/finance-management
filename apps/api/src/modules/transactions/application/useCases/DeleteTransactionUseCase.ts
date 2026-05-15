@@ -10,7 +10,11 @@ export class DeleteTransactionsUseCase {
    * @param {number} transactionId transaction id
    * @returns {Promise<void>} void
    */
-  async execute(walletId: number, transactionId: number): Promise<void> {
+  async execute(
+    walletId: number,
+    profileId: number,
+    transactionId: number,
+  ): Promise<void> {
     // #TODO Critical apply transactions
     try {
       const transaction =
@@ -21,6 +25,7 @@ export class DeleteTransactionsUseCase {
       console.log(`Removing the transaction ${transaction._id}`);
       const response = await this.transactionRepository.deleteById(
         transaction._id,
+        profileId,
       );
 
       if (!response) {

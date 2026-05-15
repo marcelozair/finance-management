@@ -26,6 +26,7 @@ export class CreateTransactionUseCase {
    */
   async execute(
     walletId: number,
+    profileId: number,
     payload: CreateTransactionDTO,
   ): Promise<TransactionDTO> {
     const newTrasaction = Transaction.forCreate(
@@ -42,10 +43,14 @@ export class CreateTransactionUseCase {
     if (newTrasaction._type.equals(new TransactionType('transfer'))) {
       await this.transactionRepository.save(
         newTrasaction.createDestinationTransaction(),
+        profileId,
       );
     }
 
-    const transaction = await this.transactionRepository.save(newTrasaction);
+    const transaction = await this.transactionRepository.save(
+      newTrasaction,
+      profileId,
+    );
 
     const category = await this.categoryRepository.findById(payload.categoryId);
     const subCategory = category?._subCategories.find(

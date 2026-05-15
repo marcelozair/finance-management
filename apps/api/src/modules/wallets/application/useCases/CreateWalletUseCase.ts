@@ -43,6 +43,7 @@ export class CreateWalletUseCase {
       await this.transactionRepository.initialTransaction(
         createdWallet._id,
         new Amount(wallet.initialBalance),
+        profileId,
       );
     }
 

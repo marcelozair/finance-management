@@ -13,6 +13,7 @@ import { WalletEntity } from './WalletEntity';
 import { CategoryEntity } from './CategoryEntity';
 import { SubCategoryEntity } from './SubCategoryEntity';
 import { TransactionEnum } from '../../../modules/transactions/domain/vo/TransactionType';
+import { ProfileEntity } from './ProfileEntity';
 
 @Entity({ schema: 'finance', name: 'mad_transactions' })
 export class TransactionEntity {
@@ -57,6 +58,13 @@ export class TransactionEntity {
   @ManyToOne(() => WalletEntity)
   @JoinColumn({ name: 'walletId' })
   wallet: WalletEntity;
+
+  @Column({ nullable: true })
+  profileId?: number;
+
+  @ManyToOne(() => ProfileEntity, { nullable: true })
+  @JoinColumn({ name: 'profileId' })
+  profile?: ProfileEntity;
 
   /**
    * Destination Wallet: Only populated for 'TRANSFER' type movements.

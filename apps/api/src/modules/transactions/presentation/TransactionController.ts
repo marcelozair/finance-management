@@ -19,6 +19,7 @@ import { CreateTransactionDTO } from './dtos/CreateTransactionDto';
 import { GetTransactionsUseCase } from '../application/useCases/GetTransactionsUseCase';
 import { CreateTransactionUseCase } from '../application/useCases/CreateTransactionUseCase';
 import { DeleteTransactionsUseCase } from '../application/useCases/DeleteTransactionUseCase';
+import { Profile } from 'src/shared/decorators/ProfileDecorator';
 
 @Controller('wallet/:walletId/transactions')
 @UseGuards(AuthGuard)
@@ -50,11 +51,13 @@ export class TransactionController {
   @Post('/')
   @HttpCode(HttpStatus.CREATED)
   async createTransaction(
+    @Profile() profileId: number,
     @Param('walletId') walletId: number,
     @Body() payload: CreateTransactionDTO,
   ) {
     const response = await this.createTransactionUseCase.execute(
-      walletId,
+      Number(walletId),
+      Number(profileId),
       payload,
     );
     return ResHandler(response, 'Transaction created successfully');
@@ -63,11 +66,13 @@ export class TransactionController {
   @Delete('/:transactionId')
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteTransaction(
+    @Profile() profileId: number,
     @Param('walletId') walletId: number,
     @Param('transactionId') transactionId: number,
   ) {
     await this.deleteTransactionUseCase.execute(
       Number(walletId),
+      Number(profileId),
       Number(transactionId),
     );
     return ResHandler(null, 'Transaction deleted successfully');

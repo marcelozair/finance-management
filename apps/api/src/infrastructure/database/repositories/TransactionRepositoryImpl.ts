@@ -15,10 +15,15 @@ export class TransactionRepositoryImpl implements TransactionRepository {
   @InjectRepository(TransactionEntity)
   private readonly repository: Repository<TransactionEntity>;
 
-  async initialTransaction(walletId: number, amount: Amount): Promise<void> {
+  async initialTransaction(
+    walletId: number,
+    amount: Amount,
+    profileId: number,
+  ): Promise<void> {
     // Implementation for creating an initial transaction with a zero amount
     const initialTransaction = this.repository.create({
       walletId,
+      profileId,
       categoryId: null as any,
       subCategoryId: null as any,
       amount: amount.getValue(),
@@ -34,8 +39,12 @@ export class TransactionRepositoryImpl implements TransactionRepository {
    * Persists a new transaction or updates an existing one.
    * Maps domain getters to the TypeORM entity structure.
    */
-  async save(transaction: Transaction): Promise<Transaction> {
+  async save(
+    transaction: Transaction,
+    profileId: number,
+  ): Promise<Transaction> {
     const transactionPayload = this.repository.create({
+      profileId: profileId,
       walletId: transaction._walletId,
       amount: transaction._amount.getValue(),
       concept: transaction._concept,
@@ -99,8 +108,8 @@ export class TransactionRepositoryImpl implements TransactionRepository {
     return TransactionMapper.entityToDomain(entity);
   }
 
-  async deleteById(id: number): Promise<boolean> {
-    const result = await this.repository.softDelete(id);
+  async deleteById(id: number, profileId: number): Promise<boolean> {
+    const result = await this.repository.softDelete({ id, profileId });
     return result.affected !== undefined && result.affected > 0;
   }
 }
