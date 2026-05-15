@@ -13,7 +13,7 @@ interface UseWalletStore {
   selectedWallet: Wallet | null;
   addWallet: (wallets: Wallet) => void;
   selectWallet: (wallet: Wallet) => void;
-  setWallets: (wallets: Wallet[]) => void;
+  setWallets: (wallets: Wallet[], selected: number | null) => void;
   updateWallets: (
     transaction: Transaction,
     operation: "add" | "remove",
@@ -29,11 +29,15 @@ export const useWalletStore = (): UseWalletStore => {
     store: walletStore,
   });
 
-  const setWallets = (walletsList: Wallet[]) => {
+  const setWallets = (
+    walletsList: Wallet[],
+    selectedWallet: number | null = null,
+  ) => {
     setWalletsAtom([...walletsList]);
 
     if (!wallets.length && walletsList[0]) {
-      selectWallet(walletsList[0]);
+      const selected = walletsList.find(({ _id }) => _id === selectedWallet);
+      selectWallet(selected || walletsList[0]);
     }
   };
 

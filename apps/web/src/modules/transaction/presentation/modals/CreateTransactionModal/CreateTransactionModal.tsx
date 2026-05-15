@@ -8,10 +8,13 @@ import {
   type CreateTransactionForm,
 } from "./ValidationForm";
 
+import { Amount } from "@core/domain/vo/Amount";
 import { Currency } from "@core/domain/vo/Currency";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toaster } from "@shared/presentation/ui/Toaster";
 import { CategorySelect } from "./CategorySelect/CategorySelect";
 import { Modal } from "@shared/presentation/components/Modal/Modal";
+import { WalletTypes } from "@modules/wallet/domain/entities/Wallet";
 import { useTransactionStore } from "../../store/useTransactionStore";
 import { useTransactionDomain } from "../../hooks/useTransactionDomain";
 import { TransactionEnum } from "./CategorySelect/TransactionCatalogs";
@@ -81,6 +84,37 @@ export const CreateTransactionModal = ({
   };
 
   const onSubmit = (data: CreateTransactionForm) => {
+    if (
+      selectedWallet &&
+      selectedWallet._creditLine &&
+      selectedWallet._type === WalletTypes.CREDIT
+    ) {
+      if (
+        data.type === TransactionEnum.INCOME &&
+        data.amount > selectedWallet._balance.getValue()
+      ) {
+        toaster.create({
+          type: "error",
+          title: "Payment amount exceeds current balance",
+        });
+        return;
+      }
+
+      if (data.type === TransactionEnum.EXPENSE) {
+        const newBalance = selectedWallet._balance.subtract(
+          new Amount(data.amount),
+        );
+
+        if (newBalance.abs().greaterThan(selectedWallet._creditLine)) {
+          toaster.create({
+            type: "error",
+            title: "Transaction exceeds credit line limit",
+          });
+          return;
+        }
+      }
+    }
+
     const isoDate = new Date(data.date).toISOString();
     const payload: CreateTransactionDto = {
       amount: data.amount,
@@ -124,27 +158,49 @@ export const CreateTransactionModal = ({
         <form id="create-transaction-form" onSubmit={handleSubmit(onSubmit)}>
           <Flex gap={4} flexDirection="column">
             <Flex justifyContent={"space-between"} gap={2}>
-              <TransactionType
-                active={transactionType === TransactionEnum.INCOME}
-                Icon={TiChartLine}
-                label="Income"
-                color="green"
-                onClick={() => setTransactionType(TransactionEnum.INCOME)}
-              />
-              <TransactionType
-                active={transactionType === TransactionEnum.EXPENSE}
-                Icon={TiChartArea}
-                label="Expense"
-                color="red"
-                onClick={() => setTransactionType(TransactionEnum.EXPENSE)}
-              />
-              <TransactionType
-                active={transactionType === TransactionEnum.TRANSFER}
-                Icon={TiArrowRepeat}
-                label="Transfer"
-                color="blue"
-                onClick={() => setTransactionType(TransactionEnum.TRANSFER)}
-              />
+              {selectedWallet?._type === WalletTypes.CREDIT && (
+                <>
+                  <TransactionType
+                    active={transactionType === TransactionEnum.INCOME}
+                    Icon={TiChartLine}
+                    label="Payment"
+                    color="green"
+                    onClick={() => setTransactionType(TransactionEnum.INCOME)}
+                  />
+                  <TransactionType
+                    active={transactionType === TransactionEnum.EXPENSE}
+                    Icon={TiChartArea}
+                    label="Expense"
+                    color="red"
+                    onClick={() => setTransactionType(TransactionEnum.EXPENSE)}
+                  />
+                </>
+              )}
+              {selectedWallet?._type !== WalletTypes.CREDIT && (
+                <>
+                  <TransactionType
+                    active={transactionType === TransactionEnum.INCOME}
+                    Icon={TiChartLine}
+                    label="Income"
+                    color="green"
+                    onClick={() => setTransactionType(TransactionEnum.INCOME)}
+                  />
+                  <TransactionType
+                    active={transactionType === TransactionEnum.EXPENSE}
+                    Icon={TiChartArea}
+                    label="Expense"
+                    color="red"
+                    onClick={() => setTransactionType(TransactionEnum.EXPENSE)}
+                  />
+                  <TransactionType
+                    active={transactionType === TransactionEnum.TRANSFER}
+                    Icon={TiArrowRepeat}
+                    label="Transfer"
+                    color="blue"
+                    onClick={() => setTransactionType(TransactionEnum.TRANSFER)}
+                  />
+                </>
+              )}
             </Flex>
             <TextField
               label="Concept"

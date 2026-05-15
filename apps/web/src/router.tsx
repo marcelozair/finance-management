@@ -45,6 +45,12 @@ export const router = createBrowserRouter([
               {
                 path: "wallet",
                 Component: WalletView,
+                children: [
+                  {
+                    path: ":walletId",
+                    Component: WalletView,
+                  },
+                ],
               },
               {
                 path: "dashboard",

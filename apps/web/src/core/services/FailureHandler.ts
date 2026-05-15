@@ -124,7 +124,7 @@ export class FailureHandler implements IFailureHandler {
 
   handleServerFailure = async (
     failure: Failure,
-    customErrorMessages: CustomErrorMessages
+    customErrorMessages: CustomErrorMessages,
   ) => {
     const defaultErrorMessages = {
       apiError: "There was an error with the API, please try again",

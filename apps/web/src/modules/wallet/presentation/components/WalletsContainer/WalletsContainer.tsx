@@ -9,30 +9,36 @@ import { CreateWalletCard } from "./CreateWalletCard/CreateWalletCard";
 import { CreateWalletModal } from "./CreateWalletModal/CreateWalletModal";
 import { useExecuteUseCase } from "@shared/presentation/hooks/useExecuteUseCase";
 import { useTransactionStore } from "../../../../transaction/presentation/store/useTransactionStore";
+import { useNavigate, useParams } from "react-router";
 
 export const WalletsContainer = () => {
   const walletDomain = useWalletDomain();
-  const { updateTransactions, selectTransaction } = useTransactionStore();
 
+  const { updateTransactions, selectTransaction } = useTransactionStore();
   const { wallets, setWallets, selectedWallet, selectWallet } =
     useWalletStore();
+
+  const navigate = useNavigate();
+  const { walletId } = useParams<{ walletId: string }>();
 
   const [createModal, setCreateModal] = useState(false);
 
   const { execute, loading } = useExecuteUseCase<void, void>({
     callback: async () => {
       const wallets = await walletDomain.getAll();
-      setWallets(wallets);
+      setWallets(wallets, Number(walletId));
     },
   });
 
   const handleWalletSelection = (walletId: number) => {
     if (selectedWallet && selectedWallet._id != walletId) {
       const wallet = wallets.find(({ _id }) => _id === walletId);
+
       if (wallet) {
         updateTransactions([]);
         selectTransaction(null);
         selectWallet(wallet);
+        navigate(String(walletId));
       }
     }
   };
