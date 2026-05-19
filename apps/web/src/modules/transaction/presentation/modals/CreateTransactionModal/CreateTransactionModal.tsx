@@ -89,9 +89,11 @@ export const CreateTransactionModal = ({
       selectedWallet._creditLine &&
       selectedWallet._type === WalletTypes.CREDIT
     ) {
+      console.log(data.amount, selectedWallet._balance.getValue());
+
       if (
         data.type === TransactionEnum.INCOME &&
-        data.amount > selectedWallet._balance.getValue()
+        data.amount > selectedWallet._balance.abs().getValue()
       ) {
         toaster.create({
           type: "error",
